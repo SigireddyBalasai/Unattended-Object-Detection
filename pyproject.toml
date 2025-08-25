@@ -1,0 +1,18 @@
+[project]
+name = "video-dataset"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1.2",
+    "flask-websockets>=0.1.2",
+    "ultralytics>=8.3.185",
+    "websocket>=0.2.1",
+]
+
+[dependency-groups]
+dev = [
+    "websocket>=0.2.1",
+    "websocket-client>=1.8.0",
+]
