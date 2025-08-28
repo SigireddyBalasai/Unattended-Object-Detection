@@ -7,7 +7,12 @@ requires-python = ">=3.13"
 dependencies = [
     "flask>=3.1.2",
     "flask-websockets>=0.1.2",
-    "ultralytics>=8.3.185",
+    "onnx>=1.18.0",
+    "onnxruntime>=1.22.1",
+    "onnxslim>=0.1.65",
+    "tritonclient[http]>=2.41.0",
+    "opencv-python>=4.8.0",
+    "numpy>=1.24.0",
     "websocket>=0.2.1",
 ]
 
