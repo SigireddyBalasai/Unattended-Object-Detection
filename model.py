@@ -10,20 +10,56 @@ def preprocess_frame(frame):
     frame = frame.astype(np.float32) / 255.0
     # Change from HWC to CHW format
     frame = np.transpose(frame, (2, 0, 1))
+    # Add batch dimension for Triton (BCHW format)
+    frame = np.expand_dims(frame, axis=0)
     return frame
 
-def postprocess_output(output):
-    # Convert raw model output to detection format
-    # This needs to be adjusted based on your model's output format
-    boxes = output[0]  # Assuming first output is bounding boxes
-    scores = output[1]  # Assuming second output is confidence scores
-    classes = output[2]  # Assuming third output is class predictions
+def postprocess_output(output, frame_shape, conf_threshold=0.5):
+    """
+    Postprocess RT-DETR output
+    Output format: [batch, 300, 84] where 84 = 4 (bbox) + 80 (classes)
+    """
+    detections = []
     
-    return {
-        'boxes': boxes.tolist(),
-        'scores': scores.tolist(),
-        'classes': classes.tolist()
-    }
+    # Remove batch dimension
+    output = output[0]  # Shape: [300, 84]
+    
+    # Get original frame dimensions
+    orig_h, orig_w = frame_shape[:2]
+    
+    for detection in output:
+        # Extract bbox and class scores
+        bbox = detection[:4]  # [x_center, y_center, width, height]
+        class_scores = detection[4:]  # 80 class scores
+        
+        # Get max confidence and class
+        max_conf = np.max(class_scores)
+        class_id = np.argmax(class_scores)
+        
+        if max_conf > conf_threshold:
+            # Convert bbox format (center_x, center_y, w, h) to (x1, y1, x2, y2)
+            # Coordinates are normalized, need to scale to original image size
+            x_center, y_center, w, h = bbox
+            
+            # Scale from normalized coordinates to original image size
+            x_center *= orig_w
+            y_center *= orig_h
+            w *= orig_w
+            h *= orig_h
+            
+            # Convert center format to corner format
+            x1 = max(0, int(x_center - w / 2))
+            y1 = max(0, int(y_center - h / 2))
+            x2 = min(orig_w, int(x_center + w / 2))
+            y2 = min(orig_h, int(y_center + h / 2))
+            
+            detections.append({
+                'bbox': [x1, y1, x2, y2],
+                'confidence': float(max_conf),
+                'class_id': int(class_id)
+            })
+    
+    return detections
 
 def get_video_predictions(video_path):
     # Initialize Triton client
@@ -45,7 +81,7 @@ def get_video_predictions(video_path):
             
             # Prepare inputs
             inputs = []
-            input_tensor = InferInput("input", input_data.shape, "FP32")
+            input_tensor = InferInput("images", input_data.shape, "FP32")
             input_tensor.set_data_from_numpy(input_data)
             inputs.append(input_tensor)
             
@@ -58,8 +94,8 @@ def get_video_predictions(video_path):
                 outputs.append(np.frombuffer(output['data'], 
                                           dtype=np.float32).reshape(output['shape']))
             
-            # Postprocess and yield results
-            yield postprocess_output(outputs)
+            # Postprocess and yield results with lower confidence threshold
+            yield postprocess_output(outputs, frame.shape, conf_threshold=0.3)
             
         frame_count += 1
     

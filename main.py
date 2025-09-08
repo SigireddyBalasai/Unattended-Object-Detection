@@ -24,4 +24,5 @@ def websocket_route(ws: WebSocket) -> None:
 def main():
     return "Hello, World!"
 
-app.run(host="0.0.0.0", port=6969)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=6969)
