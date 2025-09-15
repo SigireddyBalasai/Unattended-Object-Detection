@@ -48,4 +48,6 @@ uv run python triton_client.py \
     --output output_video2.mp4 \
     --conf-threshold 0.1
 
+uv run model3.py 
+
 echo "Job finished at $(date)"

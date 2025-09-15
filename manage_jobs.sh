@@ -18,6 +18,7 @@ Commands:
     start-triton    Start only Triton server
     start-flask     Start only Flask server  
     start-client    Start client test
+    start-client2   Start client 2 (legacy)
     status          Show job status
     logs            Show latest log files
     stop            Cancel all running jobs
@@ -58,6 +59,13 @@ start_client() {
     echo "Starting client test..."
     JOBID=$(sbatch run_client.slurm | grep -o '[0-9]\+')
     echo "Client job submitted: $JOBID"
+    echo "Monitor with: watch squeue -u $USER"
+}
+
+start_client2() {
+    echo "Starting client v2 test..."
+    JOBID=$(sbatch run_client_v2.slurm | grep -o '[0-9]\+')
+    echo "Client v2 job submitted: $JOBID"
     echo "Monitor with: watch squeue -u $USER"
 }
 
@@ -106,6 +114,9 @@ case "${1:-help}" in
         ;;
     start-client|client)
         start_client
+        ;;
+    start-client2|client2)
+        start_client2
         ;;
     status|st)
         show_status
