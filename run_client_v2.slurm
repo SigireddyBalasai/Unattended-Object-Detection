@@ -222,7 +222,7 @@ log_with_timestamp "Executing model3.py for post-processing..."
 model3_start_time=$(date +%s)
 log_with_timestamp "Model3 processing started at: $(date)"
 
-if uv run python model3.py; then
+if uv run python model3.py --triton-url ${TRITON_NODE}:8000; then
     model3_end_time=$(date +%s)
     model3_duration=$((model3_end_time - model3_start_time))
     log_with_timestamp "✓ Model3 processing completed successfully in ${model3_duration} seconds"

@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import json
 import logging
+import os
+import subprocess
 from tritonclient.http import InferenceServerClient, InferInput
 from tritonclient.utils import InferenceServerException
 
@@ -24,6 +26,42 @@ logging.basicConfig(
     format="%(asctime)s - %(message)s",
     level=logging.INFO
 )
+
+# === Cluster Configuration ===
+def get_triton_server_url():
+    """Get Triton server URL from cluster configuration."""
+    cluster_config_dir = os.path.expanduser("~/.triton_cluster")
+    triton_node_file = os.path.join(cluster_config_dir, "triton_node")
+    
+    # Try to read from cluster state file
+    if os.path.exists(triton_node_file):
+        try:
+            with open(triton_node_file, 'r') as f:
+                triton_node = f.read().strip()
+            if triton_node:
+                return f"{triton_node}:8000"
+        except Exception as e:
+            print(f"Warning: Could not read cluster state: {e}")
+    
+    # Fallback: try to detect from running SLURM jobs
+    try:
+        result = subprocess.run(
+            ["squeue", "-u", os.environ.get("USER", ""), "-n", "triton-inference", "-h", "-o", "%N"],
+            capture_output=True, text=True, timeout=10
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            triton_node = result.stdout.strip().split('\n')[0]
+            # Save to cluster state for future use
+            os.makedirs(cluster_config_dir, exist_ok=True)
+            with open(triton_node_file, 'w') as f:
+                f.write(triton_node)
+            return f"{triton_node}:8000"
+    except Exception as e:
+        print(f"Warning: Could not detect Triton server from SLURM: {e}")
+    
+    # Final fallback to localhost
+    print("Warning: Using localhost as fallback. This may not work in cluster environments.")
+    return "localhost:8000"
 
 # === Utilities ===
 def is_near(bbox1, bbox2, threshold=PROXIMITY_THRESHOLD):
@@ -135,7 +173,21 @@ def unattended_object_alert(predictions, current_time, tracking_state):
 
 # === Main Prediction Loop ===
 def get_video_predictions(video_path):
-    client = InferenceServerClient(url="localhost:8000")
+    # Get Triton server URL from cluster configuration
+    triton_url = get_triton_server_url()
+    print(f"Connecting to Triton server at: {triton_url}")
+    
+    try:
+        client = InferenceServerClient(url=triton_url)
+        # Test connection
+        if not client.is_server_ready():
+            raise Exception(f"Triton server at {triton_url} is not ready")
+        print(f"✓ Successfully connected to Triton server at {triton_url}")
+    except Exception as e:
+        print(f"✗ Failed to connect to Triton server at {triton_url}: {e}")
+        print("Make sure the Triton server is running and accessible.")
+        raise
+    
     cap = cv2.VideoCapture(video_path)
     video_fps = int(cap.get(cv2.CAP_PROP_FPS)) or 30
     frame_count = 0
@@ -219,6 +271,28 @@ def save_output_video(input_video_path, output_video_path):
 
 # === Example usage ===
 if __name__ == "__main__":
-    input_video = "ABODA/video1.avi"       # your input video path
-    output_video = "output_final.mp4"     # output video path
-    save_output_video(input_video, output_video)
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Process video for unattended object detection")
+    parser.add_argument("--input", default="ABODA/video1.avi", help="Input video path")
+    parser.add_argument("--output", default="output_final.mp4", help="Output video path")
+    parser.add_argument("--triton-url", default=None, help="Triton server URL (e.g., gpu001:8000)")
+    
+    args = parser.parse_args()
+    
+    # Override cluster detection if URL is provided
+    if args.triton_url:
+        def override_get_triton_server_url():
+            return args.triton_url
+        get_triton_server_url = override_get_triton_server_url
+        print(f"Using provided Triton server URL: {args.triton_url}")
+    
+    print(f"Processing video: {args.input}")
+    print(f"Output will be saved to: {args.output}")
+    
+    try:
+        save_output_video(args.input, args.output)
+        print("✅ Video processing completed successfully!")
+    except Exception as e:
+        print(f"✗ Error during video processing: {e}")
+        exit(1)
