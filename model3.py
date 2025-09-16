@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import json
 from tritonclient.http import InferenceServerClient, InferInput
+from tritonclient.utils import InferenceServerException
 
 # === Constants ===
 PERSON_CLASS_ID = 0
@@ -12,7 +13,7 @@ TARGET_OBJECT_CLASSES = {
 }
 PROXIMITY_THRESHOLD = 100  # pixels
 UNATTENDED_TIME_SEC = 30
-FPS = 5  # process every 5th frame
+PROCESS_EVERY_N_FRAMES = 5  # analyze every 5th frame
 
 LOG_FILE = "alerts.log"
 
@@ -34,7 +35,7 @@ def preprocess_frame(frame):
 
 def postprocess_output(output, frame_shape, conf_threshold=0.5):
     detections = []
-    output = output[0]  # Shape: [300, 84]
+    output = output[0]  # Shape: [N, 84] (N detections)
     orig_h, orig_w = frame_shape[:2]
 
     for detection in output:
@@ -59,14 +60,18 @@ def postprocess_output(output, frame_shape, conf_threshold=0.5):
             })
     return detections
 
-def unattended_object_alert(predictions, frame_index, tracking_state):
-    current_time = frame_index / FPS
+def make_obj_id(det):
+    """Stable ID: class + rounded bbox"""
+    x1, y1, x2, y2 = det['bbox']
+    return f"{det['class_id']}_{round(x1)}_{round(y1)}_{round(x2)}_{round(y2)}"
+
+def unattended_object_alert(predictions, current_time, tracking_state):
     persons = [det for det in predictions if det['class_id'] == PERSON_CLASS_ID]
     objects = [det for det in predictions if det['class_id'] in TARGET_OBJECT_CLASSES]
     alerts = []
 
     for obj in objects:
-        obj_id = f"{obj['class_id']}_{obj['bbox']}"
+        obj_id = make_obj_id(obj)
         nearby_persons = [p for p in persons if is_near(obj['bbox'], p['bbox'])]
 
         if nearby_persons:
@@ -91,7 +96,7 @@ def unattended_object_alert(predictions, frame_index, tracking_state):
                     }
                     alerts.append(alert_data)
 
-                    # Log alert to file
+                    # Log alert
                     with open(LOG_FILE, "a") as log_file:
                         log_file.write(json.dumps(alert_data) + "\n")
 
@@ -111,6 +116,7 @@ def unattended_object_alert(predictions, frame_index, tracking_state):
 def get_video_predictions(video_path):
     client = InferenceServerClient(url="localhost:8000")
     cap = cv2.VideoCapture(video_path)
+    video_fps = int(cap.get(cv2.CAP_PROP_FPS)) or 30  # fallback if 0
     frame_count = 0
     tracking_state = {}
 
@@ -119,24 +125,30 @@ def get_video_predictions(video_path):
         if not ret:
             break
 
-        if frame_count % 5 == 0:
+        if frame_count % PROCESS_EVERY_N_FRAMES == 0:
             input_data = preprocess_frame(frame)
             inputs = []
             input_tensor = InferInput("images", input_data.shape, "FP32")
             input_tensor.set_data_from_numpy(input_data)
             inputs.append(input_tensor)
 
-            results = client.infer("rtdetr", inputs)
-            outputs = []
-            for output in results.get_response()['outputs']:
-                outputs.append(np.frombuffer(output['data'], dtype=np.float32).reshape(output['shape']))
+            try:
+                results = client.infer("rtdetr", inputs)
+                # safer output extraction (check available outputs)
+                output_names = results.get_response()["outputs"]
+                output_key = output_names[0]["name"] if output_names else "output0"
+                output = results.as_numpy(output_key)
+            except InferenceServerException as e:
+                print(f"Inference failed: {e}")
+                break
 
-            predictions = postprocess_output(outputs, frame.shape, conf_threshold=0.3)
-            alerts = unattended_object_alert(predictions, frame_count // 5, tracking_state)
+            current_time = frame_count / video_fps  # seconds
+            predictions = postprocess_output(output, frame.shape, conf_threshold=0.3)
+            alerts = unattended_object_alert(predictions, current_time, tracking_state)
 
-            # Return everything as JSON serializable object
             yield {
                 "frame": frame_count,
+                "time_sec": current_time,
                 "alerts": alerts,
                 "predictions": predictions
             }
