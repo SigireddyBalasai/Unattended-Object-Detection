@@ -1,0 +1,4 @@
+2025-09-16 08:40:31,448 - {"object": "handbag", "bbox": [56, 229, 72, 283], "unattended_since": -1, "alert_time": 37.06896551724138}
+2025-09-16 08:40:35,802 - {"object": "suitcase", "bbox": [129, 321, 184, 365], "unattended_since": -1, "alert_time": 53.44827586206897}
+2025-09-16 08:40:35,892 - {"object": "handbag", "bbox": [129, 323, 186, 366], "unattended_since": -1, "alert_time": 53.793103448275865}
+2025-09-16 08:40:40,038 - {"object": "backpack", "bbox": [131, 324, 187, 365], "unattended_since": -1, "alert_time": 69.82758620689656}
