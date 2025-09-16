@@ -11,8 +11,14 @@
 set -euo pipefail
 cd "$SLURM_SUBMIT_DIR"
 
+# Source cluster configuration
+source ./cluster_config.sh
+
 echo "Job started on $(hostname) at $(date)"
 echo "Working dir: $(pwd)"
+
+# Write cluster state with current node
+write_cluster_state "${SLURM_JOB_ID}" "$(hostname)" "triton-server"
 
 # Try to load rootless docker if available
 if command -v module &>/dev/null; then
@@ -40,3 +46,6 @@ docker run --rm \
   tritonserver --model-repository=/models --log-verbose=1
 
 echo "Triton container exited"
+
+# Clean up cluster state on exit
+cleanup_cluster_state

@@ -11,16 +11,23 @@
 set -euo pipefail
 cd "$SLURM_SUBMIT_DIR"
 
+# Source cluster configuration
+source ./cluster_config.sh
+
 echo "=== Triton Inference Server Master Job ==="
 echo "Job started on $(hostname) at $(date)"
 echo "Working dir: $(pwd)"
 echo "Job ID: ${SLURM_JOB_ID}"
+
+# Write cluster state
+write_cluster_state "${SLURM_JOB_ID}" "$(hostname)" "master"
 
 # Function to cleanup background processes
 cleanup() {
     echo "Cleaning up background processes..."
     kill $(jobs -p) 2>/dev/null || true
     wait 2>/dev/null || true
+    cleanup_cluster_state
     echo "Cleanup complete"
 }
 trap cleanup EXIT
@@ -98,7 +105,7 @@ if [[ -f "ABODA/video1.avi" ]]; then
     uv run python triton_client.py \
         --video ABODA/video1.avi \
         --model-name rtdetr \
-        --url localhost:8000 \
+        --url $(hostname):8000 \
         --output output_video1.mp4 \
         --conf-threshold 0.3
     echo "Inference completed!"
@@ -118,9 +125,9 @@ sleep 5
 
 echo ""
 echo "=== System is ready ==="
-echo "Triton server: http://localhost:8000"
-echo "Flask WebSocket server: ws://localhost:6969/ws"
-echo "Flask HTTP endpoint: http://localhost:6969"
+echo "Triton server: http://$(hostname):8000"
+echo "Flask WebSocket server: ws://$(hostname):6969/ws"
+echo "Flask HTTP endpoint: http://$(hostname):6969"
 echo ""
 echo "To test WebSocket connection, you can run:"
 echo "uv run python test.py"
