@@ -5,6 +5,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --time=01:00:00
 #SBATCH --gres=gpu:1
+#SBATCH --nodelist=gpu001
 #SBATCH --output=client_v2_%j.out
 #SBATCH --error=client_v2_%j.err
 
@@ -85,7 +86,7 @@ fi
 log_with_timestamp "=================================="
 log_with_timestamp "WAITING FOR TRITON SERVER"
 log_with_timestamp "=================================="
-log_with_timestamp "Checking Triton server availability at localhost:8000..."
+log_with_timestamp "Checking Triton server availability at gpu001:8000..."
 timeout=300  # 5 minutes timeout
 elapsed=0
 check_interval=5
@@ -93,21 +94,21 @@ check_interval=5
 while [ $elapsed -lt $timeout ]; do
     log_with_timestamp "Attempt $((elapsed/check_interval + 1)): Checking server health..."
     
-    if curl -s http://localhost:8000/v2/health/ready >/dev/null 2>&1; then
+    if curl -s http://gpu001:8000/v2/health/ready >/dev/null 2>&1; then
         log_with_timestamp "✓ Triton server is ready!"
         
         # Additional health checks
         log_with_timestamp "Performing additional health checks..."
         
         # Check server status
-        if server_status=$(curl -s http://localhost:8000/v2/health/live 2>/dev/null); then
+        if server_status=$(curl -s http://gpu001:8000/v2/health/live 2>/dev/null); then
             log_with_timestamp "  ✓ Server live check: OK"
         else
             log_with_timestamp "  ⚠ Server live check: FAILED"
         fi
         
         # Check server metadata
-        if server_metadata=$(curl -s http://localhost:8000/v2 2>/dev/null); then
+        if server_metadata=$(curl -s http://gpu001:8000/v2 2>/dev/null); then
             log_with_timestamp "  ✓ Server metadata accessible"
         else
             log_with_timestamp "  ⚠ Server metadata: FAILED"
@@ -136,7 +137,7 @@ log_with_timestamp "MODEL STATUS CHECK"
 log_with_timestamp "=================================="
 log_with_timestamp "Checking model 'rtdetr' status..."
 
-if model_status=$(curl -s http://localhost:8000/v2/models/rtdetr 2>/dev/null); then
+if model_status=$(curl -s http://gpu001:8000/v2/models/rtdetr 2>/dev/null); then
     log_with_timestamp "Model status response received:"
     echo "$model_status" | jq '.' 2>/dev/null || echo "$model_status"
     
@@ -153,7 +154,7 @@ fi
 
 # Get model metadata
 log_with_timestamp "Retrieving model metadata..."
-if model_metadata=$(curl -s http://localhost:8000/v2/models/rtdetr/config 2>/dev/null); then
+if model_metadata=$(curl -s http://gpu001:8000/v2/models/rtdetr/config 2>/dev/null); then
     log_with_timestamp "Model configuration:"
     echo "$model_metadata" | jq '.' 2>/dev/null || echo "$model_metadata"
 else
@@ -169,7 +170,7 @@ log_with_timestamp "Running inference on video2.avi with confidence threshold 0.
 log_with_timestamp "Inference parameters:"
 log_with_timestamp "  - Input video: ABODA/video2.avi"
 log_with_timestamp "  - Model name: rtdetr"
-log_with_timestamp "  - Server URL: localhost:8000"
+log_with_timestamp "  - Server URL: gpu001:8000"
 log_with_timestamp "  - Output video: output_video2.mp4"
 log_with_timestamp "  - Confidence threshold: 0.1"
 
@@ -194,7 +195,7 @@ log_with_timestamp "Executing triton_client.py..."
 if uv run python triton_client.py \
     --video ABODA/video2.avi \
     --model-name rtdetr \
-    --url localhost:8000 \
+    --url gpu001:8000 \
     --output output_video2.mp4 \
     --conf-threshold 0.1; then
     
