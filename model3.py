@@ -1,4 +1,4 @@
-mport numpy as np
+import numpy as np
 import cv2
 import json
 import logging
@@ -219,6 +219,6 @@ def save_output_video(input_video_path, output_video_path):
 
 # === Example usage ===
 if __name__ == "__main__":
-    input_video = "output_video1.mp4"       # your input video path
+    input_video = "ABODA/video1.avi"       # your input video path
     output_video = "output_final.mp4"     # output video path
     save_output_video(input_video, output_video)
