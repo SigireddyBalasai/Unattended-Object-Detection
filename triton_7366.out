@@ -1,0 +1,29 @@
+Job started on gpu001 at Tue Sep 16 08:21:55 AM CEST 2025
+Working dir: /home/ing-bwrxrp/Unattended-Object-Detection
+Starting rootless docker...
+Using model repo: /home/ing-bwrxrp/Unattended-Object-Detection/model_repository
+24.08-py3: Pulling from nvidia/tritonserver
+Digest: sha256:0b6a7449ea6a46fd167376d40418b169ed82cd36addc6f6c56fe2cbda4294e13
+Status: Image is up to date for nvcr.io/nvidia/tritonserver:24.08-py3
+nvcr.io/nvidia/tritonserver:24.08-py3
+Launching Triton container
+
+=============================
+== Triton Inference Server ==
+=============================
+
+NVIDIA Release 24.08 (build 107631419)
+Triton Server Version 2.49.0
+
+Copyright (c) 2018-2024, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+NOTE: CUDA Forward Compatibility mode ENABLED.
+  Using CUDA 12.6 driver version 560.35.03 with kernel driver version 550.90.07.
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
