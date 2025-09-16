@@ -274,7 +274,7 @@ if __name__ == "__main__":
     import argparse
     
     parser = argparse.ArgumentParser(description="Process video for unattended object detection")
-    parser.add_argument("--input", default="ABODA/video1.avi", help="Input video path")
+    parser.add_argument("--input", default="ABODA/video11.avi", help="Input video path")
     parser.add_argument("--output", default="output_final.mp4", help="Output video path")
     parser.add_argument("--triton-url", default=None, help="Triton server URL (e.g., gpu001:8000)")
     
