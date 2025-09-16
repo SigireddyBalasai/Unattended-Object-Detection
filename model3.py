@@ -1,6 +1,7 @@
-import numpy as np
+mport numpy as np
 import cv2
 import json
+import logging
 from tritonclient.http import InferenceServerClient, InferInput
 from tritonclient.utils import InferenceServerException
 
@@ -13,9 +14,16 @@ TARGET_OBJECT_CLASSES = {
 }
 PROXIMITY_THRESHOLD = 100  # pixels
 UNATTENDED_TIME_SEC = 30
-PROCESS_EVERY_N_FRAMES = 5  # analyze every 5th frame
-
+PROCESS_EVERY_N_FRAMES = 5  # process every 5th frame
 LOG_FILE = "alerts.log"
+
+# === Logging setup ===
+logging.basicConfig(
+    filename=LOG_FILE,
+    filemode="a",
+    format="%(asctime)s - %(message)s",
+    level=logging.INFO
+)
 
 # === Utilities ===
 def is_near(bbox1, bbox2, threshold=PROXIMITY_THRESHOLD):
@@ -26,17 +34,30 @@ def is_near(bbox1, bbox2, threshold=PROXIMITY_THRESHOLD):
     dist = np.sqrt((cx1 - cx2) ** 2 + (cy1 - cy2) ** 2)
     return dist < threshold
 
-def preprocess_frame(frame):
-    frame = cv2.resize(frame, (640, 640))
-    frame = frame.astype(np.float32) / 255.0
-    frame = np.transpose(frame, (2, 0, 1))  # CHW
-    frame = np.expand_dims(frame, axis=0)  # BCHW
-    return frame
+def iou(bbox1, bbox2):
+    """Compute IoU for bbox matching (x1,y1,x2,y2 format)."""
+    x1 = max(bbox1[0], bbox2[0])
+    y1 = max(bbox1[1], bbox2[1])
+    x2 = min(bbox1[2], bbox2[2])
+    y2 = min(bbox1[3], bbox2[3])
+    inter = max(0, x2 - x1) * max(0, y2 - y1)
+    area1 = (bbox1[2] - bbox1[0]) * (bbox1[3] - bbox1[1])
+    area2 = (bbox2[2] - bbox2[0]) * (bbox2[3] - bbox2[1])
+    union = area1 + area2 - inter
+    return inter / union if union > 0 else 0
 
-def postprocess_output(output, frame_shape, conf_threshold=0.5):
+def preprocess_frame(frame):
+    orig_h, orig_w = frame.shape[:2]
+    resized = cv2.resize(frame, (640, 640))
+    resized = resized.astype(np.float32) / 255.0
+    resized = np.transpose(resized, (2, 0, 1))  # CHW
+    resized = np.expand_dims(resized, axis=0)   # BCHW
+    return resized, (orig_w, orig_h)
+
+def postprocess_output(output, orig_shape, conf_threshold=0.5):
     detections = []
-    output = output[0]  # Shape: [N, 84] (N detections)
-    orig_h, orig_w = frame_shape[:2]
+    output = output[0]  # Shape: [N, 84]
+    orig_w, orig_h = orig_shape
 
     for detection in output:
         bbox = detection[:4]
@@ -45,6 +66,7 @@ def postprocess_output(output, frame_shape, conf_threshold=0.5):
         class_id = np.argmax(class_scores)
         if max_conf > conf_threshold:
             x_center, y_center, w, h = bbox
+            # scale back to original resolution
             x_center *= orig_w
             y_center *= orig_h
             w *= orig_w
@@ -60,10 +82,12 @@ def postprocess_output(output, frame_shape, conf_threshold=0.5):
             })
     return detections
 
-def make_obj_id(det):
-    """Stable ID: class + rounded bbox"""
-    x1, y1, x2, y2 = det['bbox']
-    return f"{det['class_id']}_{round(x1)}_{round(y1)}_{round(x2)}_{round(y2)}"
+def match_object(obj, tracking_state, iou_thresh=0.5):
+    """Try to match obj to an existing tracked object by IoU."""
+    for obj_id, state in tracking_state.items():
+        if iou(obj['bbox'], state['bbox']) > iou_thresh and obj['class_id'] == state['class_id']:
+            return obj_id
+    return None
 
 def unattended_object_alert(predictions, current_time, tracking_state):
     persons = [det for det in predictions if det['class_id'] == PERSON_CLASS_ID]
@@ -71,7 +95,7 @@ def unattended_object_alert(predictions, current_time, tracking_state):
     alerts = []
 
     for obj in objects:
-        obj_id = make_obj_id(obj)
+        obj_id = match_object(obj, tracking_state) or f"new_{len(tracking_state)+1}"
         nearby_persons = [p for p in persons if is_near(obj['bbox'], p['bbox'])]
 
         if nearby_persons:
@@ -95,11 +119,8 @@ def unattended_object_alert(predictions, current_time, tracking_state):
                         'alert_time': current_time
                     }
                     alerts.append(alert_data)
-
-                    # Log alert
-                    with open(LOG_FILE, "a") as log_file:
-                        log_file.write(json.dumps(alert_data) + "\n")
-
+                    logging.info(json.dumps(alert_data))
+                    print(f"⚠️ ALERT: {alert_data}")
                     tracking_state[obj_id]['alerted'] = True
             else:
                 tracking_state[obj_id] = {
@@ -116,43 +137,88 @@ def unattended_object_alert(predictions, current_time, tracking_state):
 def get_video_predictions(video_path):
     client = InferenceServerClient(url="localhost:8000")
     cap = cv2.VideoCapture(video_path)
-    video_fps = int(cap.get(cv2.CAP_PROP_FPS)) or 30  # fallback if 0
+    video_fps = int(cap.get(cv2.CAP_PROP_FPS)) or 30
     frame_count = 0
     tracking_state = {}
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        if frame_count % PROCESS_EVERY_N_FRAMES == 0:
-            input_data = preprocess_frame(frame)
-            inputs = []
-            input_tensor = InferInput("images", input_data.shape, "FP32")
-            input_tensor.set_data_from_numpy(input_data)
-            inputs.append(input_tensor)
-
-            try:
-                results = client.infer("rtdetr", inputs)
-                # safer output extraction (check available outputs)
-                output_names = results.get_response()["outputs"]
-                output_key = output_names[0]["name"] if output_names else "output0"
-                output = results.as_numpy(output_key)
-            except InferenceServerException as e:
-                print(f"Inference failed: {e}")
+    try:
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
                 break
 
-            current_time = frame_count / video_fps  # seconds
-            predictions = postprocess_output(output, frame.shape, conf_threshold=0.3)
-            alerts = unattended_object_alert(predictions, current_time, tracking_state)
+            if frame_count % PROCESS_EVERY_N_FRAMES == 0:
+                input_data, orig_shape = preprocess_frame(frame)
+                inputs = []
+                input_tensor = InferInput("images", input_data.shape, "FP32")
+                input_tensor.set_data_from_numpy(input_data)
+                inputs.append(input_tensor)
 
-            yield {
-                "frame": frame_count,
-                "time_sec": current_time,
-                "alerts": alerts,
-                "predictions": predictions
-            }
+                try:
+                    results = client.infer("rtdetr", inputs)
+                    output_names = results.get_response()["outputs"]
+                    output_key = output_names[0]["name"] if output_names else "output0"
+                    output = results.as_numpy(output_key)
+                except InferenceServerException as e:
+                    print(f"Inference failed: {e}")
+                    break
 
-        frame_count += 1
+                current_time = frame_count / video_fps
+                predictions = postprocess_output(output, orig_shape, conf_threshold=0.3)
+                alerts = unattended_object_alert(predictions, current_time, tracking_state)
 
+                yield {
+                    "frame": frame_count,
+                    "time_sec": current_time,
+                    "frame_img": frame,
+                    "alerts": alerts,
+                    "predictions": predictions
+                }
+
+            frame_count += 1
+    finally:
+        cap.release()
+
+# === Draw and save video ===
+def save_output_video(input_video_path, output_video_path):
+    cap = cv2.VideoCapture(input_video_path)
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps = int(cap.get(cv2.CAP_PROP_FPS)) or 30
     cap.release()
+
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(output_video_path, fourcc, fps, (width, height))
+
+    try:
+        for result in get_video_predictions(input_video_path):
+            frame = result['frame_img']
+            predictions = result['predictions']
+            alerts = result['alerts']
+
+            # Draw detections
+            for det in predictions:
+                x1, y1, x2, y2 = det['bbox']
+                class_id = det['class_id']
+                color = (255, 0, 0) if class_id == PERSON_CLASS_ID else (0, 255, 0)
+                label = TARGET_OBJECT_CLASSES.get(class_id, "person" if class_id==0 else str(class_id))
+                cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+                cv2.putText(frame, label, (x1, y1-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
+            # Draw unattended alerts
+            for alert in alerts:
+                x1, y1, x2, y2 = alert['bbox']
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 3)
+                cv2.putText(frame, f"UNATTENDED: {alert['object']}", (x1, y1-10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+
+            out.write(frame)
+    finally:
+        out.release()
+        print(f"✅ Saved output video to {output_video_path}")
+
+# === Example usage ===
+if __name__ == "__main__":
+    input_video = "output_video1.mp4"       # your input video path
+    output_video = "output_final.mp4"     # output video path
+    save_output_video(input_video, output_video)
