@@ -18,7 +18,7 @@ write_cluster_state() {
     echo "TRITON_JOB_ID=${job_id}" > "$CLUSTER_STATE_FILE"
     echo "TRITON_NODE=${node_name}" >> "$CLUSTER_STATE_FILE"
     echo "JOB_TYPE=${job_type}" >> "$CLUSTER_STATE_FILE"
-    echo "TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')" >> "$CLUSTER_STATE_FILE"
+    echo "TIMESTAMP='$(date '+%Y-%m-%d %H:%M:%S')'" >> "$CLUSTER_STATE_FILE"
     
     # Also write just the node name for easy access
     echo "$node_name" > "$TRITON_NODE_FILE"
@@ -27,8 +27,27 @@ write_cluster_state() {
 # Function to read cluster state
 read_cluster_state() {
     if [[ -f "$CLUSTER_STATE_FILE" ]]; then
-        source "$CLUSTER_STATE_FILE"
-        return 0
+        # Create a temporary safe version of the cluster state file
+        local temp_state_file=$(mktemp)
+        
+        # Process the file to ensure proper quoting of TIMESTAMP
+        while IFS= read -r line; do
+            if [[ "$line" =~ ^TIMESTAMP=([^\'\"]*[[:space:]][^\'\"]*) ]]; then
+                # If TIMESTAMP contains spaces but isn't quoted, add quotes
+                echo "TIMESTAMP='${BASH_REMATCH[1]}'" >> "$temp_state_file"
+            else
+                echo "$line" >> "$temp_state_file"
+            fi
+        done < "$CLUSTER_STATE_FILE"
+        
+        # Source the corrected file
+        source "$temp_state_file"
+        local result=$?
+        
+        # Clean up temporary file
+        rm -f "$temp_state_file"
+        
+        return $result
     else
         return 1
     fi
