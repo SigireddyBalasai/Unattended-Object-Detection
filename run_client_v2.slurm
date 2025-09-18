@@ -131,8 +131,20 @@ fi
 # Check server metadata
 if server_metadata=$(curl -s http://${TRITON_NODE}:8000/v2 2>/dev/null); then
     log_with_timestamp "  ✓ Server metadata accessible"
+    log_with_timestamp "Server metadata:"
+    echo "$server_metadata" | jq '.' 2>/dev/null || echo "$server_metadata"
 else
     log_with_timestamp "  ⚠ Server metadata: FAILED"
+fi
+
+#list models on the server
+log_with_timestamp "Listing models on Triton server..."
+if model_list=$(curl -s http://${TRITON_NODE}:8000/v2/models
+); then
+    log_with_timestamp "Models available on the server:"
+    echo "$model_list" | jq '.' 2>/dev/null || echo "$model_list"
+else
+    log_with_timestamp "⚠ WARNING: Could not retrieve model list"
 fi
 
 # Check model status
