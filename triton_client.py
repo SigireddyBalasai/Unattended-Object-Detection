@@ -135,10 +135,16 @@ def main():
     
     # List all available models
     try:
-        models = triton_client.get_model_repository_index()
+        import json
+        import urllib.request
+        response = urllib.request.urlopen(f"http://{args.url}/v2/models")
+        data = json.loads(response.read().decode('utf-8'))
         print("Available models:")
-        for model in models:
-            print(f" - {model['name']}")
+        if isinstance(data, list):
+            for model in data:
+                print(f" - {model}")
+        else:
+            print(f" - {data}")
     except Exception as e:
         print(f"Error listing models: {e}")
     
