@@ -133,9 +133,18 @@ def main():
         print(f"Error connecting to Triton server: {e}")
         sys.exit(1)
     
+    # List all available models
+    try:
+        models = triton_client.get_model_repository_index()
+        print("Available models:")
+        for model in models:
+            print(f" - {model['name']}")
+    except Exception as e:
+        print(f"Error listing models: {e}")
+    
     # Check if model is ready
     try:
-        model_metadata = triton_client.get_model_metadata(args.model_name)
+        triton_client.get_model_metadata(args.model_name)
         print(f"Model '{args.model_name}' is ready")
     except InferenceServerException as e:
         print(f"Error: Model '{args.model_name}' is not available: {e}")
