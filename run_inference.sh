@@ -163,11 +163,17 @@ get_user_selection() {
     local video_count=${#video_files[@]}
     
     while true; do
-        echo -e "\n${CYAN}Enter video number (1-$video_count) or 'q' to quit: ${RESET}"
+        printf "\n%sEnter video number (1-%d) or 'q' to quit: %s" "$CYAN" "$video_count" "$RESET"
         read -r selection
         
         # Trim whitespace from selection
-        selection=$(echo "$selection" | tr -d '[:space:]')
+        selection=$(printf "%s" "$selection" | tr -d '[:space:]')
+        
+        # Debug: check what we actually received
+        if [[ -n "$selection" ]]; then
+            # Additional validation to ensure selection contains only digits
+            selection=$(printf "%s" "$selection" | tr -cd '0-9qQ')
+        fi
         
         if [[ "$selection" == "q" || "$selection" == "Q" ]]; then
             return 1
@@ -176,7 +182,9 @@ get_user_selection() {
         # Check if selection is a valid number
         if [[ "$selection" =~ ^[0-9]+$ ]]; then
             if [ "$selection" -ge 1 ] && [ "$selection" -le "$video_count" ]; then
-                echo $((selection - 1))
+                # Convert to zero-based index
+                local index=$((selection - 1))
+                echo "$index"
                 return 0
             else
                 print_colored "$RED" "❌ Invalid selection. Please enter a number between 1 and $video_count"
