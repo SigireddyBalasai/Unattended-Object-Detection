@@ -49,9 +49,9 @@ check_dependencies() {
         fi
     done
     
-    # Check for uv or python
-    if ! command -v uv &> /dev/null && ! command -v python3 &> /dev/null && ! command -v python &> /dev/null; then
-        missing+=("uv or python3/python")
+    # Check for sbatch (SLURM)
+    if ! command -v sbatch &> /dev/null; then
+        missing+=("sbatch")
     fi
     
     if [ ${#missing[@]} -ne 0 ]; then
@@ -356,30 +356,8 @@ run_inference() {
     print_colored "$BLUE" "⏳ Allowing server to stabilize..."
     sleep 2
     
-    # Check if uv is available and use it, otherwise fall back to python
-    local python_cmd
-    if command -v uv &> /dev/null; then
-        print_colored "$BLUE" "🐍 Using uv-managed Python environment"
-        python_cmd="uv run python"
-    else
-        # Check if Python is available
-        if ! command -v python3 &> /dev/null && ! command -v python &> /dev/null; then
-            print_colored "$RED" "❌ Error: Python not found!"
-            print_colored "$YELLOW" "Please install Python 3 or uv and try again."
-            return 1
-        fi
-        
-        # Use python3 if available, otherwise python
-        python_cmd="python3"
-        if ! command -v python3 &> /dev/null; then
-            python_cmd="python"
-            print_colored "$YELLOW" "⚠️ Using 'python' instead of 'python3'. Make sure it's Python 3."
-        fi
-    fi
-    print_colored "$GREEN" "✅ Python command: $python_cmd"
-    
-    # Run the inference using model3.py with retry logic
-    print_colored "$YELLOW" "🔄 Running unattended object detection... (This may take a while)"
+    # Submit SLURM job instead of running Python directly
+    print_colored "$YELLOW" "🔄 Submitting SLURM job for inference... (This may take a while)"
     print_colored "$YELLOW" "📊 Processing will include: person detection, object tracking, and unattended alerts"
     
     local max_retries=3
@@ -387,31 +365,68 @@ run_inference() {
     local attempt=1
     
     while [ $attempt -le $max_retries ]; do
-        print_colored "$BLUE" "🔄 Inference attempt $attempt/$max_retries..."
+        print_colored "$BLUE" "🔄 SLURM job submission attempt $attempt/$max_retries..."
         local attempt_start=$(date +%s)
         
-        local full_command="$python_cmd \"$MODEL3_SCRIPT\" --input \"$video_path\" --output \"$output_path\" --triton-url \"$server_url\" --model-name \"$model_name\" --conf-threshold \"$conf_threshold\""
-        print_colored "$BLUE" "📝 Executing: $full_command"
-        
-        if $python_cmd "$MODEL3_SCRIPT" \
-            --input "$video_path" \
-            --output "$output_path" \
-            --triton-url "$server_url" \
-            --model-name "$model_name" \
-            --conf-threshold "$conf_threshold"; then
-            local attempt_duration=$(($(date +%s) - attempt_start))
-            print_colored "$GREEN" "✅ Inference attempt $attempt completed successfully in ${attempt_duration} seconds!"
-            
-            # Check if alerts log was created
-            if [ -f "alerts.log" ]; then
-                local alert_count=$(wc -l < "alerts.log" 2>/dev/null || echo "0")
-                print_colored "$BLUE" "📋 Alerts generated: $alert_count (see alerts.log for details)"
+        # Submit SLURM job
+        local sbatch_output
+        if sbatch_output=$(sbatch run_client_v2.slurm "$video_path" "$output_path" "$conf_threshold" "$model_name" 2>&1); then
+            local job_id
+            job_id=$(echo "$sbatch_output" | grep -oP 'Submitted batch job \K\d+' || echo "")
+            if [ -n "$job_id" ]; then
+                print_colored "$GREEN" "✅ SLURM job submitted successfully with ID: $job_id"
+                
+                # Wait for job completion
+                print_colored "$YELLOW" "⏳ Waiting for SLURM job $job_id to complete..."
+                local max_wait=3600  # 1 hour timeout
+                local wait_time=0
+                
+                while [ $wait_time -lt $max_wait ]; do
+                    local job_status
+                    job_status=$(squeue -h -j "$job_id" -o "%T" 2>/dev/null || echo "")
+                    
+                    if [ -z "$job_status" ]; then
+                        # Job completed or not found
+                        if [ -f "$output_path" ]; then
+                            local attempt_duration=$(($(date +%s) - attempt_start))
+                            print_colored "$GREEN" "✅ SLURM job $job_id completed successfully in ${attempt_duration} seconds!"
+                            
+                            # Check if alerts log was created
+                            if [ -f "alerts.log" ]; then
+                                local alert_count=$(wc -l < "alerts.log" 2>/dev/null || echo "0")
+                                print_colored "$BLUE" "📋 Alerts generated: $alert_count (see alerts.log for details)"
+                            fi
+                            
+                            return 0
+                        else
+                            print_colored "$RED" "❌ SLURM job $job_id completed but output file not found: $output_path"
+                            return 1
+                        fi
+                    elif [[ "$job_status" == "FAILED" || "$job_status" == "CANCELLED" || "$job_status" == "TIMEOUT" ]]; then
+                        print_colored "$RED" "❌ SLURM job $job_id failed with status: $job_status"
+                        break
+                    else
+                        # Job still running
+                        sleep 10
+                        wait_time=$((wait_time + 10))
+                        if [ $((wait_time % 60)) -eq 0 ]; then
+                            print_colored "$BLUE" "⏳ Still waiting... (${wait_time}s elapsed)"
+                        fi
+                    fi
+                done
+                
+                if [ $wait_time -ge $max_wait ]; then
+                    print_colored "$RED" "❌ Timeout waiting for SLURM job $job_id to complete after ${max_wait} seconds"
+                    # Try to cancel the job
+                    scancel "$job_id" 2>/dev/null || true
+                    return 1
+                fi
+            else
+                print_colored "$RED" "❌ Failed to parse job ID from sbatch output: $sbatch_output"
             fi
-            
-            return 0
         else
             local attempt_duration=$(($(date +%s) - attempt_start))
-            print_colored "$RED" "❌ Inference attempt $attempt failed after ${attempt_duration} seconds!"
+            print_colored "$RED" "❌ SLURM job submission attempt $attempt failed after ${attempt_duration} seconds!"
             if [ $attempt -lt $max_retries ]; then
                 print_colored "$YELLOW" "⏳ Retrying in $retry_delay seconds..."
                 sleep $retry_delay
@@ -421,7 +436,7 @@ run_inference() {
         attempt=$((attempt + 1))
     done
     
-    print_colored "$RED" "❌ All inference attempts failed after $max_retries tries!"
+    print_colored "$RED" "❌ All SLURM job submission attempts failed after $max_retries tries!"
     return 1
 }
 
@@ -496,7 +511,7 @@ trap cleanup EXIT
 # Main function
 main() {
     local start_time=$(date +%s)
-    print_colored "$CYAN" "🚀 Starting Unattended Object Detection - Inference Runner at $(date)"
+    print_colored "$CYAN" "🚀 Starting Unattended Object Detection - SLURM Inference Runner at $(date)"
     print_colored "$CYAN" "📋 Arguments: MODEL_NAME='${1:-rtdetr_tensorrt}' CONF_THRESHOLD='${2:-0.5}'"
     print_colored "$CYAN" "📂 Working directory: $(pwd)"
     print_colored "$CYAN" "$(printf '=%.0s' {1..60})"
@@ -604,7 +619,7 @@ main() {
 # Show help if requested
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
     cat << EOF
-Unattended Object Detection - Inference Runner
+Unattended Object Detection - SLURM Inference Runner
 
 Usage: $0 [MODEL_NAME] [CONF_THRESHOLD]
 
@@ -625,7 +640,7 @@ Features:
     - Automatic Triton server health checking via cluster state
     - Auto-starts Triton server using SLURM if not running
     - **60-second retry logic for server connection with automatic server creation**
-    - **3-attempt retry logic for inference execution with 10-second delays**
+    - **3-attempt retry logic for SLURM job submission with 10-second delays**
     - Interactive video file selection
     - Unattended object detection with tracking and alerting
     - Person and target object detection (backpack, handbag, suitcase)
@@ -643,10 +658,10 @@ Detection Capabilities:
     - Visual annotations on output video
 
 Requirements:
-    - SLURM cluster environment
+    - SLURM cluster environment (sbatch command)
     - NVIDIA Triton Inference Server
-    - Python with tritonclient, opencv-python, numpy
-    - RT-DETR TensorRT model in model_repository/rtdetr_tensorrt/
+    - Python with tritonclient, opencv-python, numpy (on compute nodes)
+    - RT-DETR model in model_repository/
     - Properly configured manage_jobs.sh and cluster_config.sh
 
 Cluster Management:

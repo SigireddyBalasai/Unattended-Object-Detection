@@ -14,6 +14,12 @@ cd "$SLURM_SUBMIT_DIR"
 # Source cluster configuration
 source ./cluster_config.sh
 
+# Parse command line arguments
+VIDEO_FILE="${1:-ABODA/video2.avi}"
+OUTPUT_FILE="${2:-output_video2.mp4}"
+CONF_THRESHOLD="${3:-0.1}"
+MODEL_NAME="${4:-rtdetr}"
+
 # Enhanced logging function
 log_with_timestamp() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
@@ -53,11 +59,11 @@ fi
 
 # Check required files
 log_with_timestamp "Checking required files..."
-if [[ -f "ABODA/video2.avi" ]]; then
-    video_size=$(du -h "ABODA/video2.avi" | cut -f1)
-    log_with_timestamp "  ✓ Video file found: ABODA/video2.avi (${video_size})"
+if [[ -f "$VIDEO_FILE" ]]; then
+    video_size=$(du -h "$VIDEO_FILE" | cut -f1)
+    log_with_timestamp "  ✓ Video file found: $VIDEO_FILE (${video_size})"
 else
-    log_with_timestamp "  ✗ ERROR: Video file ABODA/video2.avi not found"
+    log_with_timestamp "  ✗ ERROR: Video file $VIDEO_FILE not found"
     exit 1
 fi
 
@@ -133,17 +139,17 @@ fi
 log_with_timestamp "=================================="
 log_with_timestamp "MODEL STATUS CHECK"
 log_with_timestamp "=================================="
-log_with_timestamp "Checking model 'rtdetr' status..."
+log_with_timestamp "Checking model '$MODEL_NAME' status..."
 
-if model_status=$(curl -s http://${TRITON_NODE}:8000/v2/models/rtdetr 2>/dev/null); then
+if model_status=$(curl -s http://${TRITON_NODE}:8000/v2/models/$MODEL_NAME 2>/dev/null); then
     log_with_timestamp "Model status response received:"
     echo "$model_status" | jq '.' 2>/dev/null || echo "$model_status"
     
     # Check if model is ready
     if echo "$model_status" | grep -q "READY"; then
-        log_with_timestamp "✓ Model 'rtdetr' is READY"
+        log_with_timestamp "✓ Model '$MODEL_NAME' is READY"
     else
-        log_with_timestamp "⚠ WARNING: Model 'rtdetr' may not be ready"
+        log_with_timestamp "⚠ WARNING: Model '$MODEL_NAME' may not be ready"
     fi
 else
     log_with_timestamp "✗ ERROR: Could not retrieve model status"
@@ -152,7 +158,7 @@ fi
 
 # Get model metadata
 log_with_timestamp "Retrieving model metadata..."
-if model_metadata=$(curl -s http://${TRITON_NODE}:8000/v2/models/rtdetr/config 2>/dev/null); then
+if model_metadata=$(curl -s http://${TRITON_NODE}:8000/v2/models/$MODEL_NAME/config 2>/dev/null); then
     log_with_timestamp "Model configuration:"
     echo "$model_metadata" | jq '.' 2>/dev/null || echo "$model_metadata"
 else
@@ -162,20 +168,20 @@ fi
 log_with_timestamp "=================================="
 log_with_timestamp "STARTING VIDEO INFERENCE"
 log_with_timestamp "=================================="
-log_with_timestamp "Running inference on video2.avi with confidence threshold 0.1..."
+log_with_timestamp "Running inference on $VIDEO_FILE with confidence threshold $CONF_THRESHOLD..."
 
 # Log inference parameters
 log_with_timestamp "Inference parameters:"
-log_with_timestamp "  - Input video: ABODA/video2.avi"
-log_with_timestamp "  - Model name: rtdetr"
+log_with_timestamp "  - Input video: $VIDEO_FILE"
+log_with_timestamp "  - Model name: $MODEL_NAME"
 log_with_timestamp "  - Server URL: ${TRITON_NODE}:8000"
-log_with_timestamp "  - Output video: output_video2.mp4"
-log_with_timestamp "  - Confidence threshold: 0.1"
+log_with_timestamp "  - Output video: $OUTPUT_FILE"
+log_with_timestamp "  - Confidence threshold: $CONF_THRESHOLD"
 
 # Get video information before processing
 if command -v ffprobe &> /dev/null; then
     log_with_timestamp "Video file information:"
-    ffprobe -v quiet -print_format json -show_format -show_streams "ABODA/video2.avi" 2>/dev/null | jq -r '
+    ffprobe -v quiet -print_format json -show_format -show_streams "$VIDEO_FILE" 2>/dev/null | jq -r '
         .streams[] | select(.codec_type=="video") | 
         "  - Resolution: \(.width)x\(.height)",
         "  - Frame rate: \(.r_frame_rate)",
@@ -191,20 +197,20 @@ log_with_timestamp "Inference started at: $(date)"
 # Run inference using uv with enhanced error handling
 log_with_timestamp "Executing triton_client.py..."
 if uv run python triton_client.py \
-    --video ABODA/video2.avi \
-    --model-name rtdetr \
+    --video "$VIDEO_FILE" \
+    --model-name "$MODEL_NAME" \
     --url ${TRITON_NODE}:8000 \
-    --output output_video2.mp4 \
-    --conf-threshold 0.1; then
+    --output "$OUTPUT_FILE" \
+    --conf-threshold "$CONF_THRESHOLD"; then
     
     inference_end_time=$(date +%s)
     inference_duration=$((inference_end_time - inference_start_time))
     log_with_timestamp "✓ Inference completed successfully in ${inference_duration} seconds"
     
     # Check output file
-    if [[ -f "output_video2.mp4" ]]; then
-        output_size=$(du -h "output_video2.mp4" | cut -f1)
-        log_with_timestamp "✓ Output video created: output_video2.mp4 (${output_size})"
+    if [[ -f "$OUTPUT_FILE" ]]; then
+        output_size=$(du -h "$OUTPUT_FILE" | cut -f1)
+        log_with_timestamp "✓ Output video created: $OUTPUT_FILE (${output_size})"
     else
         log_with_timestamp "⚠ WARNING: Output video file not found"
     fi
@@ -222,7 +228,7 @@ log_with_timestamp "Executing model3.py for post-processing..."
 model3_start_time=$(date +%s)
 log_with_timestamp "Model3 processing started at: $(date)"
 
-if uv run python model3.py --triton-url ${TRITON_NODE}:8000; then
+if uv run python model3.py --triton-url ${TRITON_NODE}:8000 --input "$VIDEO_FILE" --output "$OUTPUT_FILE" --model-name "$MODEL_NAME" --conf-threshold "$CONF_THRESHOLD"; then
     model3_end_time=$(date +%s)
     model3_duration=$((model3_end_time - model3_start_time))
     log_with_timestamp "✓ Model3 processing completed successfully in ${model3_duration} seconds"
@@ -247,7 +253,7 @@ log_with_timestamp "Model3 duration: ${model3_duration:-N/A} seconds"
 log_with_timestamp "Final output files:"
 
 # List output files with sizes
-for file in output_video2.mp4 *.out *.err; do
+for file in "$OUTPUT_FILE" *.out *.err; do
     if [[ -f "$file" ]]; then
         file_size=$(du -h "$file" | cut -f1)
         log_with_timestamp "  - $file (${file_size})"
