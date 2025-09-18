@@ -74,7 +74,8 @@ get_triton_node() {
 # Function to wait for Triton server
 wait_for_triton() {
     local triton_node=$(get_triton_node)
-    local timeout=${1:-300}
+    local port=${1:-8000}
+    local timeout=${2:-300}
     local check_interval=5
     local elapsed=0
     
@@ -83,11 +84,11 @@ wait_for_triton() {
         return 1
     fi
     
-    echo "Waiting for Triton server on node: $triton_node"
+    echo "Waiting for Triton server on node: $triton_node:$port"
     
     while [ $elapsed -lt $timeout ]; do
-        if curl -s "http://${triton_node}:8000/v2/health/ready" >/dev/null 2>&1; then
-            echo "✓ Triton server is ready on $triton_node"
+        if curl -s "http://${triton_node}:${port}/v2/health/ready" >/dev/null 2>&1; then
+            echo "✓ Triton server is ready on $triton_node:$port"
             return 0
         fi
         
@@ -116,10 +117,76 @@ is_triton_running() {
     fi
 }
 
-# Export functions
-export -f write_cluster_state
-export -f read_cluster_state
-export -f get_triton_node
-export -f wait_for_triton
-export -f cleanup_cluster_state
-export -f is_triton_running
+# Function to generate random port
+generate_random_port() {
+    local min_port=${1:-8000}
+    local max_port=${2:-8999}
+    local port
+    
+    while true; do
+        port=$((RANDOM % (max_port - min_port + 1) + min_port))
+        # Check if port is available
+        if ! lsof -i :$port >/dev/null 2>&1; then
+            echo $port
+            return 0
+        fi
+    done
+}
+
+# Function to generate unique random ports for Triton
+generate_triton_ports() {
+    local http_port grpc_port metrics_port
+    
+    # Generate HTTP port (default 8000)
+    http_port=$(generate_random_port 8000 8999)
+    # Generate gRPC port (default 8001)
+    grpc_port=$(generate_random_port 8000 8999)
+    # Generate metrics port (default 8002)
+    metrics_port=$(generate_random_port 8000 8999)
+    
+    # Ensure all ports are unique
+    while [ "$grpc_port" = "$http_port" ]; do
+        grpc_port=$(generate_random_port 8000 8999)
+    done
+    
+    while [ "$metrics_port" = "$http_port" ] || [ "$metrics_port" = "$grpc_port" ]; do
+        metrics_port=$(generate_random_port 8000 8999)
+    done
+    
+    echo "$http_port $grpc_port $metrics_port"
+}
+
+# Function to write cluster state with ports
+write_cluster_state_with_ports() {
+    local job_id="$1"
+    local node_name="$2"
+    local job_type="$3"
+    local http_port="$4"
+    local grpc_port="$5"
+    local metrics_port="$6"
+    
+    echo "TRITON_JOB_ID=${job_id}" > "$CLUSTER_STATE_FILE"
+    echo "TRITON_NODE=${node_name}" >> "$CLUSTER_STATE_FILE"
+    echo "JOB_TYPE=${job_type}" >> "$CLUSTER_STATE_FILE"
+    echo "HTTP_PORT=${http_port}" >> "$CLUSTER_STATE_FILE"
+    echo "GRPC_PORT=${grpc_port}" >> "$CLUSTER_STATE_FILE"
+    echo "METRICS_PORT=${metrics_port}" >> "$CLUSTER_STATE_FILE"
+    echo "TIMESTAMP='$(date '+%Y-%m-%d %H:%M:%S')'" >> "$CLUSTER_STATE_FILE"
+    
+    # Also write just the node name for easy access
+    echo "$node_name" > "$TRITON_NODE_FILE"
+}
+
+# Function to read port information from cluster state
+get_triton_ports() {
+    if [[ -f "$CLUSTER_STATE_FILE" ]]; then
+        # Source the cluster state file to get port variables
+        source "$CLUSTER_STATE_FILE" 2>/dev/null || return 1
+        
+        if [[ -n "${HTTP_PORT:-}" && -n "${GRPC_PORT:-}" && -n "${METRICS_PORT:-}" ]]; then
+            echo "$HTTP_PORT $GRPC_PORT $METRICS_PORT"
+            return 0
+        fi
+    fi
+    return 1
+}

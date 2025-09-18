@@ -20,6 +20,14 @@ echo "Working dir: $(pwd)"
 # Write cluster state with current node
 write_cluster_state "${SLURM_JOB_ID}" "$(hostname)" "triton-server"
 
+# Generate random ports for Triton server
+echo "Generating random ports for Triton server..."
+read HTTP_PORT GRPC_PORT METRICS_PORT <<< $(generate_triton_ports)
+echo "Generated ports: HTTP=${HTTP_PORT}, gRPC=${GRPC_PORT}, Metrics=${METRICS_PORT}"
+
+# Update cluster state with port information
+write_cluster_state_with_ports "${SLURM_JOB_ID}" "$(hostname)" "triton-server" "$HTTP_PORT" "$GRPC_PORT" "$METRICS_PORT"
+
 # Try to load rootless docker if available
 if command -v module &>/dev/null; then
   module load rootless-docker || true
@@ -42,7 +50,7 @@ echo "No existing Triton server found. Starting new instance..."
 # Launch Triton container
 docker run --rm \
   --gpus all \
-  -p 8000:8000 -p 8001:8001 -p 8002:8002 \
+  -p ${HTTP_PORT}:8000 -p ${GRPC_PORT}:8001 -p ${METRICS_PORT}:8002 \
   -v "${MODEL_REPO}:/models:ro" \
   nvcr.io/nvidia/tritonserver:24.08-py3 \
   tritonserver --model-repository=/models --log-verbose=1

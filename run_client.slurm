@@ -27,16 +27,28 @@ fi
 
 echo "Detected Triton server on node: $TRITON_NODE"
 
+# Get Triton server ports from cluster config
+TRITON_PORTS=$(get_triton_ports)
+if [[ -z "$TRITON_PORTS" ]]; then
+    echo "WARNING: Could not retrieve Triton server ports, using defaults"
+    HTTP_PORT=8000
+    GRPC_PORT=8001
+    METRICS_PORT=8002
+else
+    read HTTP_PORT GRPC_PORT METRICS_PORT <<< "$TRITON_PORTS"
+    echo "Retrieved Triton server ports: HTTP=${HTTP_PORT}, gRPC=${GRPC_PORT}, Metrics=${METRICS_PORT}"
+fi
+
 # Wait for Triton server to be ready
 echo "Waiting for Triton server to be ready..."
-if ! wait_for_triton 300; then
+if ! wait_for_triton "$HTTP_PORT" 300; then
     echo "Error: Triton server not ready after 300 seconds"
     exit 1
 fi
 
 # Check model status
 echo "Checking model status..."
-curl -s http://${TRITON_NODE}:8000/v2/models/rtdetr
+curl -s http://${TRITON_NODE}:${HTTP_PORT}/v2/models/rtdetr
 
 echo ""
 echo "Running inference on video1.avi..."
@@ -45,7 +57,7 @@ echo "Running inference on video1.avi..."
 uv run python triton_client.py \
     --video ABODA/video1.avi \
     --model-name rtdetr \
-    --url ${TRITON_NODE}:8000 \
+    --url ${TRITON_NODE}:${HTTP_PORT} \
     --output output_video1.mp4 \
     --conf-threshold 0.3
 

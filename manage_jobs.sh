@@ -119,11 +119,18 @@ show_status() {
         
         # Test server connectivity
         if [[ -n "${TRITON_NODE:-}" ]]; then
-            echo "Testing server connectivity..."
-            if curl -s "http://${TRITON_NODE}:8000/v2/health/ready" >/dev/null 2>&1; then
-                echo "✓ Triton server is responding at ${TRITON_NODE}:8000"
+            # Get ports from cluster state
+            local triton_ports=$(get_triton_ports)
+            if [[ -n "$triton_ports" ]]; then
+                read HTTP_PORT GRPC_PORT METRICS_PORT <<< "$triton_ports"
             else
-                echo "✗ Triton server not responding at ${TRITON_NODE}:8000"
+                HTTP_PORT=8000
+            fi
+            echo "Testing server connectivity..."
+            if curl -s "http://${TRITON_NODE}:${HTTP_PORT}/v2/health/ready" >/dev/null 2>&1; then
+                echo "✓ Triton server is responding at ${TRITON_NODE}:${HTTP_PORT}"
+            else
+                echo "✗ Triton server not responding at ${TRITON_NODE}:${HTTP_PORT}"
             fi
         fi
     else
@@ -145,19 +152,28 @@ show_cluster_info() {
         echo "  Last Updated: ${TIMESTAMP:-Unknown}"
         echo ""
         echo "Server endpoints:"
-        echo "  HTTP: http://${TRITON_NODE:-unknown}:8000"
-        echo "  gRPC: ${TRITON_NODE:-unknown}:8001"
-        echo "  Metrics: http://${TRITON_NODE:-unknown}:8002"
+        # Get ports from cluster state
+        local triton_ports=$(get_triton_ports)
+        if [[ -n "$triton_ports" ]]; then
+            read HTTP_PORT GRPC_PORT METRICS_PORT <<< "$triton_ports"
+        else
+            HTTP_PORT=8000
+            GRPC_PORT=8001
+            METRICS_PORT=8002
+        fi
+        echo "  HTTP: http://${TRITON_NODE:-unknown}:${HTTP_PORT}"
+        echo "  gRPC: ${TRITON_NODE:-unknown}:${GRPC_PORT}"
+        echo "  Metrics: http://${TRITON_NODE:-unknown}:${METRICS_PORT}"
         echo ""
         
         # Test connectivity
         if [[ -n "${TRITON_NODE:-}" ]]; then
             echo "Connectivity test:"
-            if curl -s "http://${TRITON_NODE}:8000/v2/health/ready" >/dev/null 2>&1; then
+            if curl -s "http://${TRITON_NODE}:${HTTP_PORT}/v2/health/ready" >/dev/null 2>&1; then
                 echo "  ✓ Server is ready and responding"
                 
                 # Get model info
-                if model_info=$(curl -s "http://${TRITON_NODE}:8000/v2/models" 2>/dev/null); then
+                if model_info=$(curl -s "http://${TRITON_NODE}:${HTTP_PORT}/v2/models" 2>/dev/null); then
                     echo "  ✓ Models available: $(echo "$model_info" | jq -r '.[].name' 2>/dev/null | tr '\n' ' ' || echo "Could not parse model list")"
                 fi
             else

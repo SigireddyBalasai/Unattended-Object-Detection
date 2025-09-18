@@ -73,22 +73,32 @@ test_triton_health() {
     if read_cluster_state; then
         local triton_node="${TRITON_NODE:-}"
         if [[ -n "$triton_node" ]]; then
-            print_colored "$BLUE" "🔍 Testing Triton server at $triton_node:8000..."
+            # Get ports from cluster state
+            local triton_ports=$(get_triton_ports)
+            if [[ -n "$triton_ports" ]]; then
+                read HTTP_PORT GRPC_PORT METRICS_PORT <<< "$triton_ports"
+            else
+                HTTP_PORT=8000
+                GRPC_PORT=8001
+                METRICS_PORT=8002
+            fi
+            
+            print_colored "$BLUE" "🔍 Testing Triton server at $triton_node:$HTTP_PORT..."
 
             # Test HTTP health endpoint
-            if ! curl -s --max-time 5 "http://$triton_node:8000/v2/health/ready" >/dev/null 2>&1; then
+            if ! curl -s --max-time 5 "http://$triton_node:$HTTP_PORT/v2/health/ready" >/dev/null 2>&1; then
                 print_colored "$YELLOW" "⚠️ HTTP health check failed"
                 return 1
             fi
 
             # Test model repository endpoint (more comprehensive check)
-            if ! curl -s --max-time 5 "http://$triton_node:8000/v2/repository/index" >/dev/null 2>&1; then
+            if ! curl -s --max-time 5 "http://$triton_node:$HTTP_PORT/v2/repository/index" >/dev/null 2>&1; then
                 print_colored "$YELLOW" "⚠️ Model repository check failed"
                 return 1
             fi
 
             # Test inference readiness for our specific model
-            if ! curl -s --max-time 5 "http://$triton_node:8000/v2/models/$MODEL_NAME/ready" >/dev/null 2>&1; then
+            if ! curl -s --max-time 5 "http://$triton_node:$HTTP_PORT/v2/models/$MODEL_NAME/ready" >/dev/null 2>&1; then
                 print_colored "$YELLOW" "⚠️ Model readiness check failed"
                 return 1
             fi
@@ -107,7 +117,14 @@ test_model_ready() {
     if read_cluster_state; then
         local triton_node="${TRITON_NODE:-}"
         if [[ -n "$triton_node" ]]; then
-            curl -s "http://$triton_node:8000/v2/models/$model_name/ready" >/dev/null 2>&1
+            # Get ports from cluster state
+            local triton_ports=$(get_triton_ports)
+            if [[ -n "$triton_ports" ]]; then
+                read HTTP_PORT GRPC_PORT METRICS_PORT <<< "$triton_ports"
+            else
+                HTTP_PORT=8000
+            fi
+            curl -s "http://$triton_node:$HTTP_PORT/v2/models/$model_name/ready" >/dev/null 2>&1
             return $?
         fi
     fi
@@ -196,7 +213,14 @@ get_server_url() {
     if read_cluster_state; then
         local triton_node="${TRITON_NODE:-}"
         if [[ -n "$triton_node" ]]; then
-            echo "$triton_node:8000"
+            # Get ports from cluster state
+            local triton_ports=$(get_triton_ports)
+            if [[ -n "$triton_ports" ]]; then
+                read HTTP_PORT GRPC_PORT METRICS_PORT <<< "$triton_ports"
+            else
+                HTTP_PORT=8000
+            fi
+            echo "$triton_node:$HTTP_PORT"
             return 0
         fi
     fi

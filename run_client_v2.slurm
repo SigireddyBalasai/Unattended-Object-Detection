@@ -104,13 +104,25 @@ fi
 
 log_with_timestamp "✓ Detected Triton server on node: $TRITON_NODE"
 
+# Get Triton server ports from cluster config
+TRITON_PORTS=$(get_triton_ports)
+if [[ -z "$TRITON_PORTS" ]]; then
+    log_with_timestamp "⚠ WARNING: Could not retrieve Triton server ports, using defaults"
+    HTTP_PORT=8000
+    GRPC_PORT=8001
+    METRICS_PORT=8002
+else
+    read HTTP_PORT GRPC_PORT METRICS_PORT <<< "$TRITON_PORTS"
+    log_with_timestamp "✓ Retrieved Triton server ports: HTTP=${HTTP_PORT}, gRPC=${GRPC_PORT}, Metrics=${METRICS_PORT}"
+fi
+
 # Wait for Triton server to be ready
 log_with_timestamp "=================================="
 log_with_timestamp "WAITING FOR TRITON SERVER"
 log_with_timestamp "=================================="
-log_with_timestamp "Checking Triton server availability at ${TRITON_NODE}:8000..."
+log_with_timestamp "Checking Triton server availability at ${TRITON_NODE}:${HTTP_PORT}..."
 
-if ! wait_for_triton 300; then
+if ! wait_for_triton "$HTTP_PORT" 300; then
     log_with_timestamp "✗ ERROR: Triton server not ready after 300 seconds"
     log_with_timestamp "Troubleshooting information:"
     log_with_timestamp "  - Check if Triton server is running: squeue -u $USER"
@@ -122,14 +134,14 @@ fi
 log_with_timestamp "Performing additional health checks..."
 
 # Check server status
-if server_status=$(curl -s http://${TRITON_NODE}:8000/v2/health/live 2>/dev/null); then
+if server_status=$(curl -s http://${TRITON_NODE}:${HTTP_PORT}/v2/health/live 2>/dev/null); then
     log_with_timestamp "  ✓ Server live check: OK"
 else
     log_with_timestamp "  ⚠ Server live check: FAILED"
 fi
 
 # Check server metadata
-if server_metadata=$(curl -s http://${TRITON_NODE}:8000/v2 2>/dev/null); then
+if server_metadata=$(curl -s http://${TRITON_NODE}:${HTTP_PORT}/v2 2>/dev/null); then
     log_with_timestamp "  ✓ Server metadata accessible"
     log_with_timestamp "Server metadata:"
     echo "$server_metadata" | jq '.' 2>/dev/null || echo "$server_metadata"
@@ -139,7 +151,7 @@ fi
 
 #list models on the server
 log_with_timestamp "Listing models on Triton server..."
-if model_list=$(curl -s http://${TRITON_NODE}:8000/v2/models
+if model_list=$(curl -s http://${TRITON_NODE}:${HTTP_PORT}/v2/models
 ); then
     log_with_timestamp "Models available on the server:"
     echo "$model_list" | jq '.' 2>/dev/null || echo "$model_list"
@@ -153,7 +165,7 @@ log_with_timestamp "MODEL STATUS CHECK"
 log_with_timestamp "=================================="
 log_with_timestamp "Checking model '$MODEL_NAME' status..."
 
-if model_status=$(curl -s http://${TRITON_NODE}:8000/v2/models/$MODEL_NAME 2>/dev/null); then
+if model_status=$(curl -s http://${TRITON_NODE}:${HTTP_PORT}/v2/models/$MODEL_NAME 2>/dev/null); then
     log_with_timestamp "Model status response received:"
     echo "$model_status" | jq '.' 2>/dev/null || echo "$model_status"
     
@@ -170,7 +182,7 @@ fi
 
 # Get model metadata
 log_with_timestamp "Retrieving model metadata..."
-if model_metadata=$(curl -s http://${TRITON_NODE}:8000/v2/models/$MODEL_NAME/config 2>/dev/null); then
+if model_metadata=$(curl -s http://${TRITON_NODE}:${HTTP_PORT}/v2/models/$MODEL_NAME/config 2>/dev/null); then
     log_with_timestamp "Model configuration:"
     echo "$model_metadata" | jq '.' 2>/dev/null || echo "$model_metadata"
 else
@@ -186,7 +198,7 @@ log_with_timestamp "Running inference on $VIDEO_FILE with confidence threshold $
 log_with_timestamp "Inference parameters:"
 log_with_timestamp "  - Input video: $VIDEO_FILE"
 log_with_timestamp "  - Model name: $MODEL_NAME"
-log_with_timestamp "  - Server URL: ${TRITON_NODE}:8000"
+log_with_timestamp "  - Server URL: ${TRITON_NODE}:${HTTP_PORT}"
 log_with_timestamp "  - Output video: $OUTPUT_FILE"
 log_with_timestamp "  - Confidence threshold: $CONF_THRESHOLD"
 
@@ -211,7 +223,7 @@ log_with_timestamp "Executing triton_client.py..."
 if uv run python triton_client.py \
     --video "$VIDEO_FILE" \
     --model-name "$MODEL_NAME" \
-    --url ${TRITON_NODE}:8000 \
+    --url ${TRITON_NODE}:${HTTP_PORT} \
     --output "$OUTPUT_FILE" \
     --conf-threshold "$CONF_THRESHOLD"; then
     
@@ -240,7 +252,7 @@ log_with_timestamp "Executing model3.py for post-processing..."
 model3_start_time=$(date +%s)
 log_with_timestamp "Model3 processing started at: $(date)"
 
-if uv run python model3.py --triton-url ${TRITON_NODE}:8000 --input "$VIDEO_FILE" --output "$OUTPUT_FILE" --model-name "$MODEL_NAME" --conf-threshold "$CONF_THRESHOLD"; then
+if uv run python model3.py --triton-url ${TRITON_NODE}:${HTTP_PORT} --input "$VIDEO_FILE" --output "$OUTPUT_FILE" --model-name "$MODEL_NAME" --conf-threshold "$CONF_THRESHOLD"; then
     model3_end_time=$(date +%s)
     model3_duration=$((model3_end_time - model3_start_time))
     log_with_timestamp "✓ Model3 processing completed successfully in ${model3_duration} seconds"
