@@ -73,10 +73,17 @@ test_triton_health() {
     if read_cluster_state; then
         local triton_node="${TRITON_NODE:-}"
         if [[ -n "$triton_node" ]]; then
-            curl -s "http://$triton_node:8000/v2/health/ready" >/dev/null 2>&1
-            return $?
+            print_colored "$BLUE" "🔍 Testing Triton server at $triton_node:8000..."
+            if curl -s --max-time 10 "http://$triton_node:8000/v2/health/ready" >/dev/null 2>&1; then
+                print_colored "$GREEN" "✅ Triton server is responding"
+                return 0
+            else
+                print_colored "$YELLOW" "⚠️ Triton server not responding at $triton_node:8000"
+                return 1
+            fi
         fi
     fi
+    print_colored "$YELLOW" "⚠️ No cluster state found"
     return 1
 }
 
@@ -140,6 +147,11 @@ get_server_url() {
             echo "$triton_node:8000"
             return 0
         fi
+    fi
+    # Fallback: try to detect from environment or ask user
+    if [[ -n "${TRITON_URL:-}" ]]; then
+        echo "$TRITON_URL"
+        return 0
     fi
     echo "localhost:8000"  # fallback
     return 1
@@ -216,6 +228,8 @@ get_user_selection() {
                 # Convert to zero-based index
                 local index=$(expr "$selection" - 1)
                 echo "$index"
+                # Clear any remaining input buffer
+                while read -r -t 0.1 dummy < /dev/tty 2>/dev/null; do :; done
                 return 0
             else
                 print_colored "$RED" "❌ Invalid selection. Please enter a number between 1 and $video_count"
@@ -400,7 +414,7 @@ main() {
             print_colored "$GREEN" "✅ Triton server is already running at ${TRITON_NODE:-unknown}:8000"
             print_colored "$BLUE" "📊 Job ID: ${TRITON_JOB_ID:-unknown}, Type: ${JOB_TYPE:-unknown}"
         else
-            print_colored "$GREEN" "✅ Triton server is running"
+            print_colored "$GREEN" "✅ Triton server is running (cluster state not available)"
         fi
         
         # Check if our model is ready
@@ -418,6 +432,7 @@ main() {
         fi
     else
         print_colored "$YELLOW" "❌ Triton server not found. Starting new instance..."
+        print_colored "$YELLOW" "💡 Tip: You can also set TRITON_URL environment variable to override server detection"
         
         if ! start_triton_server; then
             print_colored "$RED" "❌ Failed to start Triton server. Exiting."
@@ -493,10 +508,13 @@ Arguments:
     MODEL_NAME       Model name to use (default: rtdetr_tensorrt)
     CONF_THRESHOLD   Confidence threshold (default: 0.5)
 
+Environment Variables:
+    TRITON_URL       Override Triton server URL (e.g., gpu001:8000)
+
 Examples:
     $0                           # Use defaults
     $0 rtdetr 0.3               # Custom model and threshold
-    $0 rtdetr_tensorrt 0.7      # TensorRT model with high threshold
+    TRITON_URL=gpu002:8000 $0   # Override Triton server URL
 
 Features:
     - Integration with manage_jobs.sh for SLURM cluster management
