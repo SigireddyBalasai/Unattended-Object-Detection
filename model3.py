@@ -207,7 +207,7 @@ def get_video_predictions(video_path):
                 inputs.append(input_tensor)
 
                 try:
-                    results = client.infer("rtdetr", inputs)
+                    results = client.infer("rtdetr_tensorrt", inputs)
                     output_names = results.get_response()["outputs"]
                     output_key = output_names[0]["name"] if output_names else "output0"
                     output = results.as_numpy(output_key)

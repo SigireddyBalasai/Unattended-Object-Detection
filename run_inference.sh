@@ -20,7 +20,7 @@ source ./cluster_config.sh
 
 MANAGE_JOBS_SCRIPT="$SCRIPT_DIR/manage_jobs.sh"
 OUTPUT_DIR="$SCRIPT_DIR/outputs"
-CLIENT_SCRIPT="$SCRIPT_DIR/triton_client.py"
+MODEL3_SCRIPT="$SCRIPT_DIR/model3.py"
 
 # ANSI color codes
 RED='\033[0;31m'
@@ -208,16 +208,17 @@ run_inference() {
     # Get server URL from cluster state
     local server_url=$(get_server_url)
     
-    print_colored "$CYAN" "\n🎯 Starting inference..."
+    print_colored "$CYAN" "\n🎯 Starting unattended object detection inference..."
     print_colored "$BLUE" "📹 Input: $video_path"
     print_colored "$BLUE" "💾 Output: $output_path"
     print_colored "$BLUE" "🤖 Model: $model_name"
     print_colored "$BLUE" "🌐 Server: $server_url"
     print_colored "$BLUE" "🎚️ Confidence Threshold: $conf_threshold"
+    print_colored "$BLUE" "🔍 Features: Unattended object detection with tracking and alerts"
     
-    # Check if Python client exists
-    if [ ! -f "$CLIENT_SCRIPT" ]; then
-        print_colored "$RED" "❌ Error: Client script not found at $CLIENT_SCRIPT"
+    # Check if model3.py exists
+    if [ ! -f "$MODEL3_SCRIPT" ]; then
+        print_colored "$RED" "❌ Error: Model3 script not found at $MODEL3_SCRIPT"
         return 1
     fi
     
@@ -233,19 +234,25 @@ run_inference() {
         python_cmd="python"
     fi
     
-    # Run the inference
-    print_colored "$YELLOW" "🔄 Running inference... (This may take a while)"
+    # Run the inference using model3.py
+    print_colored "$YELLOW" "🔄 Running unattended object detection... (This may take a while)"
+    print_colored "$YELLOW" "📊 Processing will include: person detection, object tracking, and unattended alerts"
     
-    if $python_cmd "$CLIENT_SCRIPT" \
-        --video "$video_path" \
-        --model-name "$model_name" \
-        --url "$server_url" \
+    if $python_cmd "$MODEL3_SCRIPT" \
+        --input "$video_path" \
         --output "$output_path" \
-        --conf-threshold "$conf_threshold"; then
-        print_colored "$GREEN" "✅ Inference completed successfully!"
+        --triton-url "$server_url"; then
+        print_colored "$GREEN" "✅ Unattended object detection completed successfully!"
+        
+        # Check if alerts log was created
+        if [ -f "alerts.log" ]; then
+            local alert_count=$(wc -l < "alerts.log" 2>/dev/null || echo "0")
+            print_colored "$BLUE" "📋 Alerts generated: $alert_count (see alerts.log for details)"
+        fi
+        
         return 0
     else
-        print_colored "$RED" "❌ Inference failed!"
+        print_colored "$RED" "❌ Unattended object detection failed!"
         return 1
     fi
 }
@@ -257,7 +264,7 @@ show_summary() {
     local success=$3
     
     print_colored "$MAGENTA" "\n$(printf '=%.0s' {1..60})"
-    print_colored "$MAGENTA" "📊 INFERENCE SUMMARY"
+    print_colored "$MAGENTA" "📊 UNATTENDED OBJECT DETECTION SUMMARY"
     print_colored "$MAGENTA" "$(printf '=%.0s' {1..60})"
     
     print_colored "$BLUE" "📹 Input Video: $input_video"
@@ -272,8 +279,35 @@ show_summary() {
             print_colored "$BLUE" "📏 Output Size: ${output_size_mb} MB"
         fi
         
+        # Show alerts summary if alerts.log exists
+        if [ -f "alerts.log" ]; then
+            local alert_count=$(wc -l < "alerts.log" 2>/dev/null || echo "0")
+            if [ "$alert_count" -gt 0 ]; then
+                print_colored "$YELLOW" "⚠️ Unattended Object Alerts: $alert_count"
+                print_colored "$YELLOW" "📋 Alerts logged to: alerts.log"
+                
+                # Show last few alerts if any
+                if [ "$alert_count" -le 3 ]; then
+                    print_colored "$YELLOW" "📄 Recent alerts:"
+                    tail -n "$alert_count" "alerts.log" | while read -r line; do
+                        print_colored "$YELLOW" "   • $line"
+                    done
+                else
+                    print_colored "$YELLOW" "📄 Last 3 alerts:"
+                    tail -n 3 "alerts.log" | while read -r line; do
+                        print_colored "$YELLOW" "   • $line"
+                    done
+                fi
+            else
+                print_colored "$GREEN" "✅ No unattended object alerts detected"
+            fi
+        else
+            print_colored "$GREEN" "✅ No unattended object alerts detected"
+        fi
+        
         print_colored "$GREEN" "\n🎉 Your processed video is ready!"
         print_colored "$GREEN" "📁 Location: $output_video"
+        print_colored "$BLUE" "🔍 Features processed: Person detection, object tracking, unattended alerts"
     else
         print_colored "$RED" "❌ Status: FAILED"
         print_colored "$YELLOW" "🔍 Check the error messages above for details"
@@ -407,14 +441,26 @@ Features:
     - Automatic Triton server health checking via cluster state
     - Auto-starts Triton server using SLURM if not running
     - Interactive video file selection
+    - Unattended object detection with tracking and alerting
+    - Person and target object detection (backpack, handbag, suitcase)
+    - Real-time tracking of object-person proximity
+    - Automated alerts for unattended objects (15-second threshold)
     - Unique output file naming with timestamps
     - Comprehensive error handling and reporting
+
+Detection Capabilities:
+    - Person detection and tracking
+    - Target objects: backpack, handbag, suitcase
+    - Proximity analysis (450-pixel threshold)
+    - Unattended object alerts after 15 seconds
+    - Alert logging to alerts.log file
+    - Visual annotations on output video
 
 Requirements:
     - SLURM cluster environment
     - NVIDIA Triton Inference Server
     - Python with tritonclient, opencv-python, numpy
-    - RT-DETR model in model_repository/
+    - RT-DETR TensorRT model in model_repository/rtdetr_tensorrt/
     - Properly configured manage_jobs.sh and cluster_config.sh
 
 Cluster Management:
@@ -423,9 +469,10 @@ Cluster Management:
     - cluster_config.sh for cluster state coordination
     - Automatic server discovery via SLURM job coordination
 
-Output Location:
-    Processed videos are saved in outputs/ directory with format:
-    {original_name}_inference_{timestamp}.mp4
+Output Files:
+    - Processed videos: outputs/{original_name}_inference_{timestamp}.mp4
+    - Alert logs: alerts.log (JSON format with timestamps and locations)
+    - Visual indicators: Bounding boxes, labels, and alert annotations
 EOF
     exit 0
 fi
