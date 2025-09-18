@@ -1,0 +1,1385 @@
+I0918 20:10:43.695354 1 cache_manager.cc:480] "Create CacheManager with cache_dir: '/opt/tritonserver/caches'"
+I0918 20:10:44.126059 1 pinned_memory_manager.cc:277] "Pinned memory pool is created at '0x15530a000000' with size 268435456"
+I0918 20:10:44.128719 1 cuda_memory_manager.cc:107] "CUDA memory pool is created on device 0 with size 67108864"
+I0918 20:10:44.143371 1 model_config_utils.cc:716] "Server side auto-completed config: "
+name: "rtdetr"
+platform: "onnxruntime_onnx"
+input {
+  name: "images"
+  data_type: TYPE_FP32
+  dims: 1
+  dims: 3
+  dims: 640
+  dims: 640
+}
+output {
+  name: "output0"
+  data_type: TYPE_FP32
+  dims: 1
+  dims: 300
+  dims: 84
+}
+instance_group {
+  count: 1
+  kind: KIND_GPU
+}
+default_model_filename: "model.onnx"
+parameters {
+  key: "inter_op_thread_count"
+  value {
+    string_value: "1"
+  }
+}
+parameters {
+  key: "intra_op_thread_count"
+  value {
+    string_value: "1"
+  }
+}
+backend: "onnxruntime"
+
+I0918 20:10:44.147807 1 model_config_utils.cc:716] "Server side auto-completed config: "
+name: "rtdetr_tensorrt"
+platform: "tensorrt_plan"
+input {
+  name: "images"
+  data_type: TYPE_FP32
+  dims: 1
+  dims: 3
+  dims: 640
+  dims: 640
+}
+output {
+  name: "output0"
+  data_type: TYPE_FP32
+  dims: 1
+  dims: 300
+  dims: 84
+}
+instance_group {
+  count: 1
+  kind: KIND_GPU
+}
+default_model_filename: "model.plan"
+optimization {
+  execution_accelerators {
+    gpu_execution_accelerator {
+      name: "tensorrt"
+      parameters {
+        key: "max_workspace_size_bytes"
+        value: "1073741824"
+      }
+      parameters {
+        key: "precision_mode"
+        value: "FP32"
+      }
+    }
+  }
+}
+backend: "tensorrt"
+
+I0918 20:10:44.148244 1 model_lifecycle.cc:472] "loading: rtdetr_tensorrt:1"
+I0918 20:10:44.148400 1 backend_model.cc:503] "Adding default backend config setting: default-max-batch-size,4"
+I0918 20:10:44.148433 1 shared_library.cc:112] "OpenLibraryHandle: /opt/tritonserver/backends/tensorrt/libtriton_tensorrt.so"
+I0918 20:10:44.149996 1 model_lifecycle.cc:472] "loading: rtdetr:1"
+I0918 20:10:44.150482 1 backend_model.cc:503] "Adding default backend config setting: default-max-batch-size,4"
+I0918 20:10:44.167926 1 tensorrt.cc:65] "TRITONBACKEND_Initialize: tensorrt"
+I0918 20:10:44.167949 1 tensorrt.cc:75] "Triton TRITONBACKEND API version: 1.19"
+I0918 20:10:44.167956 1 tensorrt.cc:81] "'tensorrt' TRITONBACKEND API version: 1.19"
+I0918 20:10:44.167962 1 tensorrt.cc:105] "backend configuration:\n{\"cmdline\":{\"auto-complete-config\":\"true\",\"backend-directory\":\"/opt/tritonserver/backends\",\"min-compute-capability\":\"6.000000\",\"default-max-batch-size\":\"4\"}}"
+I0918 20:10:44.167987 1 tensorrt.cc:187] "Registering TensorRT Plugins"
+I0918 20:10:44.168005 1 logging.cc:49] "Registered plugin creator - ::BatchedNMSDynamic_TRT version 1"
+I0918 20:10:44.168013 1 logging.cc:49] "Registered plugin creator - ::BatchedNMS_TRT version 1"
+I0918 20:10:44.168022 1 logging.cc:49] "Registered plugin creator - ::BatchTilePlugin_TRT version 1"
+I0918 20:10:44.168031 1 logging.cc:49] "Registered plugin creator - ::Clip_TRT version 1"
+I0918 20:10:44.168039 1 logging.cc:49] "Registered plugin creator - ::CoordConvAC version 1"
+I0918 20:10:44.168047 1 logging.cc:49] "Registered plugin creator - ::CropAndResizeDynamic version 1"
+I0918 20:10:44.168057 1 logging.cc:49] "Registered plugin creator - ::CropAndResize version 1"
+I0918 20:10:44.168066 1 logging.cc:49] "Registered plugin creator - ::DecodeBbox3DPlugin version 1"
+I0918 20:10:44.168074 1 logging.cc:49] "Registered plugin creator - ::DetectionLayer_TRT version 1"
+I0918 20:10:44.168083 1 logging.cc:49] "Registered plugin creator - ::EfficientNMS_Explicit_TF_TRT version 1"
+I0918 20:10:44.168094 1 logging.cc:49] "Registered plugin creator - ::EfficientNMS_Implicit_TF_TRT version 1"
+I0918 20:10:44.168111 1 logging.cc:49] "Registered plugin creator - ::EfficientNMS_ONNX_TRT version 1"
+I0918 20:10:44.168123 1 logging.cc:49] "Registered plugin creator - ::EfficientNMS_TRT version 1"
+I0918 20:10:44.168132 1 logging.cc:49] "Registered plugin creator - ::FlattenConcat_TRT version 1"
+I0918 20:10:44.168141 1 logging.cc:49] "Registered plugin creator - ::GenerateDetection_TRT version 1"
+I0918 20:10:44.168152 1 logging.cc:49] "Registered plugin creator - ::GridAnchor_TRT version 1"
+I0918 20:10:44.168162 1 logging.cc:49] "Registered plugin creator - ::GridAnchorRect_TRT version 1"
+I0918 20:10:44.168173 1 logging.cc:49] "Registered plugin creator - ::InstanceNormalization_TRT version 1"
+I0918 20:10:44.168187 1 logging.cc:49] "Registered plugin creator - ::InstanceNormalization_TRT version 2"
+I0918 20:10:44.168200 1 logging.cc:49] "Registered plugin creator - ::InstanceNormalization_TRT version 3"
+I0918 20:10:44.168212 1 logging.cc:49] "Registered plugin creator - ::LReLU_TRT version 1"
+I0918 20:10:44.168225 1 logging.cc:49] "Registered plugin creator - ::ModulatedDeformConv2d version 1"
+I0918 20:10:44.168236 1 logging.cc:49] "Registered plugin creator - ::MultilevelCropAndResize_TRT version 1"
+I0918 20:10:44.168248 1 logging.cc:49] "Registered plugin creator - ::MultilevelProposeROI_TRT version 1"
+I0918 20:10:44.168259 1 logging.cc:49] "Registered plugin creator - ::MultiscaleDeformableAttnPlugin_TRT version 1"
+I0918 20:10:44.168276 1 logging.cc:49] "Registered plugin creator - ::NMSDynamic_TRT version 1"
+I0918 20:10:44.168289 1 logging.cc:49] "Registered plugin creator - ::NMS_TRT version 1"
+I0918 20:10:44.168300 1 logging.cc:49] "Registered plugin creator - ::Normalize_TRT version 1"
+I0918 20:10:44.168312 1 logging.cc:49] "Registered plugin creator - ::PillarScatterPlugin version 1"
+I0918 20:10:44.168326 1 logging.cc:49] "Registered plugin creator - ::PriorBox_TRT version 1"
+I0918 20:10:44.168338 1 logging.cc:49] "Registered plugin creator - ::ProposalDynamic version 1"
+I0918 20:10:44.168350 1 logging.cc:49] "Registered plugin creator - ::ProposalLayer_TRT version 1"
+I0918 20:10:44.168361 1 logging.cc:49] "Registered plugin creator - ::Proposal version 1"
+I0918 20:10:44.168376 1 logging.cc:49] "Registered plugin creator - ::PyramidROIAlign_TRT version 1"
+I0918 20:10:44.168387 1 logging.cc:49] "Registered plugin creator - ::Region_TRT version 1"
+I0918 20:10:44.168400 1 logging.cc:49] "Registered plugin creator - ::Reorg_TRT version 2"
+I0918 20:10:44.168410 1 logging.cc:49] "Registered plugin creator - ::Reorg_TRT version 1"
+I0918 20:10:44.168418 1 logging.cc:49] "Registered plugin creator - ::ResizeNearest_TRT version 1"
+I0918 20:10:44.168426 1 logging.cc:49] "Registered plugin creator - ::ROIAlign_TRT version 1"
+I0918 20:10:44.168434 1 logging.cc:49] "Registered plugin creator - ::ROIAlign_TRT version 2"
+I0918 20:10:44.168443 1 logging.cc:49] "Registered plugin creator - ::RPROI_TRT version 1"
+I0918 20:10:44.168452 1 logging.cc:49] "Registered plugin creator - ::ScatterElements version 2"
+I0918 20:10:44.168464 1 logging.cc:49] "Registered plugin creator - ::ScatterElements version 1"
+I0918 20:10:44.168477 1 logging.cc:49] "Registered plugin creator - ::ScatterND version 1"
+I0918 20:10:44.168488 1 logging.cc:49] "Registered plugin creator - ::SpecialSlice_TRT version 1"
+I0918 20:10:44.168503 1 logging.cc:49] "Registered plugin creator - ::Split version 1"
+I0918 20:10:44.168515 1 logging.cc:49] "Registered plugin creator - ::VoxelGeneratorPlugin version 1"
+I0918 20:10:44.168726 1 shared_library.cc:112] "OpenLibraryHandle: /opt/tritonserver/backends/onnxruntime/libtriton_onnxruntime.so"
+I0918 20:10:44.171758 1 onnxruntime.cc:2875] "TRITONBACKEND_Initialize: onnxruntime"
+I0918 20:10:44.171788 1 onnxruntime.cc:2885] "Triton TRITONBACKEND API version: 1.19"
+I0918 20:10:44.171811 1 onnxruntime.cc:2891] "'onnxruntime' TRITONBACKEND API version: 1.19"
+I0918 20:10:44.171832 1 onnxruntime.cc:2921] "backend configuration:\n{\"cmdline\":{\"auto-complete-config\":\"true\",\"backend-directory\":\"/opt/tritonserver/backends\",\"min-compute-capability\":\"6.000000\",\"default-max-batch-size\":\"4\"}}"
+I0918 20:10:44.172275 1 tensorrt.cc:231] "TRITONBACKEND_ModelInitialize: rtdetr_tensorrt (version 1)"
+I0918 20:10:44.172895 1 model_config_utils.cc:1941] "ModelConfig 64-bit fields:"
+I0918 20:10:44.172906 1 model_config_utils.cc:1943] "\tModelConfig::dynamic_batching::default_priority_level"
+I0918 20:10:44.172913 1 model_config_utils.cc:1943] "\tModelConfig::dynamic_batching::default_queue_policy::default_timeout_microseconds"
+I0918 20:10:44.172920 1 model_config_utils.cc:1943] "\tModelConfig::dynamic_batching::max_queue_delay_microseconds"
+I0918 20:10:44.172927 1 model_config_utils.cc:1943] "\tModelConfig::dynamic_batching::priority_levels"
+I0918 20:10:44.172934 1 model_config_utils.cc:1943] "\tModelConfig::dynamic_batching::priority_queue_policy::key"
+I0918 20:10:44.172941 1 model_config_utils.cc:1943] "\tModelConfig::dynamic_batching::priority_queue_policy::value::default_timeout_microseconds"
+I0918 20:10:44.172950 1 model_config_utils.cc:1943] "\tModelConfig::ensemble_scheduling::step::model_version"
+I0918 20:10:44.172957 1 model_config_utils.cc:1943] "\tModelConfig::input::dims"
+I0918 20:10:44.172964 1 model_config_utils.cc:1943] "\tModelConfig::input::reshape::shape"
+I0918 20:10:44.172972 1 model_config_utils.cc:1943] "\tModelConfig::instance_group::secondary_devices::device_id"
+I0918 20:10:44.172979 1 model_config_utils.cc:1943] "\tModelConfig::model_warmup::inputs::value::dims"
+I0918 20:10:44.172986 1 model_config_utils.cc:1943] "\tModelConfig::optimization::cuda::graph_spec::graph_lower_bound::input::value::dim"
+I0918 20:10:44.172994 1 model_config_utils.cc:1943] "\tModelConfig::optimization::cuda::graph_spec::input::value::dim"
+I0918 20:10:44.173001 1 model_config_utils.cc:1943] "\tModelConfig::output::dims"
+I0918 20:10:44.173007 1 model_config_utils.cc:1943] "\tModelConfig::output::reshape::shape"
+I0918 20:10:44.173014 1 model_config_utils.cc:1943] "\tModelConfig::sequence_batching::direct::max_queue_delay_microseconds"
+I0918 20:10:44.173023 1 model_config_utils.cc:1943] "\tModelConfig::sequence_batching::max_sequence_idle_microseconds"
+I0918 20:10:44.173030 1 model_config_utils.cc:1943] "\tModelConfig::sequence_batching::oldest::max_queue_delay_microseconds"
+I0918 20:10:44.173037 1 model_config_utils.cc:1943] "\tModelConfig::sequence_batching::state::dims"
+I0918 20:10:44.173044 1 model_config_utils.cc:1943] "\tModelConfig::sequence_batching::state::initial_state::dims"
+I0918 20:10:44.173051 1 model_config_utils.cc:1943] "\tModelConfig::version_policy::specific::versions"
+I0918 20:10:44.173260 1 model_state.cc:317] "Setting the CUDA device to GPU0 to auto-complete config for rtdetr_tensorrt"
+I0918 20:10:44.174588 1 model_state.cc:363] "Using explicit serialized file 'model.plan' to auto-complete config for rtdetr_tensorrt"
+I0918 20:10:44.196656 1 onnxruntime.cc:3157] "TRITONBACKEND_GetBackendAttribute: setting attributes"
+I0918 20:10:44.200196 1 onnxruntime.cc:2986] "TRITONBACKEND_ModelInitialize: rtdetr (version 1)"
+I0918 20:10:44.200738 1 onnxruntime.cc:984] "skipping model configuration auto-complete for 'rtdetr': inputs and outputs already specified"
+I0918 20:10:44.201633 1 onnxruntime.cc:3051] "TRITONBACKEND_ModelInstanceInitialize: rtdetr_0_0 (GPU device 0)"
+I0918 20:10:44.202966 1 backend_model_instance.cc:106] "Creating instance rtdetr_0_0 on GPU 0 (9.0) using artifact 'model.onnx'"
+I0918 20:10:44.269935 1 onnxruntime.cc:869] "CUDA Execution Accelerator is set for 'rtdetr' on device 0 with options: sdpa_kernel=0;use_tf32=1;use_ep_level_unified_stream=0;device_id=0;tunable_op_max_tuning_duration_ms=0;has_user_compute_stream=1;cudnn_conv_algo_search=EXHAUSTIVE;cudnn_conv1d_pad_to_nc1d=0;gpu_mem_limit=18446744073709551615;arena_extend_strategy=kNextPowerOfTwo;do_copy_in_default_stream=1;user_compute_stream=23445622561568;cudnn_conv_use_max_workspace=1;tunable_op_enable=0;tunable_op_tuning_enable=0;prefer_nhwc=0"
+2025-09-18 20:10:44.270038537 [I:onnxruntime:, inference_session.cc:583 TraceSessionOptions] Session Options {  execution_mode:0 execution_order:DEFAULT enable_profiling:0 optimized_model_filepath:"" enable_mem_pattern:1 enable_mem_reuse:1 enable_cpu_mem_arena:1 profile_file_prefix:onnxruntime_profile_ session_logid: session_log_severity_level:-1 session_log_verbosity_level:0 max_num_graph_transformation_steps:10 graph_optimization_level:3 intra_op_param:OrtThreadPoolParams { thread_pool_size: 1 auto_set_affinity: 0 allow_spinning: 1 dynamic_block_base_: 0 stack_size: 0 affinity_str:  set_denormal_as_zero: 0 } inter_op_param:OrtThreadPoolParams { thread_pool_size: 1 auto_set_affinity: 0 allow_spinning: 1 dynamic_block_base_: 0 stack_size: 0 affinity_str:  set_denormal_as_zero: 0 } use_per_session_threads:1 thread_pool_allow_spinning:1 use_deterministic_compute:0 config_options: {  } }
+2025-09-18 20:10:44.270075534 [I:onnxruntime:, inference_session.cc:483 operator()] Flush-to-zero and denormal-as-zero are off
+2025-09-18 20:10:44.270086633 [I:onnxruntime:, inference_session.cc:491 ConstructorCommon] Creating and using per session threadpools since use_per_session_threads_ is true
+2025-09-18 20:10:44.270098235 [I:onnxruntime:, inference_session.cc:509 ConstructorCommon] Dynamic block base set to 0
+I0918 20:10:44.387094 1 logging.cc:46] "Loaded engine size: 128 MiB"
+2025-09-18 20:10:44.407348791 [I:onnxruntime:, inference_session.cc:1661 Initialize] Initializing session.
+2025-09-18 20:10:44.407367975 [I:onnxruntime:, inference_session.cc:1698 Initialize] Adding default CPU execution provider.
+2025-09-18 20:10:44.407390565 [I:onnxruntime:log, bfc_arena.cc:29 BFCArena] Creating BFCArena for Cuda with following configs: initial_chunk_size_bytes: 1048576 max_dead_bytes_per_chunk: 134217728 initial_growth_chunk_size_bytes: 2097152 max_power_of_two_extend_bytes: 1073741824 memory limit: 18446744073709551615 arena_extend_strategy: 0
+2025-09-18 20:10:44.407398962 [V:onnxruntime:log, bfc_arena.cc:66 BFCArena] Creating 21 bins of max chunk size 256 to 268435456
+2025-09-18 20:10:44.407407557 [I:onnxruntime:log, bfc_arena.cc:29 BFCArena] Creating BFCArena for CudaPinned with following configs: initial_chunk_size_bytes: 1048576 max_dead_bytes_per_chunk: 134217728 initial_growth_chunk_size_bytes: 2097152 max_power_of_two_extend_bytes: 1073741824 memory limit: 18446744073709551615 arena_extend_strategy: 0
+2025-09-18 20:10:44.407413220 [V:onnxruntime:log, bfc_arena.cc:66 BFCArena] Creating 21 bins of max chunk size 256 to 268435456
+2025-09-18 20:10:44.407426023 [I:onnxruntime:log, bfc_arena.cc:29 BFCArena] Creating BFCArena for Cpu with following configs: initial_chunk_size_bytes: 1048576 max_dead_bytes_per_chunk: 134217728 initial_growth_chunk_size_bytes: 2097152 max_power_of_two_extend_bytes: 1073741824 memory limit: 18446744073709551615 arena_extend_strategy: 0
+2025-09-18 20:10:44.407431819 [V:onnxruntime:log, bfc_arena.cc:66 BFCArena] Creating 21 bins of max chunk size 256 to 268435456
+E0918 20:10:44.409962 1 logging.cc:40] "IRuntime::deserializeCudaEngine: Error Code 1: Serialization (Serialization assertion plan->header.magicTag == rt::kPLAN_MAGIC_TAG failed.Trying to load an engine created with incompatible serialization version. Check that the engine was not created using safety runtime, same OS was used and version compatibility parameters were set accordingly.)"
+I0918 20:10:44.428063 1 tensorrt.cc:274] "TRITONBACKEND_ModelFinalize: delete model state"
+E0918 20:10:44.428101 1 model_lifecycle.cc:642] "failed to load 'rtdetr_tensorrt' version 1: Internal: unable to load plan file to auto complete config: /models/rtdetr_tensorrt/1/model.plan"
+I0918 20:10:44.428123 1 model_lifecycle.cc:777] "failed to load 'rtdetr_tensorrt'"
+2025-09-18 20:10:44.428386818 [I:onnxruntime:, graph_partitioner.cc:898 InlineFunctionsAOT] This model does not have any local functions defined. AOT Inlining is not performed
+2025-09-18 20:10:44.429309348 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer EnsureUniqueDQForNodeUnit modified: 0 with status: OK
+2025-09-18 20:10:44.430646126 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer Level1_RuleBasedTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.430940194 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer DoubleQDQPairsRemover modified: 0 with status: OK
+2025-09-18 20:10:44.431438562 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer ConstantSharing modified: 0 with status: OK
+2025-09-18 20:10:44.433167136 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer CommonSubexpressionElimination modified: 0 with status: OK
+2025-09-18 20:10:44.433750924 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer ConstantFolding modified: 0 with status: OK
+2025-09-18 20:10:44.434047824 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulAddFusion modified: 0 with status: OK
+2025-09-18 20:10:44.434321934 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer ReshapeFusion modified: 0 with status: OK
+2025-09-18 20:10:44.434330159 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer FreeDimensionOverrideTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.434651583 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQPropagationTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.434939543 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer EnsureUniqueDQForNodeUnit modified: 0 with status: OK
+2025-09-18 20:10:44.435212118 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer RocmBlasAltImpl modified: 0 with status: OK
+2025-09-18 20:10:44.438260904 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer TransposeOptimizer modified: 1 with status: OK
+2025-09-18 20:10:44.446893321 [I:onnxruntime:, graph.cc:4264 CleanUnusedInitializersAndNodeArgs] Removing NodeArg 'Transpose_token_0_out0'. It is no longer used by any node.
+2025-09-18 20:10:44.446912323 [I:onnxruntime:, graph.cc:4264 CleanUnusedInitializersAndNodeArgs] Removing NodeArg 'Transpose_out0'. It is no longer used by any node.
+2025-09-18 20:10:44.447583592 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer Level1_RuleBasedTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.447871631 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer DoubleQDQPairsRemover modified: 0 with status: OK
+2025-09-18 20:10:44.449180365 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer CommonSubexpressionElimination modified: 0 with status: OK
+2025-09-18 20:10:44.449718125 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer ConstantFolding modified: 0 with status: OK
+2025-09-18 20:10:44.449995655 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulAddFusion modified: 0 with status: OK
+2025-09-18 20:10:44.450302255 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer ReshapeFusion modified: 0 with status: OK
+2025-09-18 20:10:44.450309472 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer FreeDimensionOverrideTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.450636594 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQPropagationTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.450921953 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer EnsureUniqueDQForNodeUnit modified: 0 with status: OK
+2025-09-18 20:10:44.451200460 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer RocmBlasAltImpl modified: 0 with status: OK
+2025-09-18 20:10:44.451541373 [I:onnxruntime:, cuda_execution_provider.cc:2517 GetCapability] CUDA kernel not found in registries for Op type: Pad node name: /model.0/Pad
+2025-09-18 20:10:44.452417854 [I:onnxruntime:, cuda_execution_provider.cc:2517 GetCapability] CUDA kernel not found in registries for Op type: Resize node name: /model.13/Resize
+2025-09-18 20:10:44.452621360 [I:onnxruntime:, cuda_execution_provider.cc:2517 GetCapability] CUDA kernel not found in registries for Op type: Resize node name: /model.18/Resize
+2025-09-18 20:10:44.463671804 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer Level2_RuleBasedTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.464637490 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer TransposeOptimizer_CPUExecutionProvider modified: 0 with status: OK
+2025-09-18 20:10:44.464915572 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQS8ToU8Transformer modified: 0 with status: OK
+2025-09-18 20:10:44.465229883 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQSelectorActionTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.465551557 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GemmActivationFusion modified: 0 with status: OK
+2025-09-18 20:10:44.465842605 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulIntegerToFloatFusion modified: 0 with status: OK
+2025-09-18 20:10:44.466133417 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer DynamicQuantizeMatMulFusion modified: 0 with status: OK
+2025-09-18 20:10:44.466382769 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466422233 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466436116 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466450655 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466467901 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466484830 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466497715 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466507286 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466516831 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466526282 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466538469 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466553057 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466567726 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466583565 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466601028 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466623327 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466639922 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466657824 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466673147 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466687421 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466708769 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466724301 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466740821 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466758807 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466775387 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466792044 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466810683 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466833213 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466847438 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466865716 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466884101 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466906550 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466925268 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466942537 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466964322 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466982530 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.466998499 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467020624 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467035908 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467053761 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467069173 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467085556 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467101777 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467114311 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467124122 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467135074 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467145871 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467156519 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467167471 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467183191 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467195953 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467208897 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467224600 [V:onnxruntime:, selector_action_transformer.cc:126 MatchAndProcess] Matched Conv
+2025-09-18 20:10:44.467373006 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer ConvActivationFusion modified: 1 with status: OK
+2025-09-18 20:10:44.476960810 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GeluFusion modified: 1 with status: OK
+2025-09-18 20:10:44.485430526 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.11/act/Constant_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.485996173 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer LayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.486267953 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer SimplifiedLayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.486568007 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer AttentionFusion modified: 0 with status: OK
+2025-09-18 20:10:44.486828945 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer EmbedLayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.488082915 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GatherSliceToSplitFusion modified: 1 with status: OK
+2025-09-18 20:10:44.496865409 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.28/decoder/layers.0/cross_attn/Constant_29_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.496886694 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.28/decoder/layers.0/cross_attn/Add_2_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.496906074 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.28/decoder/layers.0/cross_attn/Constant_20_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.496928966 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.28/decoder/layers.0/cross_attn/Unsqueeze_1_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.496936737 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.28/decoder/layers.0/Constant_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.496942828 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.28/decoder/layers.0/cross_attn/Constant_19_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.496948886 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.28/decoder/layers.0/cross_attn/Constant_17_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.496958521 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.28/decoder/layers.0/self_attn/Constant_6_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.496965766 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.28/decoder/layers.0/self_attn/Constant_1_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.496978846 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.28/decoder/layers.0/cross_attn/Add_1_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.497573164 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GatherToSliceFusion modified: 0 with status: OK
+2025-09-18 20:10:44.498023595 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatmulTransposeFusion modified: 1 with status: OK
+2025-09-18 20:10:44.507313742 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer BiasGeluFusion modified: 0 with status: OK
+2025-09-18 20:10:44.507842265 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer SkipLayerNormFusion modified: 1 with status: OK
+2025-09-18 20:10:44.517093613 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer FastGeluFusion modified: 0 with status: OK
+2025-09-18 20:10:44.517572745 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QuickGeluFusion modified: 1 with status: OK
+2025-09-18 20:10:44.526463186 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer BiasSoftmaxFusion modified: 0 with status: OK
+2025-09-18 20:10:44.526726234 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer BiasDropoutFusion modified: 0 with status: OK
+2025-09-18 20:10:44.527103471 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulScaleFusion modified: 1 with status: OK
+2025-09-18 20:10:44.535543254 [I:onnxruntime:, graph.cc:4201 CleanUnusedInitializersAndNodeArgs] Removing initializer '/model.11/ma/Constant_7_output_0'. It is no longer used by any node.
+2025-09-18 20:10:44.536106279 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulActivationFusion modified: 0 with status: OK
+2025-09-18 20:10:44.536366183 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulNBitsFusion modified: 0 with status: OK
+2025-09-18 20:10:44.536642612 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQFinalCleanupTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.536916748 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer Level2_RuleBasedTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.537184379 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQS8ToU8Transformer modified: 0 with status: OK
+2025-09-18 20:10:44.537425743 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQSelectorActionTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.537691680 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GemmActivationFusion modified: 0 with status: OK
+2025-09-18 20:10:44.537926882 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulIntegerToFloatFusion modified: 0 with status: OK
+2025-09-18 20:10:44.538180184 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer DynamicQuantizeMatMulFusion modified: 0 with status: OK
+2025-09-18 20:10:44.538553926 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer ConvActivationFusion modified: 0 with status: OK
+2025-09-18 20:10:44.538825528 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GeluFusion modified: 0 with status: OK
+2025-09-18 20:10:44.539068686 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer LayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.539317305 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer SimplifiedLayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.539562046 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer AttentionFusion modified: 0 with status: OK
+2025-09-18 20:10:44.539813649 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer EmbedLayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.540265939 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GatherSliceToSplitFusion modified: 0 with status: OK
+2025-09-18 20:10:44.540514866 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GatherToSliceFusion modified: 0 with status: OK
+2025-09-18 20:10:44.540854125 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatmulTransposeFusion modified: 1 with status: OK
+2025-09-18 20:10:44.549639911 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer BiasGeluFusion modified: 0 with status: OK
+2025-09-18 20:10:44.549908336 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer SkipLayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.550229520 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer FastGeluFusion modified: 0 with status: OK
+2025-09-18 20:10:44.550521672 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QuickGeluFusion modified: 0 with status: OK
+2025-09-18 20:10:44.550769216 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer BiasSoftmaxFusion modified: 0 with status: OK
+2025-09-18 20:10:44.551023868 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer BiasDropoutFusion modified: 0 with status: OK
+2025-09-18 20:10:44.551328458 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulScaleFusion modified: 0 with status: OK
+2025-09-18 20:10:44.551556540 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulActivationFusion modified: 0 with status: OK
+2025-09-18 20:10:44.551806418 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulNBitsFusion modified: 0 with status: OK
+2025-09-18 20:10:44.552060206 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQFinalCleanupTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.552332738 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer Level2_RuleBasedTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.552562697 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQS8ToU8Transformer modified: 0 with status: OK
+2025-09-18 20:10:44.552828681 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQSelectorActionTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.553089409 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GemmActivationFusion modified: 0 with status: OK
+2025-09-18 20:10:44.553345142 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulIntegerToFloatFusion modified: 0 with status: OK
+2025-09-18 20:10:44.553601615 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer DynamicQuantizeMatMulFusion modified: 0 with status: OK
+2025-09-18 20:10:44.553967316 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer ConvActivationFusion modified: 0 with status: OK
+2025-09-18 20:10:44.554202379 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GeluFusion modified: 0 with status: OK
+2025-09-18 20:10:44.554448117 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer LayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.554672158 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer SimplifiedLayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.554929033 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer AttentionFusion modified: 0 with status: OK
+2025-09-18 20:10:44.555165853 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer EmbedLayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.555624305 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GatherSliceToSplitFusion modified: 0 with status: OK
+2025-09-18 20:10:44.555874533 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer GatherToSliceFusion modified: 0 with status: OK
+2025-09-18 20:10:44.556136660 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatmulTransposeFusion modified: 0 with status: OK
+2025-09-18 20:10:44.556383711 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer BiasGeluFusion modified: 0 with status: OK
+2025-09-18 20:10:44.556630071 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer SkipLayerNormFusion modified: 0 with status: OK
+2025-09-18 20:10:44.556907989 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer FastGeluFusion modified: 0 with status: OK
+2025-09-18 20:10:44.557175062 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QuickGeluFusion modified: 0 with status: OK
+2025-09-18 20:10:44.557425123 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer BiasSoftmaxFusion modified: 0 with status: OK
+2025-09-18 20:10:44.557685146 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer BiasDropoutFusion modified: 0 with status: OK
+2025-09-18 20:10:44.557965685 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulScaleFusion modified: 0 with status: OK
+2025-09-18 20:10:44.558202492 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulActivationFusion modified: 0 with status: OK
+2025-09-18 20:10:44.558443153 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MatMulNBitsFusion modified: 0 with status: OK
+2025-09-18 20:10:44.558703660 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer QDQFinalCleanupTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.558946270 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer NchwcTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.559440222 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer NhwcTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.559693952 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer ConvAddActivationFusion modified: 0 with status: OK
+2025-09-18 20:10:44.559987008 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer RemoveDuplicateCastTransformer modified: 0 with status: OK
+2025-09-18 20:10:44.559993311 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer CastFloat16Transformer modified: 0 with status: OK
+2025-09-18 20:10:44.573210575 [I:onnxruntime:, transformer_memcpy.cc:329 AddCopyNode] Add MemcpyFromHost after /model.0/Pad_output_0 for CUDAExecutionProvider
+2025-09-18 20:10:44.573241081 [I:onnxruntime:, transformer_memcpy.cc:329 AddCopyNode] Add MemcpyFromHost after /model.13/Resize_output_0 for CUDAExecutionProvider
+2025-09-18 20:10:44.573261695 [I:onnxruntime:, transformer_memcpy.cc:329 AddCopyNode] Add MemcpyFromHost after /model.18/Resize_output_0 for CUDAExecutionProvider
+2025-09-18 20:10:44.573281551 [I:onnxruntime:, transformer_memcpy.cc:329 AddCopyNode] Add MemcpyToHost before /model.0/stem1/act/Relu_output_0 for CUDAExecutionProvider
+2025-09-18 20:10:44.573308777 [I:onnxruntime:, transformer_memcpy.cc:329 AddCopyNode] Add MemcpyToHost before /model.12/act/Mul_output_0 for CUDAExecutionProvider
+2025-09-18 20:10:44.573327238 [I:onnxruntime:, transformer_memcpy.cc:329 AddCopyNode] Add MemcpyToHost before /model.17/act/Mul_output_0 for CUDAExecutionProvider
+[0;93m2025-09-18 20:10:44.573542303 [W:onnxruntime:, transformer_memcpy.cc:74 ApplyImpl] 6 Memcpy nodes are added to the graph main_graph for CUDAExecutionProvider. It might have negative impact on performance (including unable to run CUDA graph). Set session_options.log_severity_level=1 to see the detail logs before this message.[m
+2025-09-18 20:10:44.573730707 [I:onnxruntime:, graph_transformer.cc:15 Apply] GraphTransformer MemcpyTransformer modified: 1 with status: OK
+2025-09-18 20:10:44.582787008 [V:onnxruntime:, session_state.cc:1146 VerifyEachNodeIsAssignedToAnEp] Node placements
+2025-09-18 20:10:44.582805242 [V:onnxruntime:, session_state.cc:1152 VerifyEachNodeIsAssignedToAnEp]  Node(s) placed on [CUDAExecutionProvider]. Number of nodes: 892
+2025-09-18 20:10:44.582811890 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   MaxPool (/model.0/pool/MaxPool)
+2025-09-18 20:10:44.582817908 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.0/Concat_2)
+2025-09-18 20:10:44.582823084 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.1/Concat)
+2025-09-18 20:10:44.582828355 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.2/conv/Conv)
+2025-09-18 20:10:44.582833792 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.3/Concat)
+2025-09-18 20:10:44.582839422 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.4/conv/Conv)
+2025-09-18 20:10:44.582844949 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.19/conv/Conv)
+2025-09-18 20:10:44.582850721 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.5/m.0/conv1/conv/Conv)
+2025-09-18 20:10:44.582856587 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.5/m.1/conv1/conv/Conv)
+2025-09-18 20:10:44.582862360 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.5/m.2/conv1/conv/Conv)
+2025-09-18 20:10:44.582868237 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.5/m.3/conv1/conv/Conv)
+2025-09-18 20:10:44.582873928 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.5/m.4/conv1/conv/Conv)
+2025-09-18 20:10:44.582879651 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.5/m.5/conv1/conv/Conv)
+2025-09-18 20:10:44.582885512 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.5/Concat)
+2025-09-18 20:10:44.582891316 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.6/m.0/conv1/conv/Conv)
+2025-09-18 20:10:44.582896980 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.6/m.1/conv1/conv/Conv)
+2025-09-18 20:10:44.582902711 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.6/m.2/conv1/conv/Conv)
+2025-09-18 20:10:44.582908507 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.6/m.3/conv1/conv/Conv)
+2025-09-18 20:10:44.582914424 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.6/m.4/conv1/conv/Conv)
+2025-09-18 20:10:44.582920123 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.6/m.5/conv1/conv/Conv)
+2025-09-18 20:10:44.582925857 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.6/Concat)
+2025-09-18 20:10:44.582931769 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.6/Add)
+2025-09-18 20:10:44.582937491 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.7/m.0/conv1/conv/Conv)
+2025-09-18 20:10:44.582943197 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.7/m.1/conv1/conv/Conv)
+2025-09-18 20:10:44.582948967 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.7/m.2/conv1/conv/Conv)
+2025-09-18 20:10:44.582954687 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.7/m.3/conv1/conv/Conv)
+2025-09-18 20:10:44.582961221 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.7/m.4/conv1/conv/Conv)
+2025-09-18 20:10:44.582967147 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.7/m.5/conv1/conv/Conv)
+2025-09-18 20:10:44.582972983 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.7/Concat)
+2025-09-18 20:10:44.582978702 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.7/Add)
+2025-09-18 20:10:44.582983977 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.8/conv/Conv)
+2025-09-18 20:10:44.582989737 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.14/conv/Conv)
+2025-09-18 20:10:44.582995478 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.9/m.0/conv1/conv/Conv)
+2025-09-18 20:10:44.583001045 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.9/m.1/conv1/conv/Conv)
+2025-09-18 20:10:44.583006807 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.9/m.2/conv1/conv/Conv)
+2025-09-18 20:10:44.583012549 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.9/m.3/conv1/conv/Conv)
+2025-09-18 20:10:44.583018290 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.9/m.4/conv1/conv/Conv)
+2025-09-18 20:10:44.583022919 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.9/m.5/conv1/conv/Conv)
+2025-09-18 20:10:44.583027182 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.9/Concat)
+2025-09-18 20:10:44.583032838 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.10/conv/Conv)
+2025-09-18 20:10:44.583038721 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/Reshape_6)
+2025-09-18 20:10:44.583044554 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.11/Transpose)
+2025-09-18 20:10:44.583050365 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.11/ma/Transpose_1)
+2025-09-18 20:10:44.583056133 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.11/Add)
+2025-09-18 20:10:44.583061926 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/ma/MatMul_2_pre_reshape)
+2025-09-18 20:10:44.583067762 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.11/ma/Transpose)
+2025-09-18 20:10:44.583073435 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.11/ma/MatMul_2)
+2025-09-18 20:10:44.583079156 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/ma/MatMul_pre_reshape)
+2025-09-18 20:10:44.583084888 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/ma/MatMul_2_post_reshape)
+2025-09-18 20:10:44.583090618 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.11/ma/MatMul)
+2025-09-18 20:10:44.583096435 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.11/ma/MatMul_1)
+2025-09-18 20:10:44.583102250 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/ma/MatMul_post_reshape)
+2025-09-18 20:10:44.583107914 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/ma/MatMul_1_post_reshape)
+2025-09-18 20:10:44.583113375 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.11/ma/Softmax)
+2025-09-18 20:10:44.583119164 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.11/ma/Transpose_5)
+2025-09-18 20:10:44.583124837 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/ma/Reshape_3)
+2025-09-18 20:10:44.583130533 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.11/ma/Gemm)
+2025-09-18 20:10:44.583136324 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/ma/Reshape_4)
+2025-09-18 20:10:44.583141953 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.11/ma/Transpose_6)
+2025-09-18 20:10:44.583147485 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/fc1/MatMul_pre_reshape)
+2025-09-18 20:10:44.583153266 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.11/fc1/MatMul)
+2025-09-18 20:10:44.583159084 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/fc1/MatMul_post_reshape)
+2025-09-18 20:10:44.583164913 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/fc2/MatMul_pre_reshape)
+2025-09-18 20:10:44.583170656 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.11/fc2/MatMul)
+2025-09-18 20:10:44.583176489 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/fc2/MatMul_post_reshape)
+2025-09-18 20:10:44.583182059 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.11/Transpose_1)
+2025-09-18 20:10:44.583187723 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.11/Reshape_7)
+2025-09-18 20:10:44.583193056 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.12/conv/Conv)
+2025-09-18 20:10:44.583198235 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.15/Concat)
+2025-09-18 20:10:44.583203886 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.16/cv1/conv/Conv)
+2025-09-18 20:10:44.583209657 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.16/cv2/conv/Conv)
+2025-09-18 20:10:44.583215331 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.16/m/m.0/conv/Conv)
+2025-09-18 20:10:44.583221147 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.16/m/m.1/conv/Conv)
+2025-09-18 20:10:44.583226855 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.16/m/m.2/conv/Conv)
+2025-09-18 20:10:44.583232707 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.16/Add)
+2025-09-18 20:10:44.583238502 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.17/conv/Conv)
+2025-09-18 20:10:44.583244299 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.20/Concat)
+2025-09-18 20:10:44.583250054 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.21/cv1/conv/Conv)
+2025-09-18 20:10:44.583255837 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.21/cv2/conv/Conv)
+2025-09-18 20:10:44.583261643 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.21/m/m.0/conv/Conv)
+2025-09-18 20:10:44.583267334 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.21/m/m.1/conv/Conv)
+2025-09-18 20:10:44.583273097 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.21/m/m.2/conv/Conv)
+2025-09-18 20:10:44.583278799 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.21/Add)
+2025-09-18 20:10:44.583284355 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.22/conv/Conv)
+2025-09-18 20:10:44.583290160 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.28/input_proj.0/input_proj.0.0/Conv)
+2025-09-18 20:10:44.583295872 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/Reshape)
+2025-09-18 20:10:44.583301607 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.23/Concat)
+2025-09-18 20:10:44.583307293 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.24/cv1/conv/Conv)
+2025-09-18 20:10:44.583313031 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.24/cv2/conv/Conv)
+2025-09-18 20:10:44.583318732 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.24/m/m.0/conv/Conv)
+2025-09-18 20:10:44.583324419 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.24/m/m.1/conv/Conv)
+2025-09-18 20:10:44.583330013 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.24/m/m.2/conv/Conv)
+2025-09-18 20:10:44.583335687 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.24/Add)
+2025-09-18 20:10:44.583341236 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.25/conv/Conv)
+2025-09-18 20:10:44.583346677 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.28/input_proj.1/input_proj.1.0/Conv)
+2025-09-18 20:10:44.583352465 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/Reshape_1)
+2025-09-18 20:10:44.583357072 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.26/Concat)
+2025-09-18 20:10:44.583361430 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.27/cv1/conv/Conv)
+2025-09-18 20:10:44.583366549 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.27/cv2/conv/Conv)
+2025-09-18 20:10:44.583371573 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.27/m/m.0/conv/Conv)
+2025-09-18 20:10:44.583375671 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.27/m/m.1/conv/Conv)
+2025-09-18 20:10:44.583380646 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.27/m/m.2/conv/Conv)
+2025-09-18 20:10:44.583385347 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.27/Add)
+2025-09-18 20:10:44.583389930 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Conv (/model.28/input_proj.2/input_proj.2.0/Conv)
+2025-09-18 20:10:44.583394443 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/Reshape_2)
+2025-09-18 20:10:44.583399225 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.28/Concat_3)
+2025-09-18 20:10:44.583404392 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/Mul_9)
+2025-09-18 20:10:44.583409653 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/value_proj/MatMul_pre_reshape)
+2025-09-18 20:10:44.583415529 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/enc_output/enc_output.0/MatMul_pre_reshape)
+2025-09-18 20:10:44.583421007 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.0/cross_attn/value_proj/MatMul)
+2025-09-18 20:10:44.583426151 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.1/cross_attn/value_proj/MatMul)
+2025-09-18 20:10:44.583431072 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.2/cross_attn/value_proj/MatMul)
+2025-09-18 20:10:44.583435498 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.3/cross_attn/value_proj/MatMul)
+2025-09-18 20:10:44.583439875 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.4/cross_attn/value_proj/MatMul)
+2025-09-18 20:10:44.583445235 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.5/cross_attn/value_proj/MatMul)
+2025-09-18 20:10:44.583450627 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/enc_output/enc_output.0/MatMul)
+2025-09-18 20:10:44.583456092 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/value_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.583463731 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/value_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.583468726 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/value_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.583474195 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/value_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.583480039 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/value_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.583485869 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/value_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.583491156 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/enc_output/enc_output.0/MatMul_post_reshape)
+2025-09-18 20:10:44.583495304 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   LayerNormalization (/model.28/enc_output/enc_output.1/LayerNormalization)
+2025-09-18 20:10:44.583500808 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_4)
+2025-09-18 20:10:44.583506473 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_7)
+2025-09-18 20:10:44.583512333 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_10)
+2025-09-18 20:10:44.583518100 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_4)
+2025-09-18 20:10:44.583523874 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_7)
+2025-09-18 20:10:44.583529517 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_10)
+2025-09-18 20:10:44.583535106 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_4)
+2025-09-18 20:10:44.583540778 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_7)
+2025-09-18 20:10:44.583546512 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_10)
+2025-09-18 20:10:44.583552290 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_4)
+2025-09-18 20:10:44.583558052 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_7)
+2025-09-18 20:10:44.583563641 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_10)
+2025-09-18 20:10:44.583569209 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_4)
+2025-09-18 20:10:44.583574779 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_7)
+2025-09-18 20:10:44.583580539 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_10)
+2025-09-18 20:10:44.583586229 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_4)
+2025-09-18 20:10:44.583591812 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_7)
+2025-09-18 20:10:44.583597515 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_10)
+2025-09-18 20:10:44.583603299 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Flatten (/model.28/Flatten)
+2025-09-18 20:10:44.583609065 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/enc_score_head/MatMul_pre_reshape)
+2025-09-18 20:10:44.583614802 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/cross_attn/Transpose)
+2025-09-18 20:10:44.583620336 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/cross_attn/Transpose_2)
+2025-09-18 20:10:44.583625901 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/cross_attn/Transpose_4)
+2025-09-18 20:10:44.583631538 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/cross_attn/Transpose)
+2025-09-18 20:10:44.583636976 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/cross_attn/Transpose_2)
+2025-09-18 20:10:44.583642203 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/cross_attn/Transpose_4)
+2025-09-18 20:10:44.583647569 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/cross_attn/Transpose)
+2025-09-18 20:10:44.583653185 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/cross_attn/Transpose_2)
+2025-09-18 20:10:44.583658874 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/cross_attn/Transpose_4)
+2025-09-18 20:10:44.583664455 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/cross_attn/Transpose)
+2025-09-18 20:10:44.583670132 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/cross_attn/Transpose_2)
+2025-09-18 20:10:44.583675707 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/cross_attn/Transpose_4)
+2025-09-18 20:10:44.583681546 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/cross_attn/Transpose)
+2025-09-18 20:10:44.583687324 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/cross_attn/Transpose_2)
+2025-09-18 20:10:44.583692825 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/cross_attn/Transpose_4)
+2025-09-18 20:10:44.583698402 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/cross_attn/Transpose)
+2025-09-18 20:10:44.583704132 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/cross_attn/Transpose_2)
+2025-09-18 20:10:44.583709714 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/cross_attn/Transpose_4)
+2025-09-18 20:10:44.583714915 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/enc_score_head/MatMul)
+2025-09-18 20:10:44.583720587 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_5)
+2025-09-18 20:10:44.583726287 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_8)
+2025-09-18 20:10:44.583731772 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_11)
+2025-09-18 20:10:44.583737648 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_5)
+2025-09-18 20:10:44.583742663 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_8)
+2025-09-18 20:10:44.583747719 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_11)
+2025-09-18 20:10:44.583752329 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_5)
+2025-09-18 20:10:44.583756841 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_8)
+2025-09-18 20:10:44.583761736 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_11)
+2025-09-18 20:10:44.583766881 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_5)
+2025-09-18 20:10:44.583772244 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_8)
+2025-09-18 20:10:44.583778174 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_11)
+2025-09-18 20:10:44.583783893 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_5)
+2025-09-18 20:10:44.583789592 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_8)
+2025-09-18 20:10:44.583795269 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_11)
+2025-09-18 20:10:44.583800856 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_5)
+2025-09-18 20:10:44.583806238 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_8)
+2025-09-18 20:10:44.583811304 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_11)
+2025-09-18 20:10:44.583816470 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/enc_score_head/MatMul_post_reshape)
+2025-09-18 20:10:44.583822228 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   ReduceMax (/model.28/ReduceMax)
+2025-09-18 20:10:44.583828065 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   TopK (/model.28/TopK)
+2025-09-18 20:10:44.583833846 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/Reshape_18)
+2025-09-18 20:10:44.583839561 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gather (/model.28/Gather_10)
+2025-09-18 20:10:44.583845281 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gather (/model.28/Gather_9)
+2025-09-18 20:10:44.583850974 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/Reshape_20)
+2025-09-18 20:10:44.583856783 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/Transpose_1)
+2025-09-18 20:10:44.583862499 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/enc_bbox_head/layers.0/MatMul_pre_reshape)
+2025-09-18 20:10:44.583868361 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/enc_bbox_head/layers.0/MatMul)
+2025-09-18 20:10:44.583874041 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/self_attn/MatMul_2_pre_reshape)
+2025-09-18 20:10:44.583879255 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/enc_bbox_head/layers.0/MatMul_post_reshape)
+2025-09-18 20:10:44.583884540 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.0/self_attn/MatMul_2)
+2025-09-18 20:10:44.583890054 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/enc_bbox_head/Relu)
+2025-09-18 20:10:44.583895805 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/self_attn/MatMul_2_post_reshape)
+2025-09-18 20:10:44.583901428 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/enc_bbox_head/layers.1/MatMul_pre_reshape)
+2025-09-18 20:10:44.583906980 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/enc_bbox_head/layers.1/MatMul)
+2025-09-18 20:10:44.583912535 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/enc_bbox_head/layers.1/MatMul_post_reshape)
+2025-09-18 20:10:44.583918238 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/enc_bbox_head/Relu_1)
+2025-09-18 20:10:44.583923980 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/enc_bbox_head/layers.2/MatMul_pre_reshape)
+2025-09-18 20:10:44.583929620 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/enc_bbox_head/layers.2/MatMul)
+2025-09-18 20:10:44.583935415 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/enc_bbox_head/layers.2/MatMul_post_reshape)
+2025-09-18 20:10:44.583941054 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/Add_4)
+2025-09-18 20:10:44.583946759 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sigmoid (/model.28/decoder/Sigmoid)
+2025-09-18 20:10:44.583952387 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip)
+2025-09-18 20:10:44.583958136 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0/MatMul_pre_reshape)
+2025-09-18 20:10:44.583963745 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.0/Unsqueeze)
+2025-09-18 20:10:44.583969389 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_1)
+2025-09-18 20:10:44.583974850 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/Sub)
+2025-09-18 20:10:44.583980395 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.0/MatMul)
+2025-09-18 20:10:44.583985978 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0/MatMul_post_reshape)
+2025-09-18 20:10:44.583991592 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_2)
+2025-09-18 20:10:44.583997238 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/query_pos_head/Relu)
+2025-09-18 20:10:44.584002693 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/Div)
+2025-09-18 20:10:44.584008424 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Log (/model.28/decoder/Log)
+2025-09-18 20:10:44.584013903 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1/MatMul_pre_reshape)
+2025-09-18 20:10:44.584019798 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.1/MatMul)
+2025-09-18 20:10:44.584024857 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1/MatMul_post_reshape)
+2025-09-18 20:10:44.584030337 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.0/Add)
+2025-09-18 20:10:44.584035896 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/Transpose)
+2025-09-18 20:10:44.584041412 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/self_attn/MatMul_pre_reshape)
+2025-09-18 20:10:44.584046281 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.0/self_attn/MatMul)
+2025-09-18 20:10:44.584050961 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.0/self_attn/MatMul_1)
+2025-09-18 20:10:44.584056215 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/self_attn/MatMul_post_reshape)
+2025-09-18 20:10:44.584061299 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/self_attn/MatMul_1_post_reshape)
+2025-09-18 20:10:44.584066514 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.0/self_attn/Softmax)
+2025-09-18 20:10:44.584071572 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/self_attn/Transpose_3)
+2025-09-18 20:10:44.584076052 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/self_attn/Reshape_3)
+2025-09-18 20:10:44.584080561 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.0/self_attn/Gemm)
+2025-09-18 20:10:44.584085380 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/self_attn/Reshape_4)
+2025-09-18 20:10:44.584090125 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/Transpose_2)
+2025-09-18 20:10:44.584094636 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.0/Add_2)
+2025-09-18 20:10:44.584100907 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/sampling_offsets/MatMul_pre_reshape)
+2025-09-18 20:10:44.584105852 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.0/cross_attn/sampling_offsets/MatMul)
+2025-09-18 20:10:44.584110660 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.0/cross_attn/attention_weights/MatMul)
+2025-09-18 20:10:44.584115122 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/attention_weights/MatMul_post_reshape)
+2025-09-18 20:10:44.584120388 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/sampling_offsets/MatMul_post_reshape)
+2025-09-18 20:10:44.584125226 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.0/cross_attn/Softmax)
+2025-09-18 20:10:44.584130556 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/layers.0/cross_attn/Div)
+2025-09-18 20:10:44.584135996 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_3)
+2025-09-18 20:10:44.584141879 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.0/cross_attn/Mul)
+2025-09-18 20:10:44.584147362 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.0/cross_attn/Mul_1)
+2025-09-18 20:10:44.584152740 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/cross_attn/Transpose_6)
+2025-09-18 20:10:44.584157914 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.0/cross_attn/Add)
+2025-09-18 20:10:44.584163444 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_13)
+2025-09-18 20:10:44.584169157 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.0/cross_attn/Mul_2)
+2025-09-18 20:10:44.584174931 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/layers.0/cross_attn/Sub)
+2025-09-18 20:10:44.584180701 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/cross_attn/Transpose_1)
+2025-09-18 20:10:44.584186544 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/cross_attn/Transpose_3)
+2025-09-18 20:10:44.584192317 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/cross_attn/Transpose_5)
+2025-09-18 20:10:44.584197817 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_6)
+2025-09-18 20:10:44.584220685 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_9)
+2025-09-18 20:10:44.584225812 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_12)
+2025-09-18 20:10:44.584231121 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.0/cross_attn/GridSample)
+2025-09-18 20:10:44.584236647 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.0/cross_attn/GridSample_1)
+2025-09-18 20:10:44.584241704 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.0/cross_attn/GridSample_2)
+2025-09-18 20:10:44.584247324 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.0/cross_attn/Unsqueeze_28)
+2025-09-18 20:10:44.584252387 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.0/cross_attn/Unsqueeze_29)
+2025-09-18 20:10:44.584257567 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.0/cross_attn/Unsqueeze_30)
+2025-09-18 20:10:44.584262536 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.28/decoder/layers.0/cross_attn/Concat_14)
+2025-09-18 20:10:44.584267108 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_14)
+2025-09-18 20:10:44.584272073 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.0/cross_attn/Mul_5)
+2025-09-18 20:10:44.584277401 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   ReduceSum (/model.28/decoder/layers.0/cross_attn/ReduceSum)
+2025-09-18 20:10:44.584282806 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/Reshape_15)
+2025-09-18 20:10:44.584287945 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.0/cross_attn/Transpose_7)
+2025-09-18 20:10:44.584293814 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/output_proj/MatMul_pre_reshape)
+2025-09-18 20:10:44.584299055 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.0/cross_attn/output_proj/MatMul)
+2025-09-18 20:10:44.584304890 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/cross_attn/output_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.584310744 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/linear1/MatMul_pre_reshape)
+2025-09-18 20:10:44.584316134 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.0/linear1/MatMul)
+2025-09-18 20:10:44.584320942 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/linear1/MatMul_post_reshape)
+2025-09-18 20:10:44.584325988 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/layers.0/act/Relu)
+2025-09-18 20:10:44.584331345 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/linear2/MatMul_pre_reshape)
+2025-09-18 20:10:44.584336849 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.0/linear2/MatMul)
+2025-09-18 20:10:44.584342062 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.0/linear2/MatMul_post_reshape)
+2025-09-18 20:10:44.584346936 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/Transpose_1)
+2025-09-18 20:10:44.584352148 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.0/layers.0/MatMul_pre_reshape)
+2025-09-18 20:10:44.584357230 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.0/layers.0/MatMul)
+2025-09-18 20:10:44.584362432 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/self_attn/MatMul_2_pre_reshape)
+2025-09-18 20:10:44.584367432 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.0/layers.0/MatMul_post_reshape)
+2025-09-18 20:10:44.584373043 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.1/self_attn/MatMul_2)
+2025-09-18 20:10:44.584378572 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.0/Relu)
+2025-09-18 20:10:44.584383860 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/self_attn/MatMul_2_post_reshape)
+2025-09-18 20:10:44.584389335 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.0/layers.1/MatMul_pre_reshape)
+2025-09-18 20:10:44.584394979 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.0/layers.1/MatMul)
+2025-09-18 20:10:44.584400586 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.0/layers.1/MatMul_post_reshape)
+2025-09-18 20:10:44.584405759 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.0/Relu_1)
+2025-09-18 20:10:44.584411034 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.0/layers.2/MatMul_pre_reshape)
+2025-09-18 20:10:44.584415685 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.0/layers.2/MatMul)
+2025-09-18 20:10:44.584420752 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.0/layers.2/MatMul_post_reshape)
+2025-09-18 20:10:44.584426000 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/Add)
+2025-09-18 20:10:44.584431254 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sigmoid (/model.28/decoder/Sigmoid_1)
+2025-09-18 20:10:44.584436601 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_3)
+2025-09-18 20:10:44.584442097 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.1/Unsqueeze)
+2025-09-18 20:10:44.584447642 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0_1/MatMul_pre_reshape)
+2025-09-18 20:10:44.584453310 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_4)
+2025-09-18 20:10:44.584459157 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/Sub_1)
+2025-09-18 20:10:44.584464874 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.0_1/MatMul)
+2025-09-18 20:10:44.584470451 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0_1/MatMul_post_reshape)
+2025-09-18 20:10:44.584476198 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_5)
+2025-09-18 20:10:44.584481838 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/query_pos_head_1/Relu)
+2025-09-18 20:10:44.584487869 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/Div_1)
+2025-09-18 20:10:44.584493662 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Log (/model.28/decoder/Log_1)
+2025-09-18 20:10:44.584499314 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1_1/MatMul_pre_reshape)
+2025-09-18 20:10:44.584504915 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.1_1/MatMul)
+2025-09-18 20:10:44.584510615 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1_1/MatMul_post_reshape)
+2025-09-18 20:10:44.584516318 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.1/Add)
+2025-09-18 20:10:44.584521876 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/Transpose)
+2025-09-18 20:10:44.584527555 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/self_attn/MatMul_pre_reshape)
+2025-09-18 20:10:44.584533036 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.1/self_attn/MatMul)
+2025-09-18 20:10:44.584538705 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.1/self_attn/MatMul_1)
+2025-09-18 20:10:44.584544289 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/self_attn/MatMul_post_reshape)
+2025-09-18 20:10:44.584549954 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/self_attn/MatMul_1_post_reshape)
+2025-09-18 20:10:44.584555509 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.1/self_attn/Softmax)
+2025-09-18 20:10:44.584561198 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/self_attn/Transpose_3)
+2025-09-18 20:10:44.584566871 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/self_attn/Reshape_3)
+2025-09-18 20:10:44.584572542 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.1/self_attn/Gemm)
+2025-09-18 20:10:44.584578140 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/self_attn/Reshape_4)
+2025-09-18 20:10:44.584583647 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/Transpose_2)
+2025-09-18 20:10:44.584589041 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.1/Add_2)
+2025-09-18 20:10:44.584594665 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/sampling_offsets/MatMul_pre_reshape)
+2025-09-18 20:10:44.584600426 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.1/cross_attn/sampling_offsets/MatMul)
+2025-09-18 20:10:44.584606069 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.1/cross_attn/attention_weights/MatMul)
+2025-09-18 20:10:44.584611733 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/attention_weights/MatMul_post_reshape)
+2025-09-18 20:10:44.584617346 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/sampling_offsets/MatMul_post_reshape)
+2025-09-18 20:10:44.584622979 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.1/cross_attn/Softmax)
+2025-09-18 20:10:44.584628787 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/layers.1/cross_attn/Div)
+2025-09-18 20:10:44.584634331 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_3)
+2025-09-18 20:10:44.584639855 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.1/cross_attn/Mul)
+2025-09-18 20:10:44.584645455 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.1/cross_attn/Mul_1)
+2025-09-18 20:10:44.584651117 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/cross_attn/Transpose_6)
+2025-09-18 20:10:44.584656595 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.1/cross_attn/Add)
+2025-09-18 20:10:44.584662236 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_13)
+2025-09-18 20:10:44.584667727 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.1/cross_attn/Mul_2)
+2025-09-18 20:10:44.584673449 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/layers.1/cross_attn/Sub)
+2025-09-18 20:10:44.584679082 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/cross_attn/Transpose_1)
+2025-09-18 20:10:44.584684795 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/cross_attn/Transpose_3)
+2025-09-18 20:10:44.584690444 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/cross_attn/Transpose_5)
+2025-09-18 20:10:44.584696096 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_6)
+2025-09-18 20:10:44.584701797 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_9)
+2025-09-18 20:10:44.584707375 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_12)
+2025-09-18 20:10:44.584713055 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.1/cross_attn/GridSample)
+2025-09-18 20:10:44.584718676 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.1/cross_attn/GridSample_1)
+2025-09-18 20:10:44.584724379 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.1/cross_attn/GridSample_2)
+2025-09-18 20:10:44.584729988 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.1/cross_attn/Unsqueeze_28)
+2025-09-18 20:10:44.584735602 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.1/cross_attn/Unsqueeze_29)
+2025-09-18 20:10:44.584741303 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.1/cross_attn/Unsqueeze_30)
+2025-09-18 20:10:44.584747005 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.28/decoder/layers.1/cross_attn/Concat_14)
+2025-09-18 20:10:44.584752776 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_14)
+2025-09-18 20:10:44.584758447 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.1/cross_attn/Mul_5)
+2025-09-18 20:10:44.584764091 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   ReduceSum (/model.28/decoder/layers.1/cross_attn/ReduceSum)
+2025-09-18 20:10:44.584769682 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/Reshape_15)
+2025-09-18 20:10:44.584775270 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.1/cross_attn/Transpose_7)
+2025-09-18 20:10:44.584780966 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/output_proj/MatMul_pre_reshape)
+2025-09-18 20:10:44.584786667 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.1/cross_attn/output_proj/MatMul)
+2025-09-18 20:10:44.584792517 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/cross_attn/output_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.584797935 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/linear1/MatMul_pre_reshape)
+2025-09-18 20:10:44.584803673 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.1/linear1/MatMul)
+2025-09-18 20:10:44.584809378 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/linear1/MatMul_post_reshape)
+2025-09-18 20:10:44.584815049 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/layers.1/act/Relu)
+2025-09-18 20:10:44.584820721 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/linear2/MatMul_pre_reshape)
+2025-09-18 20:10:44.584826434 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.1/linear2/MatMul)
+2025-09-18 20:10:44.584832014 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.1/linear2/MatMul_post_reshape)
+2025-09-18 20:10:44.584837643 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/Transpose_1)
+2025-09-18 20:10:44.584843367 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.1/layers.0/MatMul_pre_reshape)
+2025-09-18 20:10:44.584849004 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.1/layers.0/MatMul)
+2025-09-18 20:10:44.584854843 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/self_attn/MatMul_2_pre_reshape)
+2025-09-18 20:10:44.584860526 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.1/layers.0/MatMul_post_reshape)
+2025-09-18 20:10:44.584866251 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.2/self_attn/MatMul_2)
+2025-09-18 20:10:44.584871924 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.1/Relu)
+2025-09-18 20:10:44.584877528 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/self_attn/MatMul_2_post_reshape)
+2025-09-18 20:10:44.584883137 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.1/layers.1/MatMul_pre_reshape)
+2025-09-18 20:10:44.584888809 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.1/layers.1/MatMul)
+2025-09-18 20:10:44.584894442 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.1/layers.1/MatMul_post_reshape)
+2025-09-18 20:10:44.584900001 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.1/Relu_1)
+2025-09-18 20:10:44.584905667 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.1/layers.2/MatMul_pre_reshape)
+2025-09-18 20:10:44.584911242 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.1/layers.2/MatMul)
+2025-09-18 20:10:44.584916891 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.1/layers.2/MatMul_post_reshape)
+2025-09-18 20:10:44.584922565 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/Add_1)
+2025-09-18 20:10:44.584928382 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sigmoid (/model.28/decoder/Sigmoid_2)
+2025-09-18 20:10:44.584933956 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_6)
+2025-09-18 20:10:44.584939601 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.2/Unsqueeze)
+2025-09-18 20:10:44.584945364 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0_2/MatMul_pre_reshape)
+2025-09-18 20:10:44.584950972 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_7)
+2025-09-18 20:10:44.584956658 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/Sub_2)
+2025-09-18 20:10:44.584962312 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.0_2/MatMul)
+2025-09-18 20:10:44.584967813 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0_2/MatMul_post_reshape)
+2025-09-18 20:10:44.584973405 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_8)
+2025-09-18 20:10:44.584978973 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/query_pos_head_2/Relu)
+2025-09-18 20:10:44.584984500 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/Div_2)
+2025-09-18 20:10:44.584990197 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Log (/model.28/decoder/Log_2)
+2025-09-18 20:10:44.584995783 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1_2/MatMul_pre_reshape)
+2025-09-18 20:10:44.585001417 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.1_2/MatMul)
+2025-09-18 20:10:44.585007012 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1_2/MatMul_post_reshape)
+2025-09-18 20:10:44.585012534 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.2/Add)
+2025-09-18 20:10:44.585018195 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/Transpose)
+2025-09-18 20:10:44.585023806 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/self_attn/MatMul_pre_reshape)
+2025-09-18 20:10:44.585029479 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.2/self_attn/MatMul)
+2025-09-18 20:10:44.585034940 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.2/self_attn/MatMul_1)
+2025-09-18 20:10:44.585040515 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/self_attn/MatMul_post_reshape)
+2025-09-18 20:10:44.585046042 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/self_attn/MatMul_1_post_reshape)
+2025-09-18 20:10:44.585051565 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.2/self_attn/Softmax)
+2025-09-18 20:10:44.585057105 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/self_attn/Transpose_3)
+2025-09-18 20:10:44.585062678 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/self_attn/Reshape_3)
+2025-09-18 20:10:44.585068196 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.2/self_attn/Gemm)
+2025-09-18 20:10:44.585073786 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/self_attn/Reshape_4)
+2025-09-18 20:10:44.585079262 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/Transpose_2)
+2025-09-18 20:10:44.585084717 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.2/Add_2)
+2025-09-18 20:10:44.585090221 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/sampling_offsets/MatMul_pre_reshape)
+2025-09-18 20:10:44.585095894 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.2/cross_attn/sampling_offsets/MatMul)
+2025-09-18 20:10:44.585101318 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.2/cross_attn/attention_weights/MatMul)
+2025-09-18 20:10:44.585106836 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/attention_weights/MatMul_post_reshape)
+2025-09-18 20:10:44.585112431 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/sampling_offsets/MatMul_post_reshape)
+2025-09-18 20:10:44.585117967 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.2/cross_attn/Softmax)
+2025-09-18 20:10:44.585123522 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/layers.2/cross_attn/Div)
+2025-09-18 20:10:44.585129090 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_3)
+2025-09-18 20:10:44.585134611 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.2/cross_attn/Mul)
+2025-09-18 20:10:44.585140148 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.2/cross_attn/Mul_1)
+2025-09-18 20:10:44.585145677 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/cross_attn/Transpose_6)
+2025-09-18 20:10:44.585150814 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.2/cross_attn/Add)
+2025-09-18 20:10:44.585155437 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_13)
+2025-09-18 20:10:44.585159988 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.2/cross_attn/Mul_2)
+2025-09-18 20:10:44.585164727 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/layers.2/cross_attn/Sub)
+2025-09-18 20:10:44.585169712 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/cross_attn/Transpose_1)
+2025-09-18 20:10:44.585174361 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/cross_attn/Transpose_3)
+2025-09-18 20:10:44.585179064 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/cross_attn/Transpose_5)
+2025-09-18 20:10:44.585183883 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_6)
+2025-09-18 20:10:44.585188357 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_9)
+2025-09-18 20:10:44.585193291 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_12)
+2025-09-18 20:10:44.585198392 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.2/cross_attn/GridSample)
+2025-09-18 20:10:44.585203351 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.2/cross_attn/GridSample_1)
+2025-09-18 20:10:44.585208547 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.2/cross_attn/GridSample_2)
+2025-09-18 20:10:44.585213439 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.2/cross_attn/Unsqueeze_28)
+2025-09-18 20:10:44.585218518 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.2/cross_attn/Unsqueeze_29)
+2025-09-18 20:10:44.585223594 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.2/cross_attn/Unsqueeze_30)
+2025-09-18 20:10:44.585228455 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.28/decoder/layers.2/cross_attn/Concat_14)
+2025-09-18 20:10:44.585233411 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_14)
+2025-09-18 20:10:44.585238570 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.2/cross_attn/Mul_5)
+2025-09-18 20:10:44.585243299 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   ReduceSum (/model.28/decoder/layers.2/cross_attn/ReduceSum)
+2025-09-18 20:10:44.585247969 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/Reshape_15)
+2025-09-18 20:10:44.585252904 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.2/cross_attn/Transpose_7)
+2025-09-18 20:10:44.585257887 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/output_proj/MatMul_pre_reshape)
+2025-09-18 20:10:44.585263206 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.2/cross_attn/output_proj/MatMul)
+2025-09-18 20:10:44.585268583 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/cross_attn/output_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.585276456 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/linear1/MatMul_pre_reshape)
+2025-09-18 20:10:44.585282146 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.2/linear1/MatMul)
+2025-09-18 20:10:44.585287829 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/linear1/MatMul_post_reshape)
+2025-09-18 20:10:44.585293455 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/layers.2/act/Relu)
+2025-09-18 20:10:44.585299281 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/linear2/MatMul_pre_reshape)
+2025-09-18 20:10:44.585305088 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.2/linear2/MatMul)
+2025-09-18 20:10:44.585310844 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.2/linear2/MatMul_post_reshape)
+2025-09-18 20:10:44.585316449 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/Transpose_1)
+2025-09-18 20:10:44.585321754 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.2/layers.0/MatMul_pre_reshape)
+2025-09-18 20:10:44.585327414 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.2/layers.0/MatMul)
+2025-09-18 20:10:44.585332927 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/self_attn/MatMul_2_pre_reshape)
+2025-09-18 20:10:44.585338338 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.2/layers.0/MatMul_post_reshape)
+2025-09-18 20:10:44.585343973 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.3/self_attn/MatMul_2)
+2025-09-18 20:10:44.585349736 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.2/Relu)
+2025-09-18 20:10:44.585355424 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/self_attn/MatMul_2_post_reshape)
+2025-09-18 20:10:44.585361094 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.2/layers.1/MatMul_pre_reshape)
+2025-09-18 20:10:44.585366885 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.2/layers.1/MatMul)
+2025-09-18 20:10:44.585372201 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.2/layers.1/MatMul_post_reshape)
+2025-09-18 20:10:44.585377786 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.2/Relu_1)
+2025-09-18 20:10:44.585383485 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.2/layers.2/MatMul_pre_reshape)
+2025-09-18 20:10:44.585389230 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.2/layers.2/MatMul)
+2025-09-18 20:10:44.585394985 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.2/layers.2/MatMul_post_reshape)
+2025-09-18 20:10:44.585400724 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/Add_2)
+2025-09-18 20:10:44.585406482 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sigmoid (/model.28/decoder/Sigmoid_3)
+2025-09-18 20:10:44.585412071 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_9)
+2025-09-18 20:10:44.585419236 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.3/Unsqueeze)
+2025-09-18 20:10:44.585424838 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0_3/MatMul_pre_reshape)
+2025-09-18 20:10:44.585430401 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_10)
+2025-09-18 20:10:44.585435939 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/Sub_3)
+2025-09-18 20:10:44.585441607 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.0_3/MatMul)
+2025-09-18 20:10:44.585446837 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0_3/MatMul_post_reshape)
+2025-09-18 20:10:44.585457101 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_11)
+2025-09-18 20:10:44.585461837 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/query_pos_head_3/Relu)
+2025-09-18 20:10:44.585466990 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/Div_3)
+2025-09-18 20:10:44.585472697 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Log (/model.28/decoder/Log_3)
+2025-09-18 20:10:44.585478385 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1_3/MatMul_pre_reshape)
+2025-09-18 20:10:44.585484292 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.1_3/MatMul)
+2025-09-18 20:10:44.585489925 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1_3/MatMul_post_reshape)
+2025-09-18 20:10:44.585495441 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.3/Add)
+2025-09-18 20:10:44.585501235 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/Transpose)
+2025-09-18 20:10:44.585506944 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/self_attn/MatMul_pre_reshape)
+2025-09-18 20:10:44.585512713 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.3/self_attn/MatMul)
+2025-09-18 20:10:44.585518555 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.3/self_attn/MatMul_1)
+2025-09-18 20:10:44.585524256 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/self_attn/MatMul_post_reshape)
+2025-09-18 20:10:44.585529936 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/self_attn/MatMul_1_post_reshape)
+2025-09-18 20:10:44.585535436 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.3/self_attn/Softmax)
+2025-09-18 20:10:44.585540387 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/self_attn/Transpose_3)
+2025-09-18 20:10:44.585545060 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/self_attn/Reshape_3)
+2025-09-18 20:10:44.585550076 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.3/self_attn/Gemm)
+2025-09-18 20:10:44.585556328 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/self_attn/Reshape_4)
+2025-09-18 20:10:44.585561654 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/Transpose_2)
+2025-09-18 20:10:44.585567087 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.3/Add_2)
+2025-09-18 20:10:44.585572806 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/sampling_offsets/MatMul_pre_reshape)
+2025-09-18 20:10:44.585604113 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.3/cross_attn/sampling_offsets/MatMul)
+2025-09-18 20:10:44.585609383 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.3/cross_attn/attention_weights/MatMul)
+2025-09-18 20:10:44.585614632 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/attention_weights/MatMul_post_reshape)
+2025-09-18 20:10:44.585620417 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/sampling_offsets/MatMul_post_reshape)
+2025-09-18 20:10:44.585626148 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.3/cross_attn/Softmax)
+2025-09-18 20:10:44.585632034 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/layers.3/cross_attn/Div)
+2025-09-18 20:10:44.585637756 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_3)
+2025-09-18 20:10:44.585643369 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.3/cross_attn/Mul)
+2025-09-18 20:10:44.585648041 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.3/cross_attn/Mul_1)
+2025-09-18 20:10:44.585653790 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/cross_attn/Transpose_6)
+2025-09-18 20:10:44.585659239 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.3/cross_attn/Add)
+2025-09-18 20:10:44.585664867 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_13)
+2025-09-18 20:10:44.585670298 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.3/cross_attn/Mul_2)
+2025-09-18 20:10:44.585675870 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/layers.3/cross_attn/Sub)
+2025-09-18 20:10:44.585681378 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/cross_attn/Transpose_1)
+2025-09-18 20:10:44.585686986 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/cross_attn/Transpose_3)
+2025-09-18 20:10:44.585692510 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/cross_attn/Transpose_5)
+2025-09-18 20:10:44.585698265 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_6)
+2025-09-18 20:10:44.585703775 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_9)
+2025-09-18 20:10:44.585709365 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_12)
+2025-09-18 20:10:44.585715020 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.3/cross_attn/GridSample)
+2025-09-18 20:10:44.585720497 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.3/cross_attn/GridSample_1)
+2025-09-18 20:10:44.585726151 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.3/cross_attn/GridSample_2)
+2025-09-18 20:10:44.585731784 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.3/cross_attn/Unsqueeze_28)
+2025-09-18 20:10:44.585737369 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.3/cross_attn/Unsqueeze_29)
+2025-09-18 20:10:44.585742896 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.3/cross_attn/Unsqueeze_30)
+2025-09-18 20:10:44.585748509 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.28/decoder/layers.3/cross_attn/Concat_14)
+2025-09-18 20:10:44.585754058 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_14)
+2025-09-18 20:10:44.585759647 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.3/cross_attn/Mul_5)
+2025-09-18 20:10:44.585765261 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   ReduceSum (/model.28/decoder/layers.3/cross_attn/ReduceSum)
+2025-09-18 20:10:44.585770767 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/Reshape_15)
+2025-09-18 20:10:44.585776302 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.3/cross_attn/Transpose_7)
+2025-09-18 20:10:44.585781952 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/output_proj/MatMul_pre_reshape)
+2025-09-18 20:10:44.585787477 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.3/cross_attn/output_proj/MatMul)
+2025-09-18 20:10:44.585793138 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/cross_attn/output_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.585798627 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/linear1/MatMul_pre_reshape)
+2025-09-18 20:10:44.585804174 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.3/linear1/MatMul)
+2025-09-18 20:10:44.585809711 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/linear1/MatMul_post_reshape)
+2025-09-18 20:10:44.585815265 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/layers.3/act/Relu)
+2025-09-18 20:10:44.585820861 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/linear2/MatMul_pre_reshape)
+2025-09-18 20:10:44.585826505 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.3/linear2/MatMul)
+2025-09-18 20:10:44.585831961 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.3/linear2/MatMul_post_reshape)
+2025-09-18 20:10:44.585837624 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/Transpose_1)
+2025-09-18 20:10:44.585843226 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.3/layers.0/MatMul_pre_reshape)
+2025-09-18 20:10:44.585848856 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.3/layers.0/MatMul)
+2025-09-18 20:10:44.585854401 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/self_attn/MatMul_2_pre_reshape)
+2025-09-18 20:10:44.585860055 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.3/layers.0/MatMul_post_reshape)
+2025-09-18 20:10:44.585865470 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.4/self_attn/MatMul_2)
+2025-09-18 20:10:44.585871204 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.3/Relu)
+2025-09-18 20:10:44.585876831 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/self_attn/MatMul_2_post_reshape)
+2025-09-18 20:10:44.585882547 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.3/layers.1/MatMul_pre_reshape)
+2025-09-18 20:10:44.585888177 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.3/layers.1/MatMul)
+2025-09-18 20:10:44.585893710 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.3/layers.1/MatMul_post_reshape)
+2025-09-18 20:10:44.585899365 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.3/Relu_1)
+2025-09-18 20:10:44.585904979 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.3/layers.2/MatMul_pre_reshape)
+2025-09-18 20:10:44.585910695 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.3/layers.2/MatMul)
+2025-09-18 20:10:44.585916253 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.3/layers.2/MatMul_post_reshape)
+2025-09-18 20:10:44.585921915 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/Add_3)
+2025-09-18 20:10:44.585927616 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sigmoid (/model.28/decoder/Sigmoid_4)
+2025-09-18 20:10:44.585933042 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_12)
+2025-09-18 20:10:44.585938602 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.4/Unsqueeze)
+2025-09-18 20:10:44.585944115 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0_4/MatMul_pre_reshape)
+2025-09-18 20:10:44.585949391 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_13)
+2025-09-18 20:10:44.585955061 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/Sub_4)
+2025-09-18 20:10:44.585960682 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.0_4/MatMul)
+2025-09-18 20:10:44.585966342 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0_4/MatMul_post_reshape)
+2025-09-18 20:10:44.585971901 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_14)
+2025-09-18 20:10:44.585977411 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/query_pos_head_4/Relu)
+2025-09-18 20:10:44.585983030 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/Div_4)
+2025-09-18 20:10:44.585988462 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Log (/model.28/decoder/Log_4)
+2025-09-18 20:10:44.585993896 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1_4/MatMul_pre_reshape)
+2025-09-18 20:10:44.586004269 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.1_4/MatMul)
+2025-09-18 20:10:44.586009405 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1_4/MatMul_post_reshape)
+2025-09-18 20:10:44.586014169 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.4/Add)
+2025-09-18 20:10:44.586019190 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/Transpose)
+2025-09-18 20:10:44.586023930 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/self_attn/MatMul_pre_reshape)
+2025-09-18 20:10:44.586028770 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.4/self_attn/MatMul)
+2025-09-18 20:10:44.586033686 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.4/self_attn/MatMul_1)
+2025-09-18 20:10:44.586038662 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/self_attn/MatMul_post_reshape)
+2025-09-18 20:10:44.586043895 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/self_attn/MatMul_1_post_reshape)
+2025-09-18 20:10:44.586048733 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.4/self_attn/Softmax)
+2025-09-18 20:10:44.586053592 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/self_attn/Transpose_3)
+2025-09-18 20:10:44.586058653 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/self_attn/Reshape_3)
+2025-09-18 20:10:44.586063602 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.4/self_attn/Gemm)
+2025-09-18 20:10:44.586068617 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/self_attn/Reshape_4)
+2025-09-18 20:10:44.586073907 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/Transpose_2)
+2025-09-18 20:10:44.586079154 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.4/Add_2)
+2025-09-18 20:10:44.586084619 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/sampling_offsets/MatMul_pre_reshape)
+2025-09-18 20:10:44.586090290 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.4/cross_attn/sampling_offsets/MatMul)
+2025-09-18 20:10:44.586096150 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.4/cross_attn/attention_weights/MatMul)
+2025-09-18 20:10:44.586102032 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/attention_weights/MatMul_post_reshape)
+2025-09-18 20:10:44.586107649 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/sampling_offsets/MatMul_post_reshape)
+2025-09-18 20:10:44.586113066 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.4/cross_attn/Softmax)
+2025-09-18 20:10:44.586119001 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/layers.4/cross_attn/Div)
+2025-09-18 20:10:44.586124717 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_3)
+2025-09-18 20:10:44.586131369 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.4/cross_attn/Mul)
+2025-09-18 20:10:44.586137210 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.4/cross_attn/Mul_1)
+2025-09-18 20:10:44.586142826 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/cross_attn/Transpose_6)
+2025-09-18 20:10:44.586148521 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.4/cross_attn/Add)
+2025-09-18 20:10:44.586154048 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_13)
+2025-09-18 20:10:44.586159533 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.4/cross_attn/Mul_2)
+2025-09-18 20:10:44.586165153 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/layers.4/cross_attn/Sub)
+2025-09-18 20:10:44.586170958 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/cross_attn/Transpose_1)
+2025-09-18 20:10:44.586176685 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/cross_attn/Transpose_3)
+2025-09-18 20:10:44.586182372 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/cross_attn/Transpose_5)
+2025-09-18 20:10:44.586188009 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_6)
+2025-09-18 20:10:44.586193540 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_9)
+2025-09-18 20:10:44.586198712 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_12)
+2025-09-18 20:10:44.586204103 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.4/cross_attn/GridSample)
+2025-09-18 20:10:44.586209815 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.4/cross_attn/GridSample_1)
+2025-09-18 20:10:44.586215457 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.4/cross_attn/GridSample_2)
+2025-09-18 20:10:44.586221162 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.4/cross_attn/Unsqueeze_28)
+2025-09-18 20:10:44.586226707 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.4/cross_attn/Unsqueeze_29)
+2025-09-18 20:10:44.586232385 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.4/cross_attn/Unsqueeze_30)
+2025-09-18 20:10:44.586238138 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.28/decoder/layers.4/cross_attn/Concat_14)
+2025-09-18 20:10:44.586243911 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_14)
+2025-09-18 20:10:44.586249546 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.4/cross_attn/Mul_5)
+2025-09-18 20:10:44.586255261 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   ReduceSum (/model.28/decoder/layers.4/cross_attn/ReduceSum)
+2025-09-18 20:10:44.586260965 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/Reshape_15)
+2025-09-18 20:10:44.586266388 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.4/cross_attn/Transpose_7)
+2025-09-18 20:10:44.586272144 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/output_proj/MatMul_pre_reshape)
+2025-09-18 20:10:44.586277955 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.4/cross_attn/output_proj/MatMul)
+2025-09-18 20:10:44.586283576 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/cross_attn/output_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.586289188 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/linear1/MatMul_pre_reshape)
+2025-09-18 20:10:44.586294899 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.4/linear1/MatMul)
+2025-09-18 20:10:44.586300536 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/linear1/MatMul_post_reshape)
+2025-09-18 20:10:44.586306222 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/layers.4/act/Relu)
+2025-09-18 20:10:44.586311842 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/linear2/MatMul_pre_reshape)
+2025-09-18 20:10:44.586317445 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.4/linear2/MatMul)
+2025-09-18 20:10:44.586323065 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.4/linear2/MatMul_post_reshape)
+2025-09-18 20:10:44.586328722 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/Transpose_1)
+2025-09-18 20:10:44.586334432 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.4/layers.0/MatMul_pre_reshape)
+2025-09-18 20:10:44.586340017 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.4/layers.0/MatMul)
+2025-09-18 20:10:44.586345514 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/self_attn/MatMul_2_pre_reshape)
+2025-09-18 20:10:44.586350895 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.4/layers.0/MatMul_post_reshape)
+2025-09-18 20:10:44.586356276 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.5/self_attn/MatMul_2)
+2025-09-18 20:10:44.586361533 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.4/Relu)
+2025-09-18 20:10:44.586370700 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/self_attn/MatMul_2_post_reshape)
+2025-09-18 20:10:44.586376200 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.4/layers.1/MatMul_pre_reshape)
+2025-09-18 20:10:44.586380878 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.4/layers.1/MatMul)
+2025-09-18 20:10:44.586385756 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.4/layers.1/MatMul_post_reshape)
+2025-09-18 20:10:44.586390640 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.4/Relu_1)
+2025-09-18 20:10:44.586396032 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.4/layers.2/MatMul_pre_reshape)
+2025-09-18 20:10:44.586401595 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.4/layers.2/MatMul)
+2025-09-18 20:10:44.586407307 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.4/layers.2/MatMul_post_reshape)
+2025-09-18 20:10:44.586413292 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/Add_4)
+2025-09-18 20:10:44.586419013 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sigmoid (/model.28/decoder/Sigmoid_5)
+2025-09-18 20:10:44.586424830 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_15)
+2025-09-18 20:10:44.586430431 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.5/Unsqueeze)
+2025-09-18 20:10:44.586435602 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0_5/MatMul_pre_reshape)
+2025-09-18 20:10:44.586440794 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_16)
+2025-09-18 20:10:44.586446200 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/Sub_5)
+2025-09-18 20:10:44.586451888 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.0_5/MatMul)
+2025-09-18 20:10:44.586457374 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.0_5/MatMul_post_reshape)
+2025-09-18 20:10:44.586463030 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Clip (/model.28/decoder/Clip_17)
+2025-09-18 20:10:44.586468671 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/query_pos_head_5/Relu)
+2025-09-18 20:10:44.586474422 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/Div_5)
+2025-09-18 20:10:44.586480180 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Log (/model.28/decoder/Log_5)
+2025-09-18 20:10:44.586485834 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1_5/MatMul_pre_reshape)
+2025-09-18 20:10:44.586490464 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/query_pos_head/layers.1_5/MatMul)
+2025-09-18 20:10:44.586496195 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/query_pos_head/layers.1_5/MatMul_post_reshape)
+2025-09-18 20:10:44.586501729 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.5/Add)
+2025-09-18 20:10:44.586507204 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/Transpose)
+2025-09-18 20:10:44.586512824 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/self_attn/MatMul_pre_reshape)
+2025-09-18 20:10:44.586518443 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.5/self_attn/MatMul)
+2025-09-18 20:10:44.586523980 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.5/self_attn/MatMul_1)
+2025-09-18 20:10:44.586529605 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/self_attn/MatMul_post_reshape)
+2025-09-18 20:10:44.586535173 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/self_attn/MatMul_1_post_reshape)
+2025-09-18 20:10:44.586540490 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.5/self_attn/Softmax)
+2025-09-18 20:10:44.586546090 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/self_attn/Transpose_3)
+2025-09-18 20:10:44.586551537 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/self_attn/Reshape_3)
+2025-09-18 20:10:44.586557155 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.5/self_attn/Gemm)
+2025-09-18 20:10:44.586562772 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/self_attn/Reshape_4)
+2025-09-18 20:10:44.586568334 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/Transpose_2)
+2025-09-18 20:10:44.586573999 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.5/Add_2)
+2025-09-18 20:10:44.586579602 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/sampling_offsets/MatMul_pre_reshape)
+2025-09-18 20:10:44.586585178 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.5/cross_attn/sampling_offsets/MatMul)
+2025-09-18 20:10:44.586590847 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.5/cross_attn/attention_weights/MatMul)
+2025-09-18 20:10:44.586596406 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/attention_weights/MatMul_post_reshape)
+2025-09-18 20:10:44.586602004 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/sampling_offsets/MatMul_post_reshape)
+2025-09-18 20:10:44.586607673 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Softmax (/model.28/decoder/layers.5/cross_attn/Softmax)
+2025-09-18 20:10:44.586613318 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Div (/model.28/decoder/layers.5/cross_attn/Div)
+2025-09-18 20:10:44.586618979 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_3)
+2025-09-18 20:10:44.586624572 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.5/cross_attn/Mul)
+2025-09-18 20:10:44.586630127 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.5/cross_attn/Mul_1)
+2025-09-18 20:10:44.586635658 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/cross_attn/Transpose_6)
+2025-09-18 20:10:44.586640440 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/layers.5/cross_attn/Add)
+2025-09-18 20:10:44.586646124 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_13)
+2025-09-18 20:10:44.586651733 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.5/cross_attn/Mul_2)
+2025-09-18 20:10:44.586657562 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sub (/model.28/decoder/layers.5/cross_attn/Sub)
+2025-09-18 20:10:44.586663113 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/cross_attn/Transpose_1)
+2025-09-18 20:10:44.586668769 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/cross_attn/Transpose_3)
+2025-09-18 20:10:44.586674216 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/cross_attn/Transpose_5)
+2025-09-18 20:10:44.586679832 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_6)
+2025-09-18 20:10:44.586685294 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_9)
+2025-09-18 20:10:44.586690823 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_12)
+2025-09-18 20:10:44.586696457 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.5/cross_attn/GridSample)
+2025-09-18 20:10:44.586702037 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.5/cross_attn/GridSample_1)
+2025-09-18 20:10:44.586707697 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   GridSample (/model.28/decoder/layers.5/cross_attn/GridSample_2)
+2025-09-18 20:10:44.586713398 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.5/cross_attn/Unsqueeze_28)
+2025-09-18 20:10:44.586719038 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.5/cross_attn/Unsqueeze_29)
+2025-09-18 20:10:44.586724682 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/layers.5/cross_attn/Unsqueeze_30)
+2025-09-18 20:10:44.586730263 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.28/decoder/layers.5/cross_attn/Concat_14)
+2025-09-18 20:10:44.586735906 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_14)
+2025-09-18 20:10:44.586741519 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Mul (/model.28/decoder/layers.5/cross_attn/Mul_5)
+2025-09-18 20:10:44.586747058 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   ReduceSum (/model.28/decoder/layers.5/cross_attn/ReduceSum)
+2025-09-18 20:10:44.586752702 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/Reshape_15)
+2025-09-18 20:10:44.586758216 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (/model.28/decoder/layers.5/cross_attn/Transpose_7)
+2025-09-18 20:10:44.586763866 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/output_proj/MatMul_pre_reshape)
+2025-09-18 20:10:44.586769482 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.5/cross_attn/output_proj/MatMul)
+2025-09-18 20:10:44.586775185 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/cross_attn/output_proj/MatMul_post_reshape)
+2025-09-18 20:10:44.586780640 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/linear1/MatMul_pre_reshape)
+2025-09-18 20:10:44.586786359 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.5/linear1/MatMul)
+2025-09-18 20:10:44.586791962 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/linear1/MatMul_post_reshape)
+2025-09-18 20:10:44.586797433 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/layers.5/act/Relu)
+2025-09-18 20:10:44.586802859 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/linear2/MatMul_pre_reshape)
+2025-09-18 20:10:44.586811213 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/layers.5/linear2/MatMul)
+2025-09-18 20:10:44.586816473 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/layers.5/linear2/MatMul_post_reshape)
+2025-09-18 20:10:44.586821426 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.5/layers.0/MatMul_pre_reshape)
+2025-09-18 20:10:44.586826152 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.5/layers.0/MatMul)
+2025-09-18 20:10:44.586830957 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_score_head.5/MatMul)
+2025-09-18 20:10:44.586835923 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.5/layers.0/MatMul_post_reshape)
+2025-09-18 20:10:44.586840804 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_score_head.5/MatMul_post_reshape)
+2025-09-18 20:10:44.586845653 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.5/Relu)
+2025-09-18 20:10:44.586850644 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/Unsqueeze_1)
+2025-09-18 20:10:44.586855858 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (/model.28/Squeeze_1)
+2025-09-18 20:10:44.586861274 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.5/layers.1/MatMul_pre_reshape)
+2025-09-18 20:10:44.586866867 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sigmoid (/model.28/Sigmoid)
+2025-09-18 20:10:44.586872749 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.5/layers.1/MatMul)
+2025-09-18 20:10:44.586878562 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.5/layers.1/MatMul_post_reshape)
+2025-09-18 20:10:44.586884217 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Relu (/model.28/decoder/dec_bbox_head.5/Relu_1)
+2025-09-18 20:10:44.586889864 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.5/layers.2/MatMul_pre_reshape)
+2025-09-18 20:10:44.586895304 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gemm (/model.28/decoder/dec_bbox_head.5/layers.2/MatMul)
+2025-09-18 20:10:44.586900962 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Reshape (/model.28/decoder/dec_bbox_head.5/layers.2/MatMul_post_reshape)
+2025-09-18 20:10:44.586906811 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Add (/model.28/decoder/Add_5)
+2025-09-18 20:10:44.586912588 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Sigmoid (/model.28/decoder/Sigmoid_6)
+2025-09-18 20:10:44.586918232 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Unsqueeze (/model.28/decoder/Unsqueeze)
+2025-09-18 20:10:44.586923926 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (/model.28/Squeeze)
+2025-09-18 20:10:44.586929576 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Concat (/model.28/Concat_27)
+2025-09-18 20:10:44.586935255 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Transpose (Transpose_token_0)
+2025-09-18 20:10:44.586940734 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.0/stem1/conv/Conv)
+2025-09-18 20:10:44.586946477 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.0/stem2a/conv/Conv)
+2025-09-18 20:10:44.586952980 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.0/stem2b/conv/Conv)
+2025-09-18 20:10:44.586958196 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.0/stem3/conv/Conv)
+2025-09-18 20:10:44.586963764 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.0/stem4/conv/Conv)
+2025-09-18 20:10:44.586970750 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.1/m.0/conv/Conv)
+2025-09-18 20:10:44.586975960 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.1/m.1/conv/Conv)
+2025-09-18 20:10:44.586980810 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.1/m.2/conv/Conv)
+2025-09-18 20:10:44.586986464 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.1/m.3/conv/Conv)
+2025-09-18 20:10:44.586992099 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.1/m.4/conv/Conv)
+2025-09-18 20:10:44.586997611 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.1/m.5/conv/Conv)
+2025-09-18 20:10:44.587003201 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.1/sc/conv/Conv)
+2025-09-18 20:10:44.587008789 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.1/ec/conv/Conv)
+2025-09-18 20:10:44.587014416 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.3/m.0/conv/Conv)
+2025-09-18 20:10:44.587020034 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.3/m.1/conv/Conv)
+2025-09-18 20:10:44.587025816 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.3/m.2/conv/Conv)
+2025-09-18 20:10:44.587031562 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.3/m.3/conv/Conv)
+2025-09-18 20:10:44.587037088 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.3/m.4/conv/Conv)
+2025-09-18 20:10:44.587042631 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.3/m.5/conv/Conv)
+2025-09-18 20:10:44.587048164 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.3/sc/conv/Conv)
+2025-09-18 20:10:44.587053742 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.3/ec/conv/Conv)
+2025-09-18 20:10:44.587059286 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.5/m.0/conv2/conv/Conv)
+2025-09-18 20:10:44.587064889 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.5/m.1/conv2/conv/Conv)
+2025-09-18 20:10:44.587070430 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.5/m.2/conv2/conv/Conv)
+2025-09-18 20:10:44.587075912 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.5/m.3/conv2/conv/Conv)
+2025-09-18 20:10:44.587081463 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.5/m.4/conv2/conv/Conv)
+2025-09-18 20:10:44.587087005 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.5/m.5/conv2/conv/Conv)
+2025-09-18 20:10:44.587092312 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.5/sc/conv/Conv)
+2025-09-18 20:10:44.587098054 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.5/ec/conv/Conv)
+2025-09-18 20:10:44.587103533 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.6/m.0/conv2/conv/Conv)
+2025-09-18 20:10:44.587112408 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.6/m.1/conv2/conv/Conv)
+2025-09-18 20:10:44.587117760 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.6/m.2/conv2/conv/Conv)
+2025-09-18 20:10:44.587122550 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.6/m.3/conv2/conv/Conv)
+2025-09-18 20:10:44.587127505 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.6/m.4/conv2/conv/Conv)
+2025-09-18 20:10:44.587132852 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.6/m.5/conv2/conv/Conv)
+2025-09-18 20:10:44.587138133 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.6/sc/conv/Conv)
+2025-09-18 20:10:44.587143800 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.6/ec/conv/Conv)
+2025-09-18 20:10:44.587149270 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.7/m.0/conv2/conv/Conv)
+2025-09-18 20:10:44.587154910 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.7/m.1/conv2/conv/Conv)
+2025-09-18 20:10:44.587160522 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.7/m.2/conv2/conv/Conv)
+2025-09-18 20:10:44.587166169 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.7/m.3/conv2/conv/Conv)
+2025-09-18 20:10:44.587171157 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.7/m.4/conv2/conv/Conv)
+2025-09-18 20:10:44.587176113 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.7/m.5/conv2/conv/Conv)
+2025-09-18 20:10:44.587181164 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.7/sc/conv/Conv)
+2025-09-18 20:10:44.587186696 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.7/ec/conv/Conv)
+2025-09-18 20:10:44.587215762 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.9/m.0/conv2/conv/Conv)
+2025-09-18 20:10:44.587220987 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.9/m.1/conv2/conv/Conv)
+2025-09-18 20:10:44.587226562 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.9/m.2/conv2/conv/Conv)
+2025-09-18 20:10:44.587232364 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.9/m.3/conv2/conv/Conv)
+2025-09-18 20:10:44.587236911 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.9/m.4/conv2/conv/Conv)
+2025-09-18 20:10:44.587241709 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.9/m.5/conv2/conv/Conv)
+2025-09-18 20:10:44.587247261 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.9/sc/conv/Conv)
+2025-09-18 20:10:44.587252364 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedConv (/model.9/ec/conv/Conv)
+2025-09-18 20:10:44.587257090 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Gelu (Gelu)
+2025-09-18 20:10:44.587262789 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.0/cross_attn/Slice_1/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587268611 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze)
+2025-09-18 20:10:44.587274359 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_3)
+2025-09-18 20:10:44.587280046 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_6)
+2025-09-18 20:10:44.587285872 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.0/cross_attn/Gather_11/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587291632 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.0/cross_attn/Slice_4/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587297651 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.1/cross_attn/Slice_1/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587303598 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_12)
+2025-09-18 20:10:44.587309532 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_15)
+2025-09-18 20:10:44.587317729 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_18)
+2025-09-18 20:10:44.587327694 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.1/cross_attn/Gather_10/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587332200 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.1/cross_attn/Slice_4/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587337099 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.2/cross_attn/Slice_1/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587342757 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_24)
+2025-09-18 20:10:44.587348671 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_27)
+2025-09-18 20:10:44.587354696 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_30)
+2025-09-18 20:10:44.587365586 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.2/cross_attn/Gather_10/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587371415 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.2/cross_attn/Slice_4/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587376882 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.3/cross_attn/Slice_1/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587381402 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_36)
+2025-09-18 20:10:44.587386675 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_39)
+2025-09-18 20:10:44.587392649 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_42)
+2025-09-18 20:10:44.587397285 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.3/cross_attn/Gather_10/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587402221 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.3/cross_attn/Slice_4/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587407642 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.4/cross_attn/Slice_1/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587412809 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_48)
+2025-09-18 20:10:44.587418318 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_51)
+2025-09-18 20:10:44.587424053 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_54)
+2025-09-18 20:10:44.587429026 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.4/cross_attn/Gather_10/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587435005 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.4/cross_attn/Slice_4/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587440670 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.5/cross_attn/Slice_1/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587446819 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_60)
+2025-09-18 20:10:44.587453785 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_63)
+2025-09-18 20:10:44.587460067 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Squeeze (Squeeze_token_66)
+2025-09-18 20:10:44.587465743 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.5/cross_attn/Gather_10/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587471404 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Split (/model.28/decoder/layers.5/cross_attn/Slice_4/GatherSliceToSplitFusion/)
+2025-09-18 20:10:44.587477378 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.11/ma/MatMul_4/MatmulTransposeFusion/)
+2025-09-18 20:10:44.587483217 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.0/self_attn/MatMul_4/MatmulTransposeFusion/)
+2025-09-18 20:10:44.587488650 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.1/self_attn/MatMul_4/MatmulTransposeFusion/)
+2025-09-18 20:10:44.587494359 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.2/self_attn/MatMul_4/MatmulTransposeFusion/)
+2025-09-18 20:10:44.587500344 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.3/self_attn/MatMul_4/MatmulTransposeFusion/)
+2025-09-18 20:10:44.587506550 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.4/self_attn/MatMul_4/MatmulTransposeFusion/)
+2025-09-18 20:10:44.587512367 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.5/self_attn/MatMul_4/MatmulTransposeFusion/)
+2025-09-18 20:10:44.587518132 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization)
+2025-09-18 20:10:44.587523762 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_69)
+2025-09-18 20:10:44.587529922 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_70)
+2025-09-18 20:10:44.587538514 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_71)
+2025-09-18 20:10:44.587544430 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_72)
+2025-09-18 20:10:44.587550655 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_73)
+2025-09-18 20:10:44.587556563 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_74)
+2025-09-18 20:10:44.587561842 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_75)
+2025-09-18 20:10:44.587566918 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_76)
+2025-09-18 20:10:44.587572186 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_77)
+2025-09-18 20:10:44.587577174 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_78)
+2025-09-18 20:10:44.587582511 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_79)
+2025-09-18 20:10:44.587588307 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_80)
+2025-09-18 20:10:44.587594097 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_81)
+2025-09-18 20:10:44.587599007 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_82)
+2025-09-18 20:10:44.587603967 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_83)
+2025-09-18 20:10:44.587609598 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_84)
+2025-09-18 20:10:44.587615549 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_85)
+2025-09-18 20:10:44.587620845 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_86)
+2025-09-18 20:10:44.587626445 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   SkipLayerNormalization (SkipLayerNormalization_token_87)
+2025-09-18 20:10:44.587631800 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.12/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587637061 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.16/cv1/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587641865 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.16/m/m.0/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587646963 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.16/m/m.1/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587652334 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.16/m/m.2/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587658590 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.16/cv2/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587663614 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.17/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587668599 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.21/cv1/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587673781 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.21/m/m.0/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587678829 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.21/m/m.1/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587684277 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.21/m/m.2/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587689413 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.21/cv2/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587694509 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.22/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587699673 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.24/cv1/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587705316 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.24/m/m.0/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587710073 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.24/m/m.1/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587715086 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.24/m/m.2/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587720398 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.24/cv2/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587727305 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.25/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587733539 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.27/cv1/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587739573 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.27/m/m.0/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587745708 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.27/m/m.1/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587753374 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.27/m/m.2/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587759107 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   QuickGelu (/model.27/cv2/act/Mul/QuickGeluFusion/)
+2025-09-18 20:10:44.587764216 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.11/ma/MatMul_3/MatmulTransposeFusion//MatMulScaleFusion//MatmulTransposeFusion/)
+2025-09-18 20:10:44.587770851 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.0/self_attn/MatMul_3/MatmulTransposeFusion//MatMulScaleFusion//MatmulTransposeFusion/)
+2025-09-18 20:10:44.587777012 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.1/self_attn/MatMul_3/MatmulTransposeFusion//MatMulScaleFusion//MatmulTransposeFusion/)
+2025-09-18 20:10:44.587783206 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.2/self_attn/MatMul_3/MatmulTransposeFusion//MatMulScaleFusion//MatmulTransposeFusion/)
+2025-09-18 20:10:44.587789381 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.3/self_attn/MatMul_3/MatmulTransposeFusion//MatMulScaleFusion//MatmulTransposeFusion/)
+2025-09-18 20:10:44.587795461 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.4/self_attn/MatMul_3/MatmulTransposeFusion//MatMulScaleFusion//MatmulTransposeFusion/)
+2025-09-18 20:10:44.587801522 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   FusedMatMul (/model.28/decoder/layers.5/self_attn/MatMul_3/MatmulTransposeFusion//MatMulScaleFusion//MatmulTransposeFusion/)
+2025-09-18 20:10:44.587807625 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   MemcpyFromHost (Memcpy)
+2025-09-18 20:10:44.587813607 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   MemcpyFromHost (Memcpy_token_88)
+2025-09-18 20:10:44.587819731 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   MemcpyFromHost (Memcpy_token_89)
+2025-09-18 20:10:44.587825823 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   MemcpyToHost (Memcpy_token_90)
+2025-09-18 20:10:44.587831983 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   MemcpyToHost (Memcpy_token_91)
+2025-09-18 20:10:44.587838265 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   MemcpyToHost (Memcpy_token_92)
+2025-09-18 20:10:44.587845802 [V:onnxruntime:, session_state.cc:1152 VerifyEachNodeIsAssignedToAnEp]  Node(s) placed on [CPUExecutionProvider]. Number of nodes: 3
+2025-09-18 20:10:44.587853111 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Pad (/model.0/Pad)
+2025-09-18 20:10:44.587859002 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Resize (/model.13/Resize)
+2025-09-18 20:10:44.587865362 [V:onnxruntime:, session_state.cc:1154 VerifyEachNodeIsAssignedToAnEp]   Resize (/model.18/Resize)
+[0;93m2025-09-18 20:10:44.587872726 [W:onnxruntime:, session_state.cc:1166 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an negative impact on performance. e.g. ORT explicitly assigns shape related ops to CPU to improve perf.[m
+2025-09-18 20:10:44.592663674 [V:onnxruntime:, session_state.cc:126 CreateGraphInfo] SaveMLValueNameIndexMapping
+2025-09-18 20:10:44.593282547 [V:onnxruntime:, session_state.cc:172 CreateGraphInfo] Done saving OrtValue mappings.
+2025-09-18 20:10:44.647452648 [I:onnxruntime:, allocation_planner.cc:2567 CreateGraphPartitioner] Use DeviceBasedPartition as default
+2025-09-18 20:10:44.658519782 [I:onnxruntime:, session_state_utils.cc:209 SaveInitializedTensors] Saving initialized tensors.
+2025-09-18 20:10:44.658645362 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cuda. bin_num:2 (requested) num_bytes: 1024 (actual) rounded_bytes:1024
+2025-09-18 20:10:44.658679505 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 1048576 bytes.
+2025-09-18 20:10:44.658685035 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 1048576
+2025-09-18 20:10:44.658689721 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x155338826800 to 0x155338926800
+2025-09-18 20:10:44.658701933 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cpu. bin_num:2 (requested) num_bytes: 1024 (actual) rounded_bytes:1024
+2025-09-18 20:10:44.658708599 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 1048576 bytes.
+2025-09-18 20:10:44.658712925 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 1048576
+2025-09-18 20:10:44.658718730 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x15526162cb00 to 0x15526172cb00
+2025-09-18 20:10:44.659076703 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cuda. bin_num:2 (requested) num_bytes: 1024 (actual) rounded_bytes:1024
+2025-09-18 20:10:44.659333972 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 2097152 bytes.
+2025-09-18 20:10:44.659339831 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 3145728
+2025-09-18 20:10:44.659343719 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x155339400000 to 0x155339600000
+2025-09-18 20:10:44.659454847 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cuda. bin_num:13 (requested) num_bytes: 2359296 (actual) rounded_bytes:2359296
+2025-09-18 20:10:44.659664398 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 4194304 bytes.
+2025-09-18 20:10:44.659673987 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 7340032
+2025-09-18 20:10:44.659680146 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x155339600000 to 0x155339a00000
+2025-09-18 20:10:44.659702364 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cpu. bin_num:13 (requested) num_bytes: 2359296 (actual) rounded_bytes:2359296
+2025-09-18 20:10:44.659721742 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 4194304 bytes.
+2025-09-18 20:10:44.659727471 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 5242880
+2025-09-18 20:10:44.659733334 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x155261b99a40 to 0x155261f99a40
+2025-09-18 20:10:44.661655606 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cuda. bin_num:14 (requested) num_bytes: 4456448 (actual) rounded_bytes:4456448
+2025-09-18 20:10:44.661968017 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 8388608 bytes.
+2025-09-18 20:10:44.661975537 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 15728640
+2025-09-18 20:10:44.661979906 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x15526e000000 to 0x15526e800000
+2025-09-18 20:10:44.662025378 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cpu. bin_num:14 (requested) num_bytes: 4456448 (actual) rounded_bytes:4456448
+2025-09-18 20:10:44.662052991 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 8388608 bytes.
+2025-09-18 20:10:44.662059941 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 13631488
+2025-09-18 20:10:44.662064861 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x1552e0dff040 to 0x1552e15ff040
+2025-09-18 20:10:44.666110186 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cuda. bin_num:13 (requested) num_bytes: 3407872 (actual) rounded_bytes:3407872
+2025-09-18 20:10:44.666349129 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 16777216 bytes.
+2025-09-18 20:10:44.666355989 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 32505856
+2025-09-18 20:10:44.666359936 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x15526e800000 to 0x15526f800000
+2025-09-18 20:10:44.672135808 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cuda. bin_num:11 (requested) num_bytes: 589824 (actual) rounded_bytes:589824
+2025-09-18 20:10:44.672399456 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 33554432 bytes.
+2025-09-18 20:10:44.672406752 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 66060288
+2025-09-18 20:10:44.672410664 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x15526c000000 to 0x15526e000000
+2025-09-18 20:10:44.683452254 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cuda. bin_num:13 (requested) num_bytes: 2097152 (actual) rounded_bytes:2097152
+2025-09-18 20:10:44.683736090 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 67108864 bytes.
+2025-09-18 20:10:44.683748128 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 133169152
+2025-09-18 20:10:44.683753607 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x15525c000000 to 0x155260000000
+2025-09-18 20:10:44.688047142 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cpu. bin_num:15 (requested) num_bytes: 13631488 (actual) rounded_bytes:13631488
+2025-09-18 20:10:44.688078295 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 16777216 bytes.
+2025-09-18 20:10:44.688082268 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 30408704
+2025-09-18 20:10:44.688086196 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x15526afff040 to 0x15526bfff040
+2025-09-18 20:10:44.712184116 [I:onnxruntime:log, bfc_arena.cc:347 AllocateRawInternal] Extending BFCArena for Cuda. bin_num:2 (requested) num_bytes: 1536 (actual) rounded_bytes:1536
+2025-09-18 20:10:44.712472698 [I:onnxruntime:log, bfc_arena.cc:206 Extend] Extended allocation by 134217728 bytes.
+2025-09-18 20:10:44.712489138 [I:onnxruntime:log, bfc_arena.cc:209 Extend] Total allocated bytes: 267386880
+2025-09-18 20:10:44.712495812 [I:onnxruntime:log, bfc_arena.cc:212 Extend] Allocated memory at 0x155254000000 to 0x15525c000000
+2025-09-18 20:10:44.719500938 [I:onnxruntime:, session_state_utils.cc:360 SaveInitializedTensors] Done saving initialized tensors
+2025-09-18 20:10:44.721648907 [I:onnxruntime:, inference_session.cc:2094 Initialize] Session successfully initialized.
+I0918 20:10:44.721884 1 backend_model_instance.cc:783] "Starting backend thread for rtdetr_0_0 at nice 0 on device 0..."
+I0918 20:10:44.722461 1 model_lifecycle.cc:839] "successfully loaded 'rtdetr'"
+I0918 20:10:44.722566 1 server.cc:604] 
++------------------+------+
+| Repository Agent | Path |
++------------------+------+
++------------------+------+
+
+I0918 20:10:44.722653 1 server.cc:631] 
++-------------+-----------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Backend     | Path                                                            | Config                                                                                                                                                        |
++-------------+-----------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| tensorrt    | /opt/tritonserver/backends/tensorrt/libtriton_tensorrt.so       | {"cmdline":{"auto-complete-config":"true","backend-directory":"/opt/tritonserver/backends","min-compute-capability":"6.000000","default-max-batch-size":"4"}} |
+| onnxruntime | /opt/tritonserver/backends/onnxruntime/libtriton_onnxruntime.so | {"cmdline":{"auto-complete-config":"true","backend-directory":"/opt/tritonserver/backends","min-compute-capability":"6.000000","default-max-batch-size":"4"}} |
++-------------+-----------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+I0918 20:10:44.722781 1 server.cc:674] 
++-----------------+---------+---------------------------------------------------------------------------------------------------------------+
+| Model           | Version | Status                                                                                                        |
++-----------------+---------+---------------------------------------------------------------------------------------------------------------+
+| rtdetr          | 1       | READY                                                                                                         |
+| rtdetr_tensorrt | 1       | UNAVAILABLE: Internal: unable to load plan file to auto complete config: /models/rtdetr_tensorrt/1/model.plan |
++-----------------+---------+---------------------------------------------------------------------------------------------------------------+
+
+I0918 20:10:44.793515 1 metrics.cc:877] "Collecting metrics for GPU 0: NVIDIA H100 80GB HBM3"
+I0918 20:10:44.798323 1 metrics.cc:770] "Collecting CPU metrics"
+I0918 20:10:44.798503 1 tritonserver.cc:2598] 
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Option                           | Value                                                                                                                                                                                                           |
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| server_id                        | triton                                                                                                                                                                                                          |
+| server_version                   | 2.49.0                                                                                                                                                                                                          |
+| server_extensions                | classification sequence model_repository model_repository(unload_dependents) schedule_policy model_configuration system_shared_memory cuda_shared_memory binary_tensor_data parameters statistics trace logging |
+| model_repository_path[0]         | /models                                                                                                                                                                                                         |
+| model_control_mode               | MODE_NONE                                                                                                                                                                                                       |
+| strict_model_config              | 0                                                                                                                                                                                                               |
+| model_config_name                |                                                                                                                                                                                                                 |
+| rate_limit                       | OFF                                                                                                                                                                                                             |
+| pinned_memory_pool_byte_size     | 268435456                                                                                                                                                                                                       |
+| cuda_memory_pool_byte_size{0}    | 67108864                                                                                                                                                                                                        |
+| min_supported_compute_capability | 6.0                                                                                                                                                                                                             |
+| strict_readiness                 | 1                                                                                                                                                                                                               |
+| exit_timeout                     | 30                                                                                                                                                                                                              |
+| cache_enabled                    | 0                                                                                                                                                                                                               |
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+I0918 20:10:44.798610 1 server.cc:305] "Waiting for in-flight requests to complete."
+I0918 20:10:44.798621 1 server.cc:321] "Timeout 30: Found 0 model versions that have in-flight inferences"
+I0918 20:10:44.798811 1 server.cc:336] "All models are stopped, unloading models"
+I0918 20:10:44.798823 1 server.cc:345] "Timeout 30: Found 1 live models and 0 in-flight non-inference requests"
+I0918 20:10:44.798830 1 server.cc:351] "rtdetr v1: UNLOADING"
+I0918 20:10:44.798867 1 backend_model_instance.cc:806] "Stopping backend thread for rtdetr_0_0..."
+I0918 20:10:44.798961 1 onnxruntime.cc:3103] "TRITONBACKEND_ModelInstanceFinalize: delete instance state"
+I0918 20:10:44.809390 1 onnxruntime.cc:3027] "TRITONBACKEND_ModelFinalize: delete model state"
+I0918 20:10:44.809447 1 model_lifecycle.cc:624] "successfully unloaded 'rtdetr' version 1"
+I0918 20:10:45.798950 1 server.cc:345] "Timeout 29: Found 0 live models and 0 in-flight non-inference requests"
+I0918 20:10:45.864762 1 backend_manager.cc:138] "unloading backend 'onnxruntime'"
+I0918 20:10:45.865307 1 backend_manager.cc:138] "unloading backend 'tensorrt'"
+error: creating server: Internal - failed to load all models

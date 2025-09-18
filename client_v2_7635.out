@@ -1,0 +1,99 @@
+[2025-09-18 22:10:49] ==================================
+[2025-09-18 22:10:49] TRITON CLIENT V2 JOB STARTING
+[2025-09-18 22:10:49] ==================================
+[2025-09-18 22:10:49] Job ID: 7635
+[2025-09-18 22:10:49] Job Name: triton-client-v2
+[2025-09-18 22:10:49] Node: gpu002
+[2025-09-18 22:10:49] Working directory: /home/ing-bwrxrp/Unattended-Object-Detection
+[2025-09-18 22:10:49] CPUs allocated: 2
+[2025-09-18 22:10:49] GPUs allocated: N/A
+[2025-09-18 22:10:49] Memory allocated: N/AMB
+[2025-09-18 22:10:49] Time limit: N/A
+[2025-09-18 22:10:49] User: ing-bwrxrp
+[2025-09-18 22:10:49] System information:
+[2025-09-18 22:10:49]   - CPU info: 2 cores available
+[2025-09-18 22:10:49]   - Memory: 2.0Ti total
+[2025-09-18 22:10:49]   - Disk space: 8.0E available
+[2025-09-18 22:10:49] GPU information:
+[2025-09-18 22:10:49]   - GPU: NVIDIA H100 80GB HBM3, 81559, 80995
+[2025-09-18 22:10:49] Checking required files...
+[2025-09-18 22:10:49]   ✓ Video file found: ABODA/video2.avi (6.0M)
+[2025-09-18 22:10:49]   ✓ Triton client script found
+[2025-09-18 22:10:49]   ✓ Model3 script found
+[2025-09-18 22:10:49] Python environment check...
+[2025-09-18 22:10:49]   ✓ UV package manager found: uv 0.8.14
+[2025-09-18 22:10:49] ==================================
+[2025-09-18 22:10:49] DETECTING TRITON SERVER
+[2025-09-18 22:10:49] ==================================
+[2025-09-18 22:10:49] ✓ Detected Triton server on node: gpu001
+[2025-09-18 22:10:49] ✓ Retrieved Triton server ports: HTTP=8073, gRPC=8916, Metrics=8446
+[2025-09-18 22:10:49] ==================================
+[2025-09-18 22:10:49] WAITING FOR TRITON SERVER
+[2025-09-18 22:10:49] ==================================
+[2025-09-18 22:10:49] Checking Triton server availability at gpu001:8073...
+Waiting for Triton server on node: gpu001:8073
+Waiting for server... (0s/300s elapsed)
+Waiting for server... (5s/300s elapsed)
+Waiting for server... (10s/300s elapsed)
+Waiting for server... (15s/300s elapsed)
+Waiting for server... (20s/300s elapsed)
+Waiting for server... (25s/300s elapsed)
+Waiting for server... (30s/300s elapsed)
+Waiting for server... (35s/300s elapsed)
+Waiting for server... (40s/300s elapsed)
+Waiting for server... (45s/300s elapsed)
+Waiting for server... (50s/300s elapsed)
+Waiting for server... (55s/300s elapsed)
+Waiting for server... (60s/300s elapsed)
+Waiting for server... (65s/300s elapsed)
+Waiting for server... (70s/300s elapsed)
+Waiting for server... (75s/300s elapsed)
+Waiting for server... (80s/300s elapsed)
+Waiting for server... (85s/300s elapsed)
+Waiting for server... (90s/300s elapsed)
+Waiting for server... (95s/300s elapsed)
+Waiting for server... (100s/300s elapsed)
+Waiting for server... (105s/300s elapsed)
+Waiting for server... (110s/300s elapsed)
+Waiting for server... (115s/300s elapsed)
+Waiting for server... (120s/300s elapsed)
+Waiting for server... (125s/300s elapsed)
+Waiting for server... (130s/300s elapsed)
+Waiting for server... (135s/300s elapsed)
+Waiting for server... (140s/300s elapsed)
+Waiting for server... (145s/300s elapsed)
+Waiting for server... (150s/300s elapsed)
+Waiting for server... (155s/300s elapsed)
+Waiting for server... (160s/300s elapsed)
+Waiting for server... (165s/300s elapsed)
+Waiting for server... (170s/300s elapsed)
+Waiting for server... (175s/300s elapsed)
+Waiting for server... (180s/300s elapsed)
+Waiting for server... (185s/300s elapsed)
+Waiting for server... (190s/300s elapsed)
+Waiting for server... (195s/300s elapsed)
+Waiting for server... (200s/300s elapsed)
+Waiting for server... (205s/300s elapsed)
+Waiting for server... (210s/300s elapsed)
+Waiting for server... (215s/300s elapsed)
+Waiting for server... (220s/300s elapsed)
+Waiting for server... (225s/300s elapsed)
+Waiting for server... (230s/300s elapsed)
+Waiting for server... (235s/300s elapsed)
+Waiting for server... (240s/300s elapsed)
+Waiting for server... (245s/300s elapsed)
+Waiting for server... (250s/300s elapsed)
+Waiting for server... (255s/300s elapsed)
+Waiting for server... (260s/300s elapsed)
+Waiting for server... (265s/300s elapsed)
+Waiting for server... (270s/300s elapsed)
+Waiting for server... (275s/300s elapsed)
+Waiting for server... (280s/300s elapsed)
+Waiting for server... (285s/300s elapsed)
+Waiting for server... (290s/300s elapsed)
+Waiting for server... (295s/300s elapsed)
+ERROR: Triton server not ready after 300 seconds
+[2025-09-18 22:15:50] ✗ ERROR: Triton server not ready after 300 seconds
+[2025-09-18 22:15:50] Troubleshooting information:
+[2025-09-18 22:15:50]   - Check if Triton server is running: squeue -u ing-bwrxrp
+[2025-09-18 22:15:50]   - Check Triton logs for errors
