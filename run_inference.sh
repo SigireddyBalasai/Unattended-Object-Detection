@@ -324,6 +324,20 @@ run_inference() {
         return 1
     fi
     
+    # Final connection verification before starting Python script
+    print_colored "$BLUE" "🔍 Performing final connection check before inference..."
+    if ! test_triton_health; then
+        print_colored "$RED" "❌ Connection check failed. Server may have become unavailable."
+        return 1
+    fi
+    
+    if ! test_model_ready "$model_name"; then
+        print_colored "$RED" "❌ Model '$model_name' is not ready for inference."
+        return 1
+    fi
+    
+    print_colored "$GREEN" "✅ Final connection check passed. Starting inference..."
+    
     # Check if uv is available and use it, otherwise fall back to python
     local python_cmd
     if command -v uv &> /dev/null; then
