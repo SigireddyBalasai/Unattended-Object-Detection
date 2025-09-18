@@ -49,6 +49,11 @@ check_dependencies() {
         fi
     done
     
+    # Check for uv or python
+    if ! command -v uv &> /dev/null && ! command -v python3 &> /dev/null && ! command -v python &> /dev/null; then
+        missing+=("uv or python3/python")
+    fi
+    
     if [ ${#missing[@]} -ne 0 ]; then
         print_colored "$RED" "❌ Error: Missing required commands: ${missing[*]}"
         print_colored "$YELLOW" "Please install the missing commands and try again."
@@ -267,18 +272,25 @@ run_inference() {
         return 1
     fi
     
-    # Check if Python is available
-    if ! command -v python3 &> /dev/null && ! command -v python &> /dev/null; then
-        print_colored "$RED" "❌ Error: Python not found!"
-        print_colored "$YELLOW" "Please install Python 3 and try again."
-        return 1
-    fi
-    
-    # Use python3 if available, otherwise python
-    local python_cmd="python3"
-    if ! command -v python3 &> /dev/null; then
-        python_cmd="python"
-        print_colored "$YELLOW" "⚠️ Using 'python' instead of 'python3'. Make sure it's Python 3."
+    # Check if uv is available and use it, otherwise fall back to python
+    local python_cmd
+    if command -v uv &> /dev/null; then
+        print_colored "$BLUE" "🐍 Using uv-managed Python environment"
+        python_cmd="uv run python"
+    else
+        # Check if Python is available
+        if ! command -v python3 &> /dev/null && ! command -v python &> /dev/null; then
+            print_colored "$RED" "❌ Error: Python not found!"
+            print_colored "$YELLOW" "Please install Python 3 or uv and try again."
+            return 1
+        fi
+        
+        # Use python3 if available, otherwise python
+        python_cmd="python3"
+        if ! command -v python3 &> /dev/null; then
+            python_cmd="python"
+            print_colored "$YELLOW" "⚠️ Using 'python' instead of 'python3'. Make sure it's Python 3."
+        fi
     fi
     
     # Run the inference using model3.py
