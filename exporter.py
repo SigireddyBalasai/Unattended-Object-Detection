@@ -1,0 +1,7 @@
+from ultralytics import RTDETR
+import os
+
+model = RTDETR("rtdetr-l.pt")
+model.export(format="engine", dynamic=True)  # export to TensorRT engine with dynamic shape
+os.makedirs("model_repository/rtdetr_tensorrt/1", exist_ok=True)
+os.rename("model.engine", "model_repository/rtdetr_tensorrt/1/model.plan")

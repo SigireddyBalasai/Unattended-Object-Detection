@@ -25,11 +25,7 @@ fi
 
 # Convert ONNX to TensorRT plan
 echo "Converting model.onnx to model.plan..."
-trtexec --onnx=/models/rtdetr_tensorrt/1/model.onnx \
-        --saveEngine=/models/rtdetr_tensorrt/1/model.plan \
-        --fp16 \
-        --workspace=1073741824 \
-        --verbose
+uv run exporter.py
 
 if [ -f "/models/rtdetr_tensorrt/1/model.plan" ]; then
     echo "Conversion completed successfully!"
