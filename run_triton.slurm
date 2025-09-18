@@ -37,14 +37,6 @@ echo "Using model repo: ${MODEL_REPO}"
 # Pull Triton container image (non-fatal if fails)
 docker pull nvcr.io/nvidia/tritonserver:24.08-py3 || true
 
-# Check if Triton server is already running
-echo "Checking if Triton server is already running..."
-if curl -s http://localhost:8000/v2/health/ready >/dev/null 2>&1; then
-    echo "Triton server is already running on localhost:8000"
-    echo "Not starting a new instance."
-    exit 0
-fi
-
 echo "No existing Triton server found. Starting new instance..."
 
 # Launch Triton container
