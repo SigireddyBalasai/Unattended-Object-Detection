@@ -14,8 +14,8 @@ TARGET_OBJECT_CLASSES = {
     26: 'handbag',
     28: 'suitcase',
 }
-PROXIMITY_THRESHOLD = 100  # pixels
-UNATTENDED_TIME_SEC = 30
+PROXIMITY_THRESHOLD = 450  # pixels
+UNATTENDED_TIME_SEC = 15
 PROCESS_EVERY_N_FRAMES = 5  # process every 5th frame
 LOG_FILE = "alerts.log"
 
