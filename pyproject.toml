@@ -14,6 +14,7 @@ dependencies = [
     "opencv-python>=4.8.0",
     "numpy>=1.24.0",
     "websocket>=0.2.1",
+    "ultralytics>=8.3.202",
 ]
 
 [dependency-groups]
