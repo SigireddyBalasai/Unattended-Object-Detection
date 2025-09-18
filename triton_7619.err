@@ -1,1 +1,0 @@
-docker: Error response from daemon: driver failed programming external connectivity on endpoint loving_hamilton (e4af305dcfda1f94c4c84d2b69347ee97ac64629857f7864863f4d61f85b0545): failed to bind port 0.0.0.0:8000/tcp: Error starting userland proxy: error while calling PortManager.AddPort(): listen tcp4 0.0.0.0:8000: bind: address already in use.
