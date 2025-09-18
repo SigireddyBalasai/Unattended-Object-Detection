@@ -172,7 +172,7 @@ def unattended_object_alert(predictions, current_time, tracking_state):
     return alerts
 
 # === Main Prediction Loop ===
-def get_video_predictions(video_path):
+def get_video_predictions(video_path, model_name="rtdetr_tensorrt", conf_threshold=0.5):
     # Get Triton server URL from cluster configuration
     triton_url = get_triton_server_url()
     print(f"Connecting to Triton server at: {triton_url}")
@@ -207,7 +207,7 @@ def get_video_predictions(video_path):
                 inputs.append(input_tensor)
 
                 try:
-                    results = client.infer("rtdetr_tensorrt", inputs)
+                    results = client.infer(model_name, inputs)
                     output_names = results.get_response()["outputs"]
                     output_key = output_names[0]["name"] if output_names else "output0"
                     output = results.as_numpy(output_key)
@@ -216,7 +216,7 @@ def get_video_predictions(video_path):
                     break
 
                 current_time = frame_count / video_fps
-                predictions = postprocess_output(output, orig_shape, conf_threshold=0.3)
+                predictions = postprocess_output(output, orig_shape, conf_threshold)
                 alerts = unattended_object_alert(predictions, current_time, tracking_state)
 
                 yield {
@@ -228,11 +228,14 @@ def get_video_predictions(video_path):
                 }
 
             frame_count += 1
+            if frame_count % 100 == 0:
+                print(f"Processed {frame_count} frames...")
     finally:
         cap.release()
+        print(f"Video capture released. Total frames in video: {frame_count}")
 
 # === Draw and save video ===
-def save_output_video(input_video_path, output_video_path):
+def save_output_video(input_video_path, output_video_path, model_name="rtdetr_tensorrt", conf_threshold=0.5):
     cap = cv2.VideoCapture(input_video_path)
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -242,8 +245,10 @@ def save_output_video(input_video_path, output_video_path):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = cv2.VideoWriter(output_video_path, fourcc, fps, (width, height))
 
+    processed_frames = 0
+    total_alerts = 0
     try:
-        for result in get_video_predictions(input_video_path):
+        for result in get_video_predictions(input_video_path, model_name, conf_threshold):
             frame = result['frame_img']
             predictions = result['predictions']
             alerts = result['alerts']
@@ -265,9 +270,16 @@ def save_output_video(input_video_path, output_video_path):
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
             out.write(frame)
+            processed_frames += 1
+            total_alerts += len(alerts)
     finally:
         out.release()
-        print(f"✅ Saved output video to {output_video_path}")
+        if processed_frames > 0:
+            print(f"✅ Saved output video to {output_video_path}")
+            print(f"📊 Processed {processed_frames} frames with detections")
+            print(f"⚠️ Total unattended alerts: {total_alerts}")
+        else:
+            print("⚠️ No frames processed, output video may be empty or invalid")
 
 # === Example usage ===
 if __name__ == "__main__":
@@ -277,6 +289,8 @@ if __name__ == "__main__":
     parser.add_argument("--input", default="ABODA/video11.avi", help="Input video path")
     parser.add_argument("--output", default="output_final.mp4", help="Output video path")
     parser.add_argument("--triton-url", default=None, help="Triton server URL (e.g., gpu001:8000)")
+    parser.add_argument("--model-name", default="rtdetr_tensorrt", help="Model name for inference")
+    parser.add_argument("--conf-threshold", type=float, default=0.5, help="Confidence threshold for detections")
     
     args = parser.parse_args()
     
@@ -291,7 +305,7 @@ if __name__ == "__main__":
     print(f"Output will be saved to: {args.output}")
     
     try:
-        save_output_video(args.input, args.output)
+        save_output_video(args.input, args.output, args.model_name, args.conf_threshold)
         print("✅ Video processing completed successfully!")
     except Exception as e:
         print(f"✗ Error during video processing: {e}")

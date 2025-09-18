@@ -88,7 +88,7 @@ test_triton_health() {
             fi
 
             # Test inference readiness for our specific model
-            if ! curl -s --max-time 5 "http://$triton_node:8000/v2/models/rtdetr_tensorrt/ready" >/dev/null 2>&1; then
+            if ! curl -s --max-time 5 "http://$triton_node:8000/v2/models/$MODEL_NAME/ready" >/dev/null 2>&1; then
                 print_colored "$YELLOW" "⚠️ Model readiness check failed"
                 return 1
             fi
@@ -331,7 +331,7 @@ run_inference() {
     print_colored "$BLUE" "🔍 Features: Unattended object detection with tracking and alerts"
     
     # Check if model repository exists
-    local model_repo="$SCRIPT_DIR/model_repository/$MODEL_NAME"
+    local model_repo="$SCRIPT_DIR/model_repository/$model_name"
     if [ ! -d "$model_repo" ]; then
         print_colored "$RED" "❌ Error: Model repository not found at $model_repo"
         print_colored "$YELLOW" "Please ensure the model is properly installed."
@@ -377,27 +377,45 @@ run_inference() {
         fi
     fi
     
-    # Run the inference using model3.py
+    # Run the inference using model3.py with retry logic
     print_colored "$YELLOW" "🔄 Running unattended object detection... (This may take a while)"
     print_colored "$YELLOW" "📊 Processing will include: person detection, object tracking, and unattended alerts"
     
-    if $python_cmd "$MODEL3_SCRIPT" \
-        --input "$video_path" \
-        --output "$output_path" \
-        --triton-url "$server_url"; then
-        print_colored "$GREEN" "✅ Unattended object detection completed successfully!"
+    local max_retries=3
+    local retry_delay=10
+    local attempt=1
+    
+    while [ $attempt -le $max_retries ]; do
+        print_colored "$BLUE" "🔄 Inference attempt $attempt/$max_retries..."
         
-        # Check if alerts log was created
-        if [ -f "alerts.log" ]; then
-            local alert_count=$(wc -l < "alerts.log" 2>/dev/null || echo "0")
-            print_colored "$BLUE" "📋 Alerts generated: $alert_count (see alerts.log for details)"
+        if $python_cmd "$MODEL3_SCRIPT" \
+            --input "$video_path" \
+            --output "$output_path" \
+            --triton-url "$server_url" \
+            --model-name "$model_name" \
+            --conf-threshold "$conf_threshold"; then
+            print_colored "$GREEN" "✅ Unattended object detection completed successfully!"
+            
+            # Check if alerts log was created
+            if [ -f "alerts.log" ]; then
+                local alert_count=$(wc -l < "alerts.log" 2>/dev/null || echo "0")
+                print_colored "$BLUE" "📋 Alerts generated: $alert_count (see alerts.log for details)"
+            fi
+            
+            return 0
+        else
+            print_colored "$RED" "❌ Inference attempt $attempt failed!"
+            if [ $attempt -lt $max_retries ]; then
+                print_colored "$YELLOW" "⏳ Retrying in $retry_delay seconds..."
+                sleep $retry_delay
+            fi
         fi
         
-        return 0
-    else
-        print_colored "$RED" "❌ Unattended object detection failed!"
-        return 1
-    fi
+        attempt=$((attempt + 1))
+    done
+    
+    print_colored "$RED" "❌ All inference attempts failed after $max_retries tries!"
+    return 1
 }
 
 # Function to show summary
@@ -567,6 +585,7 @@ Features:
     - Automatic Triton server health checking via cluster state
     - Auto-starts Triton server using SLURM if not running
     - **60-second retry logic for server connection with automatic server creation**
+    - **3-attempt retry logic for inference execution with 10-second delays**
     - Interactive video file selection
     - Unattended object detection with tracking and alerting
     - Person and target object detection (backpack, handbag, suitcase)
