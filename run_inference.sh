@@ -163,7 +163,7 @@ get_user_selection() {
     local video_count=${#video_files[@]}
     
     while true; do
-        echo -en "\n${CYAN}Enter video number (1-$video_count) or 'q' to quit: ${RESET}"
+        echo -e "\n${CYAN}Enter video number (1-$video_count) or 'q' to quit: ${RESET}"
         read -r selection
         
         # Trim whitespace from selection
