@@ -181,7 +181,7 @@ get_user_selection() {
     
     while true; do
         print_colored "$CYAN" "Enter video number (1-$video_count) or 'q' to quit: "
-        if ! read -r -t 60 selection; then
+        if ! read -r -t 60 selection < /dev/tty; then
             print_colored "$RED" "❌ Timeout: No input received within 60 seconds"
             return 1
         fi
