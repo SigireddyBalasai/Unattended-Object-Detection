@@ -5,6 +5,12 @@ set -e
 
 echo "Starting ONNX to TensorRT conversion..."
 
+# If .engine file exists, do nothing
+if [ -f "/models/rtdetr_tensorrt/1/model.engine" ]; then
+    echo ".engine file already exists. Skipping conversion."
+    exit 0
+fi
+
 # Check if ONNX file exists
 if [ ! -f "/models/rtdetr_tensorrt/1/model.onnx" ]; then
     echo "Error: model.onnx not found at /models/rtdetr_tensorrt/1/model.onnx"
