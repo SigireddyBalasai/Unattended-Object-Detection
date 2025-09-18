@@ -1,0 +1,1 @@
+docker: Error response from daemon: driver failed programming external connectivity on endpoint dreamy_swirles (7d26ebd71bf7df9946d724562cc75d8553a7c7876a732dd33117a5c0cd904f38): failed to bind port 0.0.0.0:8000/tcp: Error starting userland proxy: error while calling PortManager.AddPort(): listen tcp4 0.0.0.0:8000: bind: address already in use.

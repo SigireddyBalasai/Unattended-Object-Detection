@@ -1,0 +1,1 @@
+docker: Error response from daemon: driver failed programming external connectivity on endpoint focused_allen (19ca73593be31678bf756a50edae7bf58a45f0d5823cfe71d6c9da7100303013): failed to bind port 0.0.0.0:8000/tcp: Error starting userland proxy: error while calling PortManager.AddPort(): listen tcp4 0.0.0.0:8000: bind: address already in use.
