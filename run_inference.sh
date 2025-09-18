@@ -137,6 +137,9 @@ connect_to_triton_with_retry() {
         return 1
     fi
 }
+
+# Function to start Triton server using manage_jobs.sh
+start_triton_server() {
     print_colored "$CYAN" "🚀 Starting Triton Inference Server using manage_jobs.sh..."
     
     # Check if manage_jobs.sh exists
