@@ -118,7 +118,7 @@ get_server_url() {
 
 # Function to find video files
 find_video_files() {
-    print_colored "$CYAN" "🔍 Searching for video files..."
+    print_colored "$CYAN" "🔍 Searching for video files..." >&2
     
     # Find video files excluding outputs directory and files starting with "output_"
     find "$SCRIPT_DIR" -type f \( \
@@ -166,16 +166,24 @@ get_user_selection() {
         echo -en "\n${CYAN}Enter video number (1-$video_count) or 'q' to quit: ${RESET}"
         read -r selection
         
+        # Trim whitespace from selection
+        selection=$(echo "$selection" | tr -d '[:space:]')
+        
         if [[ "$selection" == "q" || "$selection" == "Q" ]]; then
             return 1
         fi
         
-        if [[ "$selection" =~ ^[0-9]+$ ]] && [ "$selection" -ge 1 ] && [ "$selection" -le "$video_count" ]; then
-            echo $((selection - 1))
-            return 0
+        # Check if selection is a valid number
+        if [[ "$selection" =~ ^[0-9]+$ ]]; then
+            if [ "$selection" -ge 1 ] && [ "$selection" -le "$video_count" ]; then
+                echo $((selection - 1))
+                return 0
+            else
+                print_colored "$RED" "❌ Invalid selection. Please enter a number between 1 and $video_count"
+            fi
+        else
+            print_colored "$RED" "❌ Invalid input. Please enter a number between 1 and $video_count or 'q' to quit"
         fi
-        
-        print_colored "$RED" "❌ Invalid selection. Please enter a number between 1 and $video_count"
     done
 }
 
