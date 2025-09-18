@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import subprocess
+import time
 from tritonclient.http import InferenceServerClient, InferInput
 from tritonclient.utils import InferenceServerException
 
@@ -158,7 +159,7 @@ def unattended_object_alert(predictions, current_time, tracking_state):
                     }
                     alerts.append(alert_data)
                     logging.info(json.dumps(alert_data))
-                    print(f"⚠️ ALERT: {alert_data}")
+                    print(f"🚨 ALERT: {alert_data['object']} unattended for {current_time - last_seen:.1f}s")
                     tracking_state[obj_id]['alerted'] = True
             else:
                 tracking_state[obj_id] = {
@@ -192,11 +193,13 @@ def get_video_predictions(video_path, model_name="rtdetr_tensorrt", conf_thresho
     video_fps = int(cap.get(cv2.CAP_PROP_FPS)) or 30
     frame_count = 0
     tracking_state = {}
+    print(f"🎬 Opened video: {video_fps} fps, starting inference...")
 
     try:
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
+                print(f"📹 End of video reached at frame {frame_count}")
                 break
 
             if frame_count % PROCESS_EVERY_N_FRAMES == 0:
@@ -219,6 +222,12 @@ def get_video_predictions(video_path, model_name="rtdetr_tensorrt", conf_thresho
                 predictions = postprocess_output(output, orig_shape, conf_threshold)
                 alerts = unattended_object_alert(predictions, current_time, tracking_state)
 
+                # Log detection summary for this frame
+                person_count = sum(1 for p in predictions if p['class_id'] == PERSON_CLASS_ID)
+                object_count = sum(1 for p in predictions if p['class_id'] in TARGET_OBJECT_CLASSES)
+                if predictions:
+                    print(f"🎯 Frame {frame_count}: {len(predictions)} detections ({person_count} persons, {object_count} objects)")
+
                 yield {
                     "frame": frame_count,
                     "time_sec": current_time,
@@ -236,22 +245,37 @@ def get_video_predictions(video_path, model_name="rtdetr_tensorrt", conf_thresho
 
 # === Draw and save video ===
 def save_output_video(input_video_path, output_video_path, model_name="rtdetr_tensorrt", conf_threshold=0.5):
+    print(f"🎬 Loading input video: {input_video_path}")
     cap = cv2.VideoCapture(input_video_path)
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = int(cap.get(cv2.CAP_PROP_FPS)) or 30
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     cap.release()
+    
+    print(f"📊 Video properties: {width}x{height} @ {fps}fps, {total_frames} total frames")
+    print(f"🎯 Output video: {output_video_path}")
+    print(f"🤖 Using model: {model_name} with confidence threshold: {conf_threshold}")
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = cv2.VideoWriter(output_video_path, fourcc, fps, (width, height))
+    print(f"📝 Video writer initialized: {width}x{height}, {fps}fps")
 
     processed_frames = 0
     total_alerts = 0
+    start_time = time.time()
+    
     try:
         for result in get_video_predictions(input_video_path, model_name, conf_threshold):
             frame = result['frame_img']
             predictions = result['predictions']
             alerts = result['alerts']
+
+            # Log frame processing details
+            if processed_frames % 100 == 0 or processed_frames == 0:
+                elapsed = time.time() - start_time
+                fps_processed = processed_frames / elapsed if elapsed > 0 else 0
+                print(f"🔄 Processed {processed_frames}/{total_frames} frames ({fps_processed:.1f} fps)")
 
             # Draw detections
             for det in predictions:
@@ -260,7 +284,7 @@ def save_output_video(input_video_path, output_video_path, model_name="rtdetr_te
                 color = (255, 0, 0) if class_id == PERSON_CLASS_ID else (0, 255, 0)
                 label = TARGET_OBJECT_CLASSES.get(class_id, "person" if class_id==0 else str(class_id))
                 cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-                cv2.putText(frame, label, (x1, y1-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                cv2.putText(frame, f"{label} {det['confidence']:.2f}", (x1, y1-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
             # Draw unattended alerts
             for alert in alerts:
@@ -272,12 +296,20 @@ def save_output_video(input_video_path, output_video_path, model_name="rtdetr_te
             out.write(frame)
             processed_frames += 1
             total_alerts += len(alerts)
+            
+            # Log alerts as they happen
+            if alerts:
+                print(f"⚠️ Frame {result['frame']}: {len(alerts)} alert(s) - {[a['object'] for a in alerts]}")
     finally:
         out.release()
+        total_time = time.time() - start_time
+        avg_fps = processed_frames / total_time if total_time > 0 else 0
+        
         if processed_frames > 0:
             print(f"✅ Saved output video to {output_video_path}")
             print(f"📊 Processed {processed_frames} frames with detections")
             print(f"⚠️ Total unattended alerts: {total_alerts}")
+            print(f"⏱️ Processing time: {total_time:.1f}s ({avg_fps:.1f} fps)")
         else:
             print("⚠️ No frames processed, output video may be empty or invalid")
 

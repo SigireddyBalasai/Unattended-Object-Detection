@@ -376,6 +376,7 @@ run_inference() {
             print_colored "$YELLOW" "⚠️ Using 'python' instead of 'python3'. Make sure it's Python 3."
         fi
     fi
+    print_colored "$GREEN" "✅ Python command: $python_cmd"
     
     # Run the inference using model3.py with retry logic
     print_colored "$YELLOW" "🔄 Running unattended object detection... (This may take a while)"
@@ -387,6 +388,10 @@ run_inference() {
     
     while [ $attempt -le $max_retries ]; do
         print_colored "$BLUE" "🔄 Inference attempt $attempt/$max_retries..."
+        local attempt_start=$(date +%s)
+        
+        local full_command="$python_cmd \"$MODEL3_SCRIPT\" --input \"$video_path\" --output \"$output_path\" --triton-url \"$server_url\" --model-name \"$model_name\" --conf-threshold \"$conf_threshold\""
+        print_colored "$BLUE" "📝 Executing: $full_command"
         
         if $python_cmd "$MODEL3_SCRIPT" \
             --input "$video_path" \
@@ -394,7 +399,8 @@ run_inference() {
             --triton-url "$server_url" \
             --model-name "$model_name" \
             --conf-threshold "$conf_threshold"; then
-            print_colored "$GREEN" "✅ Unattended object detection completed successfully!"
+            local attempt_duration=$(($(date +%s) - attempt_start))
+            print_colored "$GREEN" "✅ Inference attempt $attempt completed successfully in ${attempt_duration} seconds!"
             
             # Check if alerts log was created
             if [ -f "alerts.log" ]; then
@@ -404,7 +410,8 @@ run_inference() {
             
             return 0
         else
-            print_colored "$RED" "❌ Inference attempt $attempt failed!"
+            local attempt_duration=$(($(date +%s) - attempt_start))
+            print_colored "$RED" "❌ Inference attempt $attempt failed after ${attempt_duration} seconds!"
             if [ $attempt -lt $max_retries ]; then
                 print_colored "$YELLOW" "⏳ Retrying in $retry_delay seconds..."
                 sleep $retry_delay
@@ -488,75 +495,108 @@ trap cleanup EXIT
 
 # Main function
 main() {
-    # Check dependencies first
-    check_dependencies
-    
-    print_colored "$CYAN" "🚀 Unattended Object Detection - Inference Runner"
+    local start_time=$(date +%s)
+    print_colored "$CYAN" "🚀 Starting Unattended Object Detection - Inference Runner at $(date)"
+    print_colored "$CYAN" "📋 Arguments: MODEL_NAME='${1:-rtdetr_tensorrt}' CONF_THRESHOLD='${2:-0.5}'"
+    print_colored "$CYAN" "📂 Working directory: $(pwd)"
     print_colored "$CYAN" "$(printf '=%.0s' {1..60})"
+    
+    # Check dependencies first
+    print_colored "$BLUE" "🔧 Checking system dependencies..."
+    check_dependencies
+    print_colored "$GREEN" "✅ Dependencies check completed"
     
     # Step 1: Connect to Triton server with retry logic
     print_colored "$CYAN" "🔍 Checking Triton server status..."
+    local triton_start=$(date +%s)
     
     if ! connect_to_triton_with_retry; then
-        print_colored "$RED" "❌ Failed to establish Triton server connection. Exiting."
+        print_colored "$RED" "❌ Failed to establish Triton server connection after $(($(date +%s) - triton_start)) seconds. Exiting."
         exit 1
     fi
     
+    print_colored "$GREEN" "✅ Triton server connection established in $(($(date +%s) - triton_start)) seconds"
+    
     # Verify model is ready
+    print_colored "$BLUE" "🤖 Verifying model '$MODEL_NAME' readiness..."
     if ! test_model_ready "$MODEL_NAME"; then
         print_colored "$RED" "❌ Model '$MODEL_NAME' is not ready"
         
         # Show cluster info for debugging
         if [ -f "$MANAGE_JOBS_SCRIPT" ]; then
-            print_colored "$YELLOW" "🔍 Checking cluster status..."
+            print_colored "$YELLOW" "🔍 Checking cluster status for debugging..."
             "$MANAGE_JOBS_SCRIPT" cluster-info
         fi
         exit 1
     fi
     
-    print_colored "$GREEN" "✅ Model '$MODEL_NAME' is ready"
+    print_colored "$GREEN" "✅ Model '$MODEL_NAME' is ready for inference"
     
     # Step 2: Find video files
+    print_colored "$BLUE" "🔍 Searching for video files in repository..."
     mapfile -t video_files < <(find_video_files)
     
     if [ ${#video_files[@]} -eq 0 ]; then
         print_colored "$RED" "❌ No video files found in the repository!"
+        print_colored "$YELLOW" "📂 Searched in: $(pwd)"
+        print_colored "$YELLOW" "🔍 Supported formats: mp4, avi, mov, mkv, wmv, flv, webm, m4v"
+        print_colored "$YELLOW" "🚫 Excluded directories: outputs/, files starting with 'output_'"
         print_colored "$YELLOW" "Please add video files to the repository and try again."
         exit 1
     fi
     
-    print_colored "$GREEN" "✅ Found ${#video_files[@]} video file(s)"
+    print_colored "$GREEN" "✅ Found ${#video_files[@]} video file(s):"
+    for i in "${!video_files[@]}"; do
+        local file="${video_files[$i]}"
+        local filename=$(basename "$file")
+        print_colored "$BLUE" "   $((i+1)). $filename (${file#$SCRIPT_DIR/})"
+    done
     
     # Step 3: Show video selection menu
+    print_colored "$BLUE" "📋 Displaying video selection menu..."
     show_video_selection "${video_files[@]}"
     
     # Step 4: Get user selection
+    print_colored "$BLUE" "⌨️ Waiting for user video selection..."
     if ! selected_index=$(get_user_selection "${video_files[@]}"); then
-        print_colored "$CYAN" "👋 Goodbye!"
+        print_colored "$CYAN" "👋 User cancelled selection. Goodbye!"
         exit 0
     fi
     
     selected_video="${video_files[$selected_index]}"
     selected_filename=$(basename "$selected_video")
-    print_colored "$GREEN" "✅ Selected: $selected_filename"
+    print_colored "$GREEN" "✅ User selected: $selected_filename (index: $selected_index)"
     
     # Step 5: Generate unique output path
+    print_colored "$BLUE" "📁 Generating unique output path..."
     mkdir -p "$OUTPUT_DIR"
     output_path=$(generate_output_path "$selected_video")
+    print_colored "$GREEN" "✅ Output will be saved to: $output_path"
     
     # Step 6: Run inference
+    print_colored "$BLUE" "🎯 Starting inference process..."
+    local inference_start=$(date +%s)
     if run_inference "$selected_video" "$output_path" "$MODEL_NAME" "$CONF_THRESHOLD"; then
         success="true"
+        local inference_duration=$(($(date +%s) - inference_start))
+        print_colored "$GREEN" "✅ Inference completed successfully in ${inference_duration} seconds"
     else
         success="false"
+        local inference_duration=$(($(date +%s) - inference_start))
+        print_colored "$RED" "❌ Inference failed after ${inference_duration} seconds"
     fi
     
     # Step 7: Show summary
     show_summary "$selected_video" "$output_path" "$success"
     
+    local total_duration=$(($(date +%s) - start_time))
+    print_colored "$CYAN" "⏱️ Total execution time: ${total_duration} seconds"
+    
     if [ "$success" = "true" ]; then
+        print_colored "$GREEN" "🎉 Process completed successfully!"
         exit 0
     else
+        print_colored "$RED" "💥 Process failed!"
         exit 1
     fi
 }
