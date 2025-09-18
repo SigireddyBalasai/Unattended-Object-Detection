@@ -86,7 +86,7 @@ def get_video_predictions(video_path):
             inputs.append(input_tensor)
             
             # Get predictions from Triton server
-            results = client.infer("rtdetr", inputs)
+            results = client.infer("rtdetr_tensorrt", inputs)
             
             # Convert results to numpy arrays
             outputs = []
