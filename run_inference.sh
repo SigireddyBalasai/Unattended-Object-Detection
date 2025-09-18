@@ -163,15 +163,14 @@ get_user_selection() {
     local video_count=${#video_files[@]}
     
     while true; do
-        printf "\n%sEnter video number (1-%d) or 'q' to quit: %s" "$CYAN" "$video_count" "$RESET"
+        print_colored "$CYAN" "Enter video number (1-$video_count) or 'q' to quit: "
         read -r selection
         
-        # Trim whitespace from selection
-        selection=$(printf "%s" "$selection" | tr -d '[:space:]')
+        # Trim whitespace and remove any ANSI escape sequences
+        selection=$(printf "%s" "$selection" | sed 's/\x1b\[[0-9;]*m//g' | tr -d '[:space:]')
         
-        # Debug: check what we actually received
+        # Additional validation to ensure selection contains only digits or q/Q
         if [[ -n "$selection" ]]; then
-            # Additional validation to ensure selection contains only digits
             selection=$(printf "%s" "$selection" | tr -cd '0-9qQ')
         fi
         
