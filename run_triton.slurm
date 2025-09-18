@@ -42,18 +42,6 @@ fi
 MODEL_REPO="$(pwd)/model_repository"
 echo "Using model repo: ${MODEL_REPO}"
 
-# Pull Triton container image (non-fatal if fails)
-docker pull nvcr.io/nvidia/tritonserver:24.08-py3 || true
-
-# Launch Triton container with conversion step
-echo "Converting ONNX to TensorRT..."
-docker run --rm \
-  --gpus all \
-  -v "${MODEL_REPO}:/models" \
-  -v "$(pwd)/convert_to_tensorrt.sh:/convert_to_tensorrt.sh" \
-  nvcr.io/nvidia/tritonserver:24.08-py3 \
-  bash -c "chmod +x /convert_to_tensorrt.sh && /convert_to_tensorrt.sh"
-
 echo "Starting Triton server..."
 
 # Launch Triton container
