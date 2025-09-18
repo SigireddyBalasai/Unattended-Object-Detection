@@ -32,11 +32,28 @@ CYAN='\033[0;36m'
 WHITE='\033[1;37m'
 RESET='\033[0m'
 
-# Function to print colored output
-print_colored() {
-    local color=$1
-    local message=$2
-    echo -e "${color}${message}${RESET}"
+# Function to check required commands
+check_dependencies() {
+    local missing=()
+    
+    for cmd in curl sed tr expr stat find; do
+        if ! command -v "$cmd" &> /dev/null; then
+            missing+=("$cmd")
+        fi
+    done
+    
+    if [ ${#missing[@]} -ne 0 ]; then
+        print_colored "$RED" "❌ Error: Missing required commands: ${missing[*]}"
+        print_colored "$YELLOW" "Please install the missing commands and try again."
+        exit 1
+    fi
+    
+    # Check for mapfile (bash 4+)
+    if ! type mapfile &> /dev/null; then
+        print_colored "$RED" "❌ Error: mapfile command not available (requires bash 4.0+)"
+        print_colored "$YELLOW" "Please upgrade bash or use a compatible shell."
+        exit 1
+    fi
 }
 
 # Function to test Triton server health using cluster config
@@ -148,7 +165,7 @@ show_video_selection() {
         local filename=$(basename "$file")
         local relative_path="${file#$SCRIPT_DIR/}"
         local size_bytes=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null || echo "0")
-        local size_kb=$((size_bytes / 1024))
+        local size_kb=$(expr $size_bytes / 1024)
         
         printf "${YELLOW}%d.${RESET} ${WHITE}%s${RESET} ${BLUE}(%s, %dKB)${RESET}\n" \
             $((i + 1)) "$filename" "$relative_path" "$size_kb"
@@ -164,7 +181,10 @@ get_user_selection() {
     
     while true; do
         print_colored "$CYAN" "Enter video number (1-$video_count) or 'q' to quit: "
-        read -r selection
+        if ! read -r -t 60 selection; then
+            print_colored "$RED" "❌ Timeout: No input received within 60 seconds"
+            return 1
+        fi
         
         # Trim whitespace and remove any ANSI escape sequences
         selection=$(printf "%s" "$selection" | sed 's/\x1b\[[0-9;]*m//g' | tr -d '[:space:]')
@@ -182,7 +202,7 @@ get_user_selection() {
         if [[ "$selection" =~ ^[0-9]+$ ]]; then
             if [ "$selection" -ge 1 ] && [ "$selection" -le "$video_count" ]; then
                 # Convert to zero-based index
-                local index=$((selection - 1))
+                local index=$(expr "$selection" - 1)
                 echo "$index"
                 return 0
             else
@@ -208,7 +228,7 @@ generate_output_path() {
     while [ -f "$output_path" ]; do
         output_filename="${basename}_inference_${timestamp}_${counter}.mp4"
         output_path="$OUTPUT_DIR/$output_filename"
-        counter=$((counter + 1))
+        counter=$(expr $counter + 1)
     done
     
     echo "$output_path"
@@ -232,15 +252,18 @@ run_inference() {
     print_colored "$BLUE" "🎚️ Confidence Threshold: $conf_threshold"
     print_colored "$BLUE" "🔍 Features: Unattended object detection with tracking and alerts"
     
-    # Check if model3.py exists
-    if [ ! -f "$MODEL3_SCRIPT" ]; then
-        print_colored "$RED" "❌ Error: Model3 script not found at $MODEL3_SCRIPT"
+    # Check if model repository exists
+    local model_repo="$SCRIPT_DIR/model_repository/$MODEL_NAME"
+    if [ ! -d "$model_repo" ]; then
+        print_colored "$RED" "❌ Error: Model repository not found at $model_repo"
+        print_colored "$YELLOW" "Please ensure the model is properly installed."
         return 1
     fi
     
     # Check if Python is available
     if ! command -v python3 &> /dev/null && ! command -v python &> /dev/null; then
         print_colored "$RED" "❌ Error: Python not found!"
+        print_colored "$YELLOW" "Please install Python 3 and try again."
         return 1
     fi
     
@@ -248,6 +271,7 @@ run_inference() {
     local python_cmd="python3"
     if ! command -v python3 &> /dev/null; then
         python_cmd="python"
+        print_colored "$YELLOW" "⚠️ Using 'python' instead of 'python3'. Make sure it's Python 3."
     fi
     
     # Run the inference using model3.py
@@ -291,7 +315,7 @@ show_summary() {
         
         if [ -f "$output_video" ]; then
             local output_size=$(stat -f%z "$output_video" 2>/dev/null || stat -c%s "$output_video" 2>/dev/null || echo "0")
-            local output_size_mb=$((output_size / 1024 / 1024))
+            local output_size_mb=$(expr $output_size / 1024 / 1024)
             print_colored "$BLUE" "📏 Output Size: ${output_size_mb} MB"
         fi
         
@@ -343,6 +367,9 @@ trap cleanup EXIT
 
 # Main function
 main() {
+    # Check dependencies first
+    check_dependencies
+    
     print_colored "$CYAN" "🚀 Unattended Object Detection - Inference Runner"
     print_colored "$CYAN" "$(printf '=%.0s' {1..60})"
     
