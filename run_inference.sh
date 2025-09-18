@@ -100,8 +100,43 @@ test_model_ready() {
     return 1
 }
 
-# Function to start Triton server using manage_jobs.sh
-start_triton_server() {
+# Function to connect to Triton server with retry logic (60 seconds timeout)
+connect_to_triton_with_retry() {
+    local max_attempts=60  # 60 seconds total
+    local attempt=1
+    local retry_interval=1  # 1 second between retries
+    
+    print_colored "$CYAN" "🔄 Attempting to connect to Triton server with retry logic..."
+    print_colored "$BLUE" "⏱️ Will retry for up to 60 seconds, then start new server if needed"
+    
+    while [ $attempt -le $max_attempts ]; do
+        print_colored "$YELLOW" "🔍 Connection attempt $attempt/$max_attempts..."
+        
+        if test_triton_health; then
+            print_colored "$GREEN" "✅ Triton server connection successful!"
+            return 0
+        fi
+        
+        if [ $attempt -lt $max_attempts ]; then
+            print_colored "$YELLOW" "⏳ Waiting ${retry_interval}s before retry..."
+            sleep $retry_interval
+        fi
+        
+        attempt=$((attempt + 1))
+    done
+    
+    # If we get here, all retries failed
+    print_colored "$RED" "❌ Triton server not responding after 60 seconds"
+    print_colored "$CYAN" "🚀 Starting new Triton server..."
+    
+    if start_triton_server; then
+        print_colored "$GREEN" "✅ New Triton server started successfully!"
+        return 0
+    else
+        print_colored "$RED" "❌ Failed to start new Triton server"
+        return 1
+    fi
+}
     print_colored "$CYAN" "🚀 Starting Triton Inference Server using manage_jobs.sh..."
     
     # Check if manage_jobs.sh exists
@@ -406,51 +441,27 @@ main() {
     print_colored "$CYAN" "🚀 Unattended Object Detection - Inference Runner"
     print_colored "$CYAN" "$(printf '=%.0s' {1..60})"
     
-    # Step 1: Check if Triton server is already running
+    # Step 1: Connect to Triton server with retry logic
     print_colored "$CYAN" "🔍 Checking Triton server status..."
     
-    if test_triton_health; then
-        if read_cluster_state; then
-            print_colored "$GREEN" "✅ Triton server is already running at ${TRITON_NODE:-unknown}:8000"
-            print_colored "$BLUE" "📊 Job ID: ${TRITON_JOB_ID:-unknown}, Type: ${JOB_TYPE:-unknown}"
-        else
-            print_colored "$GREEN" "✅ Triton server is running (cluster state not available)"
-        fi
-        
-        # Check if our model is ready
-        if test_model_ready "$MODEL_NAME"; then
-            print_colored "$GREEN" "✅ Model '$MODEL_NAME' is ready"
-        else
-            print_colored "$YELLOW" "⚠️ Model '$MODEL_NAME' is not ready. Checking available models..."
-            if read_cluster_state && [[ -n "${TRITON_NODE:-}" ]]; then
-                if available_models=$(curl -s "http://${TRITON_NODE}:8000/v2/models" 2>/dev/null); then
-                    print_colored "$BLUE" "Available models: $available_models"
-                else
-                    print_colored "$RED" "❌ Could not fetch available models"
-                fi
-            fi
-        fi
-    else
-        print_colored "$YELLOW" "❌ Triton server not found. Starting new instance..."
-        print_colored "$YELLOW" "💡 Tip: You can also set TRITON_URL environment variable to override server detection"
-        
-        if ! start_triton_server; then
-            print_colored "$RED" "❌ Failed to start Triton server. Exiting."
-            exit 1
-        fi
-        
-        # Verify model is ready
-        if ! test_model_ready "$MODEL_NAME"; then
-            print_colored "$RED" "❌ Model '$MODEL_NAME' is not ready after server start"
-            
-            # Show cluster info for debugging
-            if [ -f "$MANAGE_JOBS_SCRIPT" ]; then
-                print_colored "$YELLOW" "🔍 Checking cluster status..."
-                "$MANAGE_JOBS_SCRIPT" cluster-info
-            fi
-            exit 1
-        fi
+    if ! connect_to_triton_with_retry; then
+        print_colored "$RED" "❌ Failed to establish Triton server connection. Exiting."
+        exit 1
     fi
+    
+    # Verify model is ready
+    if ! test_model_ready "$MODEL_NAME"; then
+        print_colored "$RED" "❌ Model '$MODEL_NAME' is not ready"
+        
+        # Show cluster info for debugging
+        if [ -f "$MANAGE_JOBS_SCRIPT" ]; then
+            print_colored "$YELLOW" "🔍 Checking cluster status..."
+            "$MANAGE_JOBS_SCRIPT" cluster-info
+        fi
+        exit 1
+    fi
+    
+    print_colored "$GREEN" "✅ Model '$MODEL_NAME' is ready"
     
     # Step 2: Find video files
     mapfile -t video_files < <(find_video_files)
@@ -520,6 +531,7 @@ Features:
     - Integration with manage_jobs.sh for SLURM cluster management
     - Automatic Triton server health checking via cluster state
     - Auto-starts Triton server using SLURM if not running
+    - **60-second retry logic for server connection with automatic server creation**
     - Interactive video file selection
     - Unattended object detection with tracking and alerting
     - Person and target object detection (backpack, handbag, suitcase)
