@@ -32,6 +32,13 @@ CYAN='\033[0;36m'
 WHITE='\033[1;37m'
 RESET='\033[0m'
 
+# Function to print colored output
+print_colored() {
+    local color=$1
+    local message=$2
+    echo -e "${color}${message}${RESET}" >&2
+}
+
 # Function to check required commands
 check_dependencies() {
     local missing=()
