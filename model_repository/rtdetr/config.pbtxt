@@ -1,6 +1,18 @@
 name: "rtdetr"
 platform: "onnxruntime_onnx"
 max_batch_size: 0
+default_model_filename: "model.onnx"
+
+parameters [
+  {
+    key: "intra_op_thread_count"
+    value: { string_value: "1" }
+  },
+  {
+    key: "inter_op_thread_count"
+    value: { string_value: "1" }
+  }
+]
 
 input [
   {

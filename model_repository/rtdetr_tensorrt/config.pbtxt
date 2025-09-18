@@ -1,6 +1,7 @@
 name: "rtdetr_tensorrt"
 platform: "tensorrt_plan"
 max_batch_size: 0
+default_model_filename: "model.plan"
 
 input [
   {
