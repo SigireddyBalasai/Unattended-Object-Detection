@@ -74,13 +74,27 @@ test_triton_health() {
         local triton_node="${TRITON_NODE:-}"
         if [[ -n "$triton_node" ]]; then
             print_colored "$BLUE" "🔍 Testing Triton server at $triton_node:8000..."
-            if curl -s --max-time 10 "http://$triton_node:8000/v2/health/ready" >/dev/null 2>&1; then
-                print_colored "$GREEN" "✅ Triton server is responding"
-                return 0
-            else
-                print_colored "$YELLOW" "⚠️ Triton server not responding at $triton_node:8000"
+
+            # Test HTTP health endpoint
+            if ! curl -s --max-time 5 "http://$triton_node:8000/v2/health/ready" >/dev/null 2>&1; then
+                print_colored "$YELLOW" "⚠️ HTTP health check failed"
                 return 1
             fi
+
+            # Test model repository endpoint (more comprehensive check)
+            if ! curl -s --max-time 5 "http://$triton_node:8000/v2/repository/index" >/dev/null 2>&1; then
+                print_colored "$YELLOW" "⚠️ Model repository check failed"
+                return 1
+            fi
+
+            # Test inference readiness for our specific model
+            if ! curl -s --max-time 5 "http://$triton_node:8000/v2/models/rtdetr_tensorrt/ready" >/dev/null 2>&1; then
+                print_colored "$YELLOW" "⚠️ Model readiness check failed"
+                return 1
+            fi
+
+            print_colored "$GREEN" "✅ Triton server is responding (comprehensive check passed)"
+            return 0
         fi
     fi
     print_colored "$YELLOW" "⚠️ No cluster state found"
@@ -337,6 +351,10 @@ run_inference() {
     fi
     
     print_colored "$GREEN" "✅ Final connection check passed. Starting inference..."
+    
+    # Brief pause to ensure server stability
+    print_colored "$BLUE" "⏳ Allowing server to stabilize..."
+    sleep 2
     
     # Check if uv is available and use it, otherwise fall back to python
     local python_cmd
