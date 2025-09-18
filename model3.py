@@ -173,7 +173,7 @@ def unattended_object_alert(predictions, current_time, tracking_state):
     return alerts
 
 # === Main Prediction Loop ===
-def get_video_predictions(video_path, model_name="rtdetr_tensorrt", conf_threshold=0.5):
+def get_video_predictions(video_path, model_name="rtdetr", conf_threshold=0.5):
     # Get Triton server URL from cluster configuration
     triton_url = get_triton_server_url()
     print(f"Connecting to Triton server at: {triton_url}")
@@ -244,7 +244,7 @@ def get_video_predictions(video_path, model_name="rtdetr_tensorrt", conf_thresho
         print(f"Video capture released. Total frames in video: {frame_count}")
 
 # === Draw and save video ===
-def save_output_video(input_video_path, output_video_path, model_name="rtdetr_tensorrt", conf_threshold=0.5):
+def save_output_video(input_video_path, output_video_path, model_name="rtdetr", conf_threshold=0.5):
     print(f"🎬 Loading input video: {input_video_path}")
     cap = cv2.VideoCapture(input_video_path)
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -321,7 +321,7 @@ if __name__ == "__main__":
     parser.add_argument("--input", default="ABODA/video11.avi", help="Input video path")
     parser.add_argument("--output", default="output_final.mp4", help="Output video path")
     parser.add_argument("--triton-url", default=None, help="Triton server URL (e.g., gpu001:8000)")
-    parser.add_argument("--model-name", default="rtdetr_tensorrt", help="Model name for inference")
+    parser.add_argument("--model-name", default="rtdetr", help="Model name for inference")
     parser.add_argument("--conf-threshold", type=float, default=0.5, help="Confidence threshold for detections")
     
     args = parser.parse_args()

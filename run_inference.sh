@@ -8,7 +8,7 @@
 set -euo pipefail
 
 # Default configuration
-MODEL_NAME="${1:-rtdetr_tensorrt}"
+MODEL_NAME="${1:-rtdetr}"
 CONF_THRESHOLD="${2:-0.5}"
 
 # Script directory and paths
