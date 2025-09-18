@@ -17,18 +17,6 @@ if [ ! -f "/models/rtdetr_tensorrt/1/model.onnx" ]; then
     exit 1
 fi
 
-# Remove existing plan file if it exists
-if [ -f "/models/rtdetr_tensorrt/1/model.plan" ]; then
-    echo "Removing existing model.plan..."
-    rm -f "/models/rtdetr_tensorrt/1/model.plan"
-fi
-
-# Install trtexec if not available
-if ! command -v trtexec &> /dev/null; then
-    echo "trtexec not found, installing TensorRT tools..."
-    apt-get update && apt-get install -y libnvinfer-dev libnvinfer-plugin-dev
-fi
-
 # Convert ONNX to TensorRT plan
 echo "Converting model.onnx to model.plan..."
 uv run exporter.py
