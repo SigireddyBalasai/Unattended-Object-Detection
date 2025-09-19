@@ -17,7 +17,7 @@ TARGET_OBJECT_CLASSES = {
 }
 PROXIMITY_THRESHOLD = 450  # pixels
 UNATTENDED_TIME_SEC = 15
-PROCESS_EVERY_N_FRAMES = 5  # process every 5th frame
+PROCESS_EVERY_N_FRAMES = 1  # process every 5th frame
 LOG_FILE = "alerts.log"
 
 # === Logging setup ===
