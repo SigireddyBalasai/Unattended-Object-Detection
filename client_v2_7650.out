@@ -1,0 +1,876 @@
+[2025-09-18 23:16:19] ==================================
+[2025-09-18 23:16:19] TRITON CLIENT V2 JOB STARTING
+[2025-09-18 23:16:19] ==================================
+[2025-09-18 23:16:19] Job ID: 7650
+[2025-09-18 23:16:19] Job Name: triton-client-v2
+[2025-09-18 23:16:19] Node: gpu002
+[2025-09-18 23:16:19] Working directory: /home/ing-bwrxrp/Unattended-Object-Detection
+[2025-09-18 23:16:19] CPUs allocated: 2
+[2025-09-18 23:16:19] GPUs allocated: N/A
+[2025-09-18 23:16:19] Memory allocated: N/AMB
+[2025-09-18 23:16:19] Time limit: N/A
+[2025-09-18 23:16:19] User: ing-bwrxrp
+[2025-09-18 23:16:19] System information:
+[2025-09-18 23:16:19]   - CPU info: 2 cores available
+[2025-09-18 23:16:19]   - Memory: 2.0Ti total
+[2025-09-18 23:16:19]   - Disk space: 8.0E available
+[2025-09-18 23:16:19] GPU information:
+[2025-09-18 23:16:19]   - GPU: NVIDIA H100 80GB HBM3, 81559, 80995
+[2025-09-18 23:16:19] Checking required files...
+[2025-09-18 23:16:19]   ✓ Video file found: ABODA/video2.avi (6.0M)
+[2025-09-18 23:16:19]   ✓ Triton client script found
+[2025-09-18 23:16:19]   ✓ Model3 script found
+[2025-09-18 23:16:19] Python environment check...
+[2025-09-18 23:16:19]   ✓ UV package manager found: uv 0.8.14
+[2025-09-18 23:16:19] ==================================
+[2025-09-18 23:16:19] DETECTING TRITON SERVER
+[2025-09-18 23:16:19] ==================================
+[2025-09-18 23:16:19] ✓ Detected Triton server on node: gpu001
+[2025-09-18 23:16:19] ✓ Retrieved Triton server ports: HTTP=8086, gRPC=8106, Metrics=8675
+[2025-09-18 23:16:19] ==================================
+[2025-09-18 23:16:19] WAITING FOR TRITON SERVER
+[2025-09-18 23:16:19] ==================================
+[2025-09-18 23:16:19] Checking Triton server availability at gpu001:8086...
+Waiting for Triton server on node: gpu001:8086
+✓ Triton server is ready on gpu001:8086
+[2025-09-18 23:16:19] Performing additional health checks...
+[2025-09-18 23:16:19]   ✓ Server live check: OK
+[2025-09-18 23:16:19]   ✓ Server metadata accessible
+[2025-09-18 23:16:19] Server metadata:
+{
+  "name": "triton",
+  "version": "2.49.0",
+  "extensions": [
+    "classification",
+    "sequence",
+    "model_repository",
+    "model_repository(unload_dependents)",
+    "schedule_policy",
+    "model_configuration",
+    "system_shared_memory",
+    "cuda_shared_memory",
+    "binary_tensor_data",
+    "parameters",
+    "statistics",
+    "trace",
+    "logging"
+  ]
+}
+[2025-09-18 23:16:19] Listing models on Triton server...
+[2025-09-18 23:16:19] Models available on the server:
+{
+  "error": "Not Found"
+}
+[2025-09-18 23:16:19] ==================================
+[2025-09-18 23:16:19] MODEL STATUS CHECK
+[2025-09-18 23:16:19] ==================================
+[2025-09-18 23:16:19] Checking model 'rtdetr' status...
+[2025-09-18 23:16:19] Model status response received:
+{
+  "name": "rtdetr",
+  "versions": [
+    "1"
+  ],
+  "platform": "onnxruntime_onnx",
+  "inputs": [
+    {
+      "name": "images",
+      "datatype": "FP32",
+      "shape": [
+        1,
+        3,
+        640,
+        640
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output0",
+      "datatype": "FP32",
+      "shape": [
+        1,
+        300,
+        84
+      ]
+    }
+  ]
+}
+[2025-09-18 23:16:19] ⚠ WARNING: Model 'rtdetr' may not be ready
+[2025-09-18 23:16:19] Retrieving model metadata...
+[2025-09-18 23:16:19] Model configuration:
+{
+  "name": "rtdetr",
+  "platform": "onnxruntime_onnx",
+  "backend": "onnxruntime",
+  "runtime": "",
+  "version_policy": {
+    "latest": {
+      "num_versions": 1
+    }
+  },
+  "max_batch_size": 0,
+  "input": [
+    {
+      "name": "images",
+      "data_type": "TYPE_FP32",
+      "format": "FORMAT_NONE",
+      "dims": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "is_shape_tensor": false,
+      "allow_ragged_batch": false,
+      "optional": false,
+      "is_non_linear_format_io": false
+    }
+  ],
+  "output": [
+    {
+      "name": "output0",
+      "data_type": "TYPE_FP32",
+      "dims": [
+        1,
+        300,
+        84
+      ],
+      "label_filename": "",
+      "is_shape_tensor": false,
+      "is_non_linear_format_io": false
+    }
+  ],
+  "batch_input": [],
+  "batch_output": [],
+  "optimization": {
+    "priority": "PRIORITY_DEFAULT",
+    "input_pinned_memory": {
+      "enable": true
+    },
+    "output_pinned_memory": {
+      "enable": true
+    },
+    "gather_kernel_buffer_threshold": 0,
+    "eager_batching": false
+  },
+  "instance_group": [
+    {
+      "name": "rtdetr_0",
+      "kind": "KIND_GPU",
+      "count": 1,
+      "gpus": [
+        0
+      ],
+      "secondary_devices": [],
+      "profile": [],
+      "passive": false,
+      "host_policy": ""
+    }
+  ],
+  "default_model_filename": "model.onnx",
+  "cc_model_filenames": {},
+  "metric_tags": {},
+  "parameters": {
+    "inter_op_thread_count": {
+      "string_value": "1"
+    },
+    "intra_op_thread_count": {
+      "string_value": "1"
+    }
+  },
+  "model_warmup": []
+}
+[2025-09-18 23:16:19] ==================================
+[2025-09-18 23:16:19] STARTING VIDEO INFERENCE
+[2025-09-18 23:16:19] ==================================
+[2025-09-18 23:16:19] Running inference on ABODA/video2.avi with confidence threshold 0.1...
+[2025-09-18 23:16:19] Inference parameters:
+[2025-09-18 23:16:19]   - Input video: ABODA/video2.avi
+[2025-09-18 23:16:19]   - Model name: rtdetr
+[2025-09-18 23:16:19]   - Server URL: gpu001:8086
+[2025-09-18 23:16:19]   - Output video: output_video2.mp4
+[2025-09-18 23:16:19]   - Confidence threshold: 0.1
+[2025-09-18 23:16:19] Inference started at: Thu Sep 18 11:16:19 PM CEST 2025
+[2025-09-18 23:16:19] Executing triton_client.py...
+Connected to Triton server at gpu001:8086
+Error listing models: HTTP Error 404: Not Found
+Model 'rtdetr' is ready
+Video info: 720x480, 29.97 FPS, 2818 frames
+Starting inference...
+Processing frame 1/2818Processing frame 2/2818Processing frame 3/2818Processing frame 4/2818Processing frame 5/2818Processing frame 6/2818Processing frame 7/2818Processing frame 8/2818Processing frame 9/2818Processing frame 10/2818Processing frame 11/2818Processing frame 12/2818Processing frame 13/2818Processing frame 14/2818Processing frame 15/2818Processing frame 16/2818Processing frame 17/2818Processing frame 18/2818Processing frame 19/2818Processing frame 20/2818Processing frame 21/2818Processing frame 22/2818Processing frame 23/2818Processing frame 24/2818Processing frame 25/2818Processing frame 26/2818Processing frame 27/2818Processing frame 28/2818Processing frame 29/2818Processing frame 30/2818Processing frame 31/2818Processing frame 32/2818Processing frame 33/2818Processing frame 34/2818Processing frame 35/2818Processing frame 36/2818Processing frame 37/2818Processing frame 38/2818Processing frame 39/2818Processing frame 40/2818Processing frame 41/2818Processing frame 42/2818Processing frame 43/2818Processing frame 44/2818Processing frame 45/2818Processing frame 46/2818Processing frame 47/2818Processing frame 48/2818Processing frame 49/2818Processing frame 50/2818Processing frame 51/2818Processing frame 52/2818Processing frame 53/2818Processing frame 54/2818Processing frame 55/2818Processing frame 56/2818Processing frame 57/2818Processing frame 58/2818Processing frame 59/2818Processing frame 60/2818Processing frame 61/2818Processing frame 62/2818Processing frame 63/2818Processing frame 64/2818Processing frame 65/2818Processing frame 66/2818Processing frame 67/2818Processing frame 68/2818Processing frame 69/2818Processing frame 70/2818Processing frame 71/2818Processing frame 72/2818Processing frame 73/2818Processing frame 74/2818Processing frame 75/2818Processing frame 76/2818Processing frame 77/2818Processing frame 78/2818Processing frame 79/2818Processing frame 80/2818Processing frame 81/2818Processing frame 82/2818Processing frame 83/2818Processing frame 84/2818Processing frame 85/2818Processing frame 86/2818Processing frame 87/2818Processing frame 88/2818Processing frame 89/2818Processing frame 90/2818Processing frame 91/2818Processing frame 92/2818Processing frame 93/2818Processing frame 94/2818Processing frame 95/2818Processing frame 96/2818Processing frame 97/2818Processing frame 98/2818Processing frame 99/2818Processing frame 100/2818Processing frame 101/2818Processing frame 102/2818Processing frame 103/2818Processing frame 104/2818Processing frame 105/2818Processing frame 106/2818Processing frame 107/2818Processing frame 108/2818Processing frame 109/2818Processing frame 110/2818Processing frame 111/2818Processing frame 112/2818Processing frame 113/2818Processing frame 114/2818Processing frame 115/2818Processing frame 116/2818Processing frame 117/2818Processing frame 118/2818Processing frame 119/2818Processing frame 120/2818Processing frame 121/2818Processing frame 122/2818Processing frame 123/2818Processing frame 124/2818Processing frame 125/2818Processing frame 126/2818Processing frame 127/2818Processing frame 128/2818Processing frame 129/2818Processing frame 130/2818Processing frame 131/2818Processing frame 132/2818Processing frame 133/2818Processing frame 134/2818Processing frame 135/2818Processing frame 136/2818Processing frame 137/2818Processing frame 138/2818Processing frame 139/2818Processing frame 140/2818Processing frame 141/2818Processing frame 142/2818Processing frame 143/2818Processing frame 144/2818Processing frame 145/2818Processing frame 146/2818Processing frame 147/2818Processing frame 148/2818Processing frame 149/2818Processing frame 150/2818Processing frame 151/2818Processing frame 152/2818Processing frame 153/2818Processing frame 154/2818Processing frame 155/2818Processing frame 156/2818Processing frame 157/2818Processing frame 158/2818Processing frame 159/2818Processing frame 160/2818Processing frame 161/2818Processing frame 162/2818Processing frame 163/2818Processing frame 164/2818Processing frame 165/2818Processing frame 166/2818Processing frame 167/2818Processing frame 168/2818Processing frame 169/2818Processing frame 170/2818Processing frame 171/2818Processing frame 172/2818Processing frame 173/2818Processing frame 174/2818Processing frame 175/2818Processing frame 176/2818Processing frame 177/2818Processing frame 178/2818Processing frame 179/2818Processing frame 180/2818Processing frame 181/2818Processing frame 182/2818Processing frame 183/2818Processing frame 184/2818Processing frame 185/2818Processing frame 186/2818Processing frame 187/2818Processing frame 188/2818Processing frame 189/2818Processing frame 190/2818Processing frame 191/2818Processing frame 192/2818Processing frame 193/2818Processing frame 194/2818Processing frame 195/2818Processing frame 196/2818Processing frame 197/2818Processing frame 198/2818Processing frame 199/2818Processing frame 200/2818Processing frame 201/2818Processing frame 202/2818Processing frame 203/2818Processing frame 204/2818Processing frame 205/2818Processing frame 206/2818Processing frame 207/2818Processing frame 208/2818Processing frame 209/2818Processing frame 210/2818Processing frame 211/2818Processing frame 212/2818Processing frame 213/2818Processing frame 214/2818Processing frame 215/2818Processing frame 216/2818Processing frame 217/2818Processing frame 218/2818Processing frame 219/2818Processing frame 220/2818Processing frame 221/2818Processing frame 222/2818Processing frame 223/2818Processing frame 224/2818Processing frame 225/2818Processing frame 226/2818Processing frame 227/2818Processing frame 228/2818Processing frame 229/2818Processing frame 230/2818Processing frame 231/2818Processing frame 232/2818Processing frame 233/2818Processing frame 234/2818Processing frame 235/2818Processing frame 236/2818Processing frame 237/2818Processing frame 238/2818Processing frame 239/2818Processing frame 240/2818Processing frame 241/2818Processing frame 242/2818Processing frame 243/2818Processing frame 244/2818Processing frame 245/2818Processing frame 246/2818Processing frame 247/2818Processing frame 248/2818Processing frame 249/2818Processing frame 250/2818Processing frame 251/2818Processing frame 252/2818Processing frame 253/2818Processing frame 254/2818Processing frame 255/2818Processing frame 256/2818Processing frame 257/2818Processing frame 258/2818Processing frame 259/2818Processing frame 260/2818Processing frame 261/2818Processing frame 262/2818Processing frame 263/2818Processing frame 264/2818Processing frame 265/2818Processing frame 266/2818Processing frame 267/2818Processing frame 268/2818Processing frame 269/2818Processing frame 270/2818Processing frame 271/2818Processing frame 272/2818Processing frame 273/2818Processing frame 274/2818Processing frame 275/2818Processing frame 276/2818Processing frame 277/2818Processing frame 278/2818Processing frame 279/2818Processing frame 280/2818Processing frame 281/2818Processing frame 282/2818Processing frame 283/2818Processing frame 284/2818Processing frame 285/2818Processing frame 286/2818Processing frame 287/2818Processing frame 288/2818Processing frame 289/2818Processing frame 290/2818Processing frame 291/2818Processing frame 292/2818Processing frame 293/2818Processing frame 294/2818Processing frame 295/2818Processing frame 296/2818Processing frame 297/2818Processing frame 298/2818Processing frame 299/2818Processing frame 300/2818Processing frame 301/2818Processing frame 302/2818Processing frame 303/2818Processing frame 304/2818Processing frame 305/2818Processing frame 306/2818Processing frame 307/2818Processing frame 308/2818Processing frame 309/2818Processing frame 310/2818Processing frame 311/2818Processing frame 312/2818Processing frame 313/2818Processing frame 314/2818Processing frame 315/2818Processing frame 316/2818Processing frame 317/2818Processing frame 318/2818Processing frame 319/2818Processing frame 320/2818Processing frame 321/2818Processing frame 322/2818Processing frame 323/2818Processing frame 324/2818Processing frame 325/2818Processing frame 326/2818Processing frame 327/2818Processing frame 328/2818Processing frame 329/2818Processing frame 330/2818Processing frame 331/2818Processing frame 332/2818Processing frame 333/2818Processing frame 334/2818Processing frame 335/2818Processing frame 336/2818Processing frame 337/2818Processing frame 338/2818Processing frame 339/2818Processing frame 340/2818Processing frame 341/2818Processing frame 342/2818Processing frame 343/2818Processing frame 344/2818Processing frame 345/2818Processing frame 346/2818Processing frame 347/2818Processing frame 348/2818Processing frame 349/2818Processing frame 350/2818Processing frame 351/2818Processing frame 352/2818Processing frame 353/2818Processing frame 354/2818Processing frame 355/2818Processing frame 356/2818Processing frame 357/2818Processing frame 358/2818Processing frame 359/2818Processing frame 360/2818Processing frame 361/2818Processing frame 362/2818Processing frame 363/2818Processing frame 364/2818Processing frame 365/2818Processing frame 366/2818Processing frame 367/2818Processing frame 368/2818Processing frame 369/2818Processing frame 370/2818Processing frame 371/2818Processing frame 372/2818Processing frame 373/2818Processing frame 374/2818Processing frame 375/2818Processing frame 376/2818Processing frame 377/2818Processing frame 378/2818Processing frame 379/2818Processing frame 380/2818Processing frame 381/2818Processing frame 382/2818Processing frame 383/2818Processing frame 384/2818Processing frame 385/2818Processing frame 386/2818Processing frame 387/2818Processing frame 388/2818Processing frame 389/2818Processing frame 390/2818Processing frame 391/2818Processing frame 392/2818Processing frame 393/2818Processing frame 394/2818Processing frame 395/2818Processing frame 396/2818Processing frame 397/2818Processing frame 398/2818Processing frame 399/2818Processing frame 400/2818Processing frame 401/2818Processing frame 402/2818Processing frame 403/2818Processing frame 404/2818Processing frame 405/2818Processing frame 406/2818Processing frame 407/2818Processing frame 408/2818Processing frame 409/2818Processing frame 410/2818Processing frame 411/2818Processing frame 412/2818Processing frame 413/2818Processing frame 414/2818Processing frame 415/2818Processing frame 416/2818Processing frame 417/2818Processing frame 418/2818Processing frame 419/2818Processing frame 420/2818Processing frame 421/2818Processing frame 422/2818Processing frame 423/2818Processing frame 424/2818Processing frame 425/2818Processing frame 426/2818Processing frame 427/2818Processing frame 428/2818Processing frame 429/2818Processing frame 430/2818Processing frame 431/2818Processing frame 432/2818Processing frame 433/2818Processing frame 434/2818Processing frame 435/2818Processing frame 436/2818Processing frame 437/2818Processing frame 438/2818Processing frame 439/2818Processing frame 440/2818Processing frame 441/2818Processing frame 442/2818Processing frame 443/2818Processing frame 444/2818Processing frame 445/2818Processing frame 446/2818Processing frame 447/2818Processing frame 448/2818Processing frame 449/2818Processing frame 450/2818Processing frame 451/2818Processing frame 452/2818Processing frame 453/2818Processing frame 454/2818Processing frame 455/2818Processing frame 456/2818Processing frame 457/2818Processing frame 458/2818Processing frame 459/2818Processing frame 460/2818Processing frame 461/2818Processing frame 462/2818Processing frame 463/2818Processing frame 464/2818Processing frame 465/2818Processing frame 466/2818Processing frame 467/2818Processing frame 468/2818Processing frame 469/2818Processing frame 470/2818Processing frame 471/2818Processing frame 472/2818Processing frame 473/2818Processing frame 474/2818Processing frame 475/2818Processing frame 476/2818Processing frame 477/2818Processing frame 478/2818Processing frame 479/2818Processing frame 480/2818Processing frame 481/2818Processing frame 482/2818Processing frame 483/2818Processing frame 484/2818Processing frame 485/2818Processing frame 486/2818Processing frame 487/2818Processing frame 488/2818Processing frame 489/2818Processing frame 490/2818Processing frame 491/2818Processing frame 492/2818Processing frame 493/2818Processing frame 494/2818Processing frame 495/2818Processing frame 496/2818Processing frame 497/2818Processing frame 498/2818Processing frame 499/2818Processing frame 500/2818Processing frame 501/2818Processing frame 502/2818Processing frame 503/2818Processing frame 504/2818Processing frame 505/2818Processing frame 506/2818Processing frame 507/2818Processing frame 508/2818Processing frame 509/2818Processing frame 510/2818Processing frame 511/2818Processing frame 512/2818Processing frame 513/2818Processing frame 514/2818Processing frame 515/2818Processing frame 516/2818Processing frame 517/2818Processing frame 518/2818Processing frame 519/2818Processing frame 520/2818Processing frame 521/2818Processing frame 522/2818Processing frame 523/2818Processing frame 524/2818Processing frame 525/2818Processing frame 526/2818Processing frame 527/2818Processing frame 528/2818Processing frame 529/2818Processing frame 530/2818Processing frame 531/2818Processing frame 532/2818Processing frame 533/2818Processing frame 534/2818Processing frame 535/2818Processing frame 536/2818Processing frame 537/2818Processing frame 538/2818Processing frame 539/2818Processing frame 540/2818Processing frame 541/2818Processing frame 542/2818Processing frame 543/2818Processing frame 544/2818Processing frame 545/2818Processing frame 546/2818Processing frame 547/2818Processing frame 548/2818Processing frame 549/2818Processing frame 550/2818Processing frame 551/2818Processing frame 552/2818Processing frame 553/2818Processing frame 554/2818Processing frame 555/2818Processing frame 556/2818Processing frame 557/2818Processing frame 558/2818Processing frame 559/2818Processing frame 560/2818Processing frame 561/2818Processing frame 562/2818Processing frame 563/2818Processing frame 564/2818Processing frame 565/2818Processing frame 566/2818Processing frame 567/2818Processing frame 568/2818Processing frame 569/2818Processing frame 570/2818Processing frame 571/2818Processing frame 572/2818Processing frame 573/2818Processing frame 574/2818Processing frame 575/2818Processing frame 576/2818Processing frame 577/2818Processing frame 578/2818Processing frame 579/2818Processing frame 580/2818Processing frame 581/2818Processing frame 582/2818Processing frame 583/2818Processing frame 584/2818Processing frame 585/2818Processing frame 586/2818Processing frame 587/2818Processing frame 588/2818Processing frame 589/2818Processing frame 590/2818Processing frame 591/2818Processing frame 592/2818Processing frame 593/2818Processing frame 594/2818Processing frame 595/2818Processing frame 596/2818Processing frame 597/2818Processing frame 598/2818Processing frame 599/2818Processing frame 600/2818Processing frame 601/2818Processing frame 602/2818Processing frame 603/2818Processing frame 604/2818Processing frame 605/2818Processing frame 606/2818Processing frame 607/2818Processing frame 608/2818Processing frame 609/2818Processing frame 610/2818Processing frame 611/2818Processing frame 612/2818Processing frame 613/2818Processing frame 614/2818Processing frame 615/2818Processing frame 616/2818Processing frame 617/2818Processing frame 618/2818Processing frame 619/2818Processing frame 620/2818Processing frame 621/2818Processing frame 622/2818Processing frame 623/2818Processing frame 624/2818Processing frame 625/2818Processing frame 626/2818Processing frame 627/2818Processing frame 628/2818Processing frame 629/2818Processing frame 630/2818Processing frame 631/2818Processing frame 632/2818Processing frame 633/2818Processing frame 634/2818Processing frame 635/2818Processing frame 636/2818Processing frame 637/2818Processing frame 638/2818Processing frame 639/2818Processing frame 640/2818Processing frame 641/2818Processing frame 642/2818Processing frame 643/2818Processing frame 644/2818Processing frame 645/2818Processing frame 646/2818Processing frame 647/2818Processing frame 648/2818Processing frame 649/2818Processing frame 650/2818Processing frame 651/2818Processing frame 652/2818Processing frame 653/2818Processing frame 654/2818Processing frame 655/2818Processing frame 656/2818Processing frame 657/2818Processing frame 658/2818Processing frame 659/2818Processing frame 660/2818Processing frame 661/2818Processing frame 662/2818Processing frame 663/2818Processing frame 664/2818Processing frame 665/2818Processing frame 666/2818Processing frame 667/2818Processing frame 668/2818Processing frame 669/2818Processing frame 670/2818Processing frame 671/2818Processing frame 672/2818Processing frame 673/2818Processing frame 674/2818Processing frame 675/2818Processing frame 676/2818Processing frame 677/2818Processing frame 678/2818Processing frame 679/2818Processing frame 680/2818Processing frame 681/2818Processing frame 682/2818Processing frame 683/2818Processing frame 684/2818Processing frame 685/2818Processing frame 686/2818Processing frame 687/2818Processing frame 688/2818Processing frame 689/2818Processing frame 690/2818Processing frame 691/2818Processing frame 692/2818Processing frame 693/2818Processing frame 694/2818Processing frame 695/2818Processing frame 696/2818Processing frame 697/2818Processing frame 698/2818Processing frame 699/2818Processing frame 700/2818Processing frame 701/2818Processing frame 702/2818Processing frame 703/2818Processing frame 704/2818Processing frame 705/2818Processing frame 706/2818Processing frame 707/2818Processing frame 708/2818Processing frame 709/2818Processing frame 710/2818Processing frame 711/2818Processing frame 712/2818Processing frame 713/2818Processing frame 714/2818Processing frame 715/2818Processing frame 716/2818Processing frame 717/2818Processing frame 718/2818Processing frame 719/2818Processing frame 720/2818Processing frame 721/2818Processing frame 722/2818Processing frame 723/2818Processing frame 724/2818Processing frame 725/2818Processing frame 726/2818Processing frame 727/2818Processing frame 728/2818Processing frame 729/2818Processing frame 730/2818Processing frame 731/2818Processing frame 732/2818Processing frame 733/2818Processing frame 734/2818Processing frame 735/2818Processing frame 736/2818Processing frame 737/2818Processing frame 738/2818Processing frame 739/2818Processing frame 740/2818Processing frame 741/2818Processing frame 742/2818Processing frame 743/2818Processing frame 744/2818Processing frame 745/2818Processing frame 746/2818Processing frame 747/2818Processing frame 748/2818Processing frame 749/2818Processing frame 750/2818Processing frame 751/2818Processing frame 752/2818Processing frame 753/2818Processing frame 754/2818Processing frame 755/2818Processing frame 756/2818Processing frame 757/2818Processing frame 758/2818Processing frame 759/2818Processing frame 760/2818Processing frame 761/2818Processing frame 762/2818Processing frame 763/2818Processing frame 764/2818Processing frame 765/2818Processing frame 766/2818Processing frame 767/2818Processing frame 768/2818Processing frame 769/2818Processing frame 770/2818Processing frame 771/2818Processing frame 772/2818Processing frame 773/2818Processing frame 774/2818Processing frame 775/2818Processing frame 776/2818Processing frame 777/2818Processing frame 778/2818Processing frame 779/2818Processing frame 780/2818Processing frame 781/2818Processing frame 782/2818Processing frame 783/2818Processing frame 784/2818Processing frame 785/2818Processing frame 786/2818Processing frame 787/2818Processing frame 788/2818Processing frame 789/2818Processing frame 790/2818Processing frame 791/2818Processing frame 792/2818Processing frame 793/2818Processing frame 794/2818Processing frame 795/2818Processing frame 796/2818Processing frame 797/2818Processing frame 798/2818Processing frame 799/2818Processing frame 800/2818Processing frame 801/2818Processing frame 802/2818Processing frame 803/2818Processing frame 804/2818Processing frame 805/2818Processing frame 806/2818Processing frame 807/2818Processing frame 808/2818Processing frame 809/2818Processing frame 810/2818Processing frame 811/2818Processing frame 812/2818Processing frame 813/2818Processing frame 814/2818Processing frame 815/2818Processing frame 816/2818Processing frame 817/2818Processing frame 818/2818Processing frame 819/2818Processing frame 820/2818Processing frame 821/2818Processing frame 822/2818Processing frame 823/2818Processing frame 824/2818Processing frame 825/2818Processing frame 826/2818Processing frame 827/2818Processing frame 828/2818Processing frame 829/2818Processing frame 830/2818Processing frame 831/2818Processing frame 832/2818Processing frame 833/2818Processing frame 834/2818Processing frame 835/2818Processing frame 836/2818Processing frame 837/2818Processing frame 838/2818Processing frame 839/2818Processing frame 840/2818Processing frame 841/2818Processing frame 842/2818Processing frame 843/2818Processing frame 844/2818Processing frame 845/2818Processing frame 846/2818Processing frame 847/2818Processing frame 848/2818Processing frame 849/2818Processing frame 850/2818Processing frame 851/2818Processing frame 852/2818Processing frame 853/2818Processing frame 854/2818Processing frame 855/2818Processing frame 856/2818Processing frame 857/2818Processing frame 858/2818Processing frame 859/2818Processing frame 860/2818Processing frame 861/2818Processing frame 862/2818Processing frame 863/2818Processing frame 864/2818Processing frame 865/2818Processing frame 866/2818Processing frame 867/2818Processing frame 868/2818Processing frame 869/2818Processing frame 870/2818Processing frame 871/2818Processing frame 872/2818Processing frame 873/2818Processing frame 874/2818Processing frame 875/2818Processing frame 876/2818Processing frame 877/2818Processing frame 878/2818Processing frame 879/2818Processing frame 880/2818Processing frame 881/2818Processing frame 882/2818Processing frame 883/2818Processing frame 884/2818Processing frame 885/2818Processing frame 886/2818Processing frame 887/2818Processing frame 888/2818Processing frame 889/2818Processing frame 890/2818Processing frame 891/2818Processing frame 892/2818Processing frame 893/2818Processing frame 894/2818Processing frame 895/2818Processing frame 896/2818Processing frame 897/2818Processing frame 898/2818Processing frame 899/2818Processing frame 900/2818Processing frame 901/2818Processing frame 902/2818Processing frame 903/2818Processing frame 904/2818Processing frame 905/2818Processing frame 906/2818Processing frame 907/2818Processing frame 908/2818Processing frame 909/2818Processing frame 910/2818Processing frame 911/2818Processing frame 912/2818Processing frame 913/2818Processing frame 914/2818Processing frame 915/2818Processing frame 916/2818Processing frame 917/2818Processing frame 918/2818Processing frame 919/2818Processing frame 920/2818Processing frame 921/2818Processing frame 922/2818Processing frame 923/2818Processing frame 924/2818Processing frame 925/2818Processing frame 926/2818Processing frame 927/2818Processing frame 928/2818Processing frame 929/2818Processing frame 930/2818Processing frame 931/2818Processing frame 932/2818Processing frame 933/2818Processing frame 934/2818Processing frame 935/2818Processing frame 936/2818Processing frame 937/2818Processing frame 938/2818Processing frame 939/2818Processing frame 940/2818Processing frame 941/2818Processing frame 942/2818Processing frame 943/2818Processing frame 944/2818Processing frame 945/2818Processing frame 946/2818Processing frame 947/2818Processing frame 948/2818Processing frame 949/2818Processing frame 950/2818Processing frame 951/2818Processing frame 952/2818Processing frame 953/2818Processing frame 954/2818Processing frame 955/2818Processing frame 956/2818Processing frame 957/2818Processing frame 958/2818Processing frame 959/2818Processing frame 960/2818Processing frame 961/2818Processing frame 962/2818Processing frame 963/2818Processing frame 964/2818Processing frame 965/2818Processing frame 966/2818Processing frame 967/2818Processing frame 968/2818Processing frame 969/2818Processing frame 970/2818Processing frame 971/2818Processing frame 972/2818Processing frame 973/2818Processing frame 974/2818Processing frame 975/2818Processing frame 976/2818Processing frame 977/2818Processing frame 978/2818Processing frame 979/2818Processing frame 980/2818Processing frame 981/2818Processing frame 982/2818Processing frame 983/2818Processing frame 984/2818Processing frame 985/2818Processing frame 986/2818Processing frame 987/2818Processing frame 988/2818Processing frame 989/2818Processing frame 990/2818Processing frame 991/2818Processing frame 992/2818Processing frame 993/2818Processing frame 994/2818Processing frame 995/2818Processing frame 996/2818Processing frame 997/2818Processing frame 998/2818Processing frame 999/2818Processing frame 1000/2818Processing frame 1001/2818Processing frame 1002/2818Processing frame 1003/2818Processing frame 1004/2818Processing frame 1005/2818Processing frame 1006/2818Processing frame 1007/2818Processing frame 1008/2818Processing frame 1009/2818Processing frame 1010/2818Processing frame 1011/2818Processing frame 1012/2818Processing frame 1013/2818Processing frame 1014/2818Processing frame 1015/2818Processing frame 1016/2818Processing frame 1017/2818Processing frame 1018/2818Processing frame 1019/2818Processing frame 1020/2818Processing frame 1021/2818Processing frame 1022/2818Processing frame 1023/2818Processing frame 1024/2818Processing frame 1025/2818Processing frame 1026/2818Processing frame 1027/2818Processing frame 1028/2818Processing frame 1029/2818Processing frame 1030/2818Processing frame 1031/2818Processing frame 1032/2818Processing frame 1033/2818Processing frame 1034/2818Processing frame 1035/2818Processing frame 1036/2818Processing frame 1037/2818Processing frame 1038/2818Processing frame 1039/2818Processing frame 1040/2818Processing frame 1041/2818Processing frame 1042/2818Processing frame 1043/2818Processing frame 1044/2818Processing frame 1045/2818Processing frame 1046/2818Processing frame 1047/2818Processing frame 1048/2818Processing frame 1049/2818Processing frame 1050/2818Processing frame 1051/2818Processing frame 1052/2818Processing frame 1053/2818Processing frame 1054/2818Processing frame 1055/2818Processing frame 1056/2818Processing frame 1057/2818Processing frame 1058/2818Processing frame 1059/2818Processing frame 1060/2818Processing frame 1061/2818Processing frame 1062/2818Processing frame 1063/2818Processing frame 1064/2818Processing frame 1065/2818Processing frame 1066/2818Processing frame 1067/2818Processing frame 1068/2818Processing frame 1069/2818Processing frame 1070/2818Processing frame 1071/2818Processing frame 1072/2818Processing frame 1073/2818Processing frame 1074/2818Processing frame 1075/2818Processing frame 1076/2818Processing frame 1077/2818Processing frame 1078/2818Processing frame 1079/2818Processing frame 1080/2818Processing frame 1081/2818Processing frame 1082/2818Processing frame 1083/2818Processing frame 1084/2818Processing frame 1085/2818Processing frame 1086/2818Processing frame 1087/2818Processing frame 1088/2818Processing frame 1089/2818Processing frame 1090/2818Processing frame 1091/2818Processing frame 1092/2818Processing frame 1093/2818Processing frame 1094/2818Processing frame 1095/2818Processing frame 1096/2818Processing frame 1097/2818Processing frame 1098/2818Processing frame 1099/2818Processing frame 1100/2818Processing frame 1101/2818Processing frame 1102/2818Processing frame 1103/2818Processing frame 1104/2818Processing frame 1105/2818Processing frame 1106/2818Processing frame 1107/2818Processing frame 1108/2818Processing frame 1109/2818Processing frame 1110/2818Processing frame 1111/2818Processing frame 1112/2818Processing frame 1113/2818Processing frame 1114/2818Processing frame 1115/2818Processing frame 1116/2818Processing frame 1117/2818Processing frame 1118/2818Processing frame 1119/2818Processing frame 1120/2818Processing frame 1121/2818Processing frame 1122/2818Processing frame 1123/2818Processing frame 1124/2818Processing frame 1125/2818Processing frame 1126/2818Processing frame 1127/2818Processing frame 1128/2818Processing frame 1129/2818Processing frame 1130/2818Processing frame 1131/2818Processing frame 1132/2818Processing frame 1133/2818Processing frame 1134/2818Processing frame 1135/2818Processing frame 1136/2818Processing frame 1137/2818Processing frame 1138/2818Processing frame 1139/2818Processing frame 1140/2818Processing frame 1141/2818Processing frame 1142/2818Processing frame 1143/2818Processing frame 1144/2818Processing frame 1145/2818Processing frame 1146/2818Processing frame 1147/2818Processing frame 1148/2818Processing frame 1149/2818Processing frame 1150/2818Processing frame 1151/2818Processing frame 1152/2818Processing frame 1153/2818Processing frame 1154/2818Processing frame 1155/2818Processing frame 1156/2818Processing frame 1157/2818Processing frame 1158/2818Processing frame 1159/2818Processing frame 1160/2818Processing frame 1161/2818Processing frame 1162/2818Processing frame 1163/2818Processing frame 1164/2818Processing frame 1165/2818Processing frame 1166/2818Processing frame 1167/2818Processing frame 1168/2818Processing frame 1169/2818Processing frame 1170/2818Processing frame 1171/2818Processing frame 1172/2818Processing frame 1173/2818Processing frame 1174/2818Processing frame 1175/2818Processing frame 1176/2818Processing frame 1177/2818Processing frame 1178/2818Processing frame 1179/2818Processing frame 1180/2818Processing frame 1181/2818Processing frame 1182/2818Processing frame 1183/2818Processing frame 1184/2818Processing frame 1185/2818Processing frame 1186/2818Processing frame 1187/2818Processing frame 1188/2818Processing frame 1189/2818Processing frame 1190/2818Processing frame 1191/2818Processing frame 1192/2818Processing frame 1193/2818Processing frame 1194/2818Processing frame 1195/2818Processing frame 1196/2818Processing frame 1197/2818Processing frame 1198/2818Processing frame 1199/2818Processing frame 1200/2818Processing frame 1201/2818Processing frame 1202/2818Processing frame 1203/2818Processing frame 1204/2818Processing frame 1205/2818Processing frame 1206/2818Processing frame 1207/2818Processing frame 1208/2818Processing frame 1209/2818Processing frame 1210/2818Processing frame 1211/2818Processing frame 1212/2818Processing frame 1213/2818Processing frame 1214/2818Processing frame 1215/2818Processing frame 1216/2818Processing frame 1217/2818Processing frame 1218/2818Processing frame 1219/2818Processing frame 1220/2818Processing frame 1221/2818Processing frame 1222/2818Processing frame 1223/2818Processing frame 1224/2818Processing frame 1225/2818Processing frame 1226/2818Processing frame 1227/2818Processing frame 1228/2818Processing frame 1229/2818Processing frame 1230/2818Processing frame 1231/2818Processing frame 1232/2818Processing frame 1233/2818Processing frame 1234/2818Processing frame 1235/2818Processing frame 1236/2818Processing frame 1237/2818Processing frame 1238/2818Processing frame 1239/2818Processing frame 1240/2818Processing frame 1241/2818Processing frame 1242/2818Processing frame 1243/2818Processing frame 1244/2818Processing frame 1245/2818Processing frame 1246/2818Processing frame 1247/2818Processing frame 1248/2818Processing frame 1249/2818Processing frame 1250/2818Processing frame 1251/2818Processing frame 1252/2818Processing frame 1253/2818Processing frame 1254/2818Processing frame 1255/2818Processing frame 1256/2818Processing frame 1257/2818Processing frame 1258/2818Processing frame 1259/2818Processing frame 1260/2818Processing frame 1261/2818Processing frame 1262/2818Processing frame 1263/2818Processing frame 1264/2818Processing frame 1265/2818Processing frame 1266/2818Processing frame 1267/2818Processing frame 1268/2818Processing frame 1269/2818Processing frame 1270/2818Processing frame 1271/2818Processing frame 1272/2818Processing frame 1273/2818Processing frame 1274/2818Processing frame 1275/2818Processing frame 1276/2818Processing frame 1277/2818Processing frame 1278/2818Processing frame 1279/2818Processing frame 1280/2818Processing frame 1281/2818Processing frame 1282/2818Processing frame 1283/2818Processing frame 1284/2818Processing frame 1285/2818Processing frame 1286/2818Processing frame 1287/2818Processing frame 1288/2818Processing frame 1289/2818Processing frame 1290/2818Processing frame 1291/2818Processing frame 1292/2818Processing frame 1293/2818Processing frame 1294/2818Processing frame 1295/2818Processing frame 1296/2818Processing frame 1297/2818Processing frame 1298/2818Processing frame 1299/2818Processing frame 1300/2818Processing frame 1301/2818Processing frame 1302/2818Processing frame 1303/2818Processing frame 1304/2818Processing frame 1305/2818Processing frame 1306/2818Processing frame 1307/2818Processing frame 1308/2818Processing frame 1309/2818Processing frame 1310/2818Processing frame 1311/2818Processing frame 1312/2818Processing frame 1313/2818Processing frame 1314/2818Processing frame 1315/2818Processing frame 1316/2818Processing frame 1317/2818Processing frame 1318/2818Processing frame 1319/2818Processing frame 1320/2818Processing frame 1321/2818Processing frame 1322/2818Processing frame 1323/2818Processing frame 1324/2818Processing frame 1325/2818Processing frame 1326/2818Processing frame 1327/2818Processing frame 1328/2818Processing frame 1329/2818Processing frame 1330/2818Processing frame 1331/2818Processing frame 1332/2818Processing frame 1333/2818Processing frame 1334/2818Processing frame 1335/2818Processing frame 1336/2818Processing frame 1337/2818Processing frame 1338/2818Processing frame 1339/2818Processing frame 1340/2818Processing frame 1341/2818Processing frame 1342/2818Processing frame 1343/2818Processing frame 1344/2818Processing frame 1345/2818Processing frame 1346/2818Processing frame 1347/2818Processing frame 1348/2818Processing frame 1349/2818Processing frame 1350/2818Processing frame 1351/2818Processing frame 1352/2818Processing frame 1353/2818Processing frame 1354/2818Processing frame 1355/2818Processing frame 1356/2818Processing frame 1357/2818Processing frame 1358/2818Processing frame 1359/2818Processing frame 1360/2818Processing frame 1361/2818Processing frame 1362/2818Processing frame 1363/2818Processing frame 1364/2818Processing frame 1365/2818Processing frame 1366/2818Processing frame 1367/2818Processing frame 1368/2818Processing frame 1369/2818Processing frame 1370/2818Processing frame 1371/2818Processing frame 1372/2818Processing frame 1373/2818Processing frame 1374/2818Processing frame 1375/2818Processing frame 1376/2818Processing frame 1377/2818Processing frame 1378/2818Processing frame 1379/2818Processing frame 1380/2818Processing frame 1381/2818Processing frame 1382/2818Processing frame 1383/2818Processing frame 1384/2818Processing frame 1385/2818Processing frame 1386/2818Processing frame 1387/2818Processing frame 1388/2818Processing frame 1389/2818Processing frame 1390/2818Processing frame 1391/2818Processing frame 1392/2818Processing frame 1393/2818Processing frame 1394/2818Processing frame 1395/2818Processing frame 1396/2818Processing frame 1397/2818Processing frame 1398/2818Processing frame 1399/2818Processing frame 1400/2818Processing frame 1401/2818Processing frame 1402/2818Processing frame 1403/2818Processing frame 1404/2818Processing frame 1405/2818Processing frame 1406/2818Processing frame 1407/2818Processing frame 1408/2818Processing frame 1409/2818Processing frame 1410/2818Processing frame 1411/2818Processing frame 1412/2818Processing frame 1413/2818Processing frame 1414/2818Processing frame 1415/2818Processing frame 1416/2818Processing frame 1417/2818Processing frame 1418/2818Processing frame 1419/2818Processing frame 1420/2818Processing frame 1421/2818Processing frame 1422/2818Processing frame 1423/2818Processing frame 1424/2818Processing frame 1425/2818Processing frame 1426/2818Processing frame 1427/2818Processing frame 1428/2818Processing frame 1429/2818Processing frame 1430/2818Processing frame 1431/2818Processing frame 1432/2818Processing frame 1433/2818Processing frame 1434/2818Processing frame 1435/2818Processing frame 1436/2818Processing frame 1437/2818Processing frame 1438/2818Processing frame 1439/2818Processing frame 1440/2818Processing frame 1441/2818Processing frame 1442/2818Processing frame 1443/2818Processing frame 1444/2818Processing frame 1445/2818Processing frame 1446/2818Processing frame 1447/2818Processing frame 1448/2818Processing frame 1449/2818Processing frame 1450/2818Processing frame 1451/2818Processing frame 1452/2818Processing frame 1453/2818Processing frame 1454/2818Processing frame 1455/2818Processing frame 1456/2818Processing frame 1457/2818Processing frame 1458/2818Processing frame 1459/2818Processing frame 1460/2818Processing frame 1461/2818Processing frame 1462/2818Processing frame 1463/2818Processing frame 1464/2818Processing frame 1465/2818Processing frame 1466/2818Processing frame 1467/2818Processing frame 1468/2818Processing frame 1469/2818Processing frame 1470/2818Processing frame 1471/2818Processing frame 1472/2818Processing frame 1473/2818Processing frame 1474/2818Processing frame 1475/2818Processing frame 1476/2818Processing frame 1477/2818Processing frame 1478/2818Processing frame 1479/2818Processing frame 1480/2818Processing frame 1481/2818Processing frame 1482/2818Processing frame 1483/2818Processing frame 1484/2818Processing frame 1485/2818Processing frame 1486/2818Processing frame 1487/2818Processing frame 1488/2818Processing frame 1489/2818Processing frame 1490/2818Processing frame 1491/2818Processing frame 1492/2818Processing frame 1493/2818Processing frame 1494/2818Processing frame 1495/2818Processing frame 1496/2818Processing frame 1497/2818Processing frame 1498/2818Processing frame 1499/2818Processing frame 1500/2818Processing frame 1501/2818Processing frame 1502/2818Processing frame 1503/2818Processing frame 1504/2818Processing frame 1505/2818Processing frame 1506/2818Processing frame 1507/2818Processing frame 1508/2818Processing frame 1509/2818Processing frame 1510/2818Processing frame 1511/2818Processing frame 1512/2818Processing frame 1513/2818Processing frame 1514/2818Processing frame 1515/2818Processing frame 1516/2818Processing frame 1517/2818Processing frame 1518/2818Processing frame 1519/2818Processing frame 1520/2818Processing frame 1521/2818Processing frame 1522/2818Processing frame 1523/2818Processing frame 1524/2818Processing frame 1525/2818Processing frame 1526/2818Processing frame 1527/2818Processing frame 1528/2818Processing frame 1529/2818Processing frame 1530/2818Processing frame 1531/2818Processing frame 1532/2818Processing frame 1533/2818Processing frame 1534/2818Processing frame 1535/2818Processing frame 1536/2818Processing frame 1537/2818Processing frame 1538/2818Processing frame 1539/2818Processing frame 1540/2818Processing frame 1541/2818Processing frame 1542/2818Processing frame 1543/2818Processing frame 1544/2818Processing frame 1545/2818Processing frame 1546/2818Processing frame 1547/2818Processing frame 1548/2818Processing frame 1549/2818Processing frame 1550/2818Processing frame 1551/2818Processing frame 1552/2818Processing frame 1553/2818Processing frame 1554/2818Processing frame 1555/2818Processing frame 1556/2818Processing frame 1557/2818Processing frame 1558/2818Processing frame 1559/2818Processing frame 1560/2818Processing frame 1561/2818Processing frame 1562/2818Processing frame 1563/2818Processing frame 1564/2818Processing frame 1565/2818Processing frame 1566/2818Processing frame 1567/2818Processing frame 1568/2818Processing frame 1569/2818Processing frame 1570/2818Processing frame 1571/2818Processing frame 1572/2818Processing frame 1573/2818Processing frame 1574/2818Processing frame 1575/2818Processing frame 1576/2818Processing frame 1577/2818Processing frame 1578/2818Processing frame 1579/2818Processing frame 1580/2818Processing frame 1581/2818Processing frame 1582/2818Processing frame 1583/2818Processing frame 1584/2818Processing frame 1585/2818Processing frame 1586/2818Processing frame 1587/2818Processing frame 1588/2818Processing frame 1589/2818Processing frame 1590/2818Processing frame 1591/2818Processing frame 1592/2818Processing frame 1593/2818Processing frame 1594/2818Processing frame 1595/2818Processing frame 1596/2818Processing frame 1597/2818Processing frame 1598/2818Processing frame 1599/2818Processing frame 1600/2818Processing frame 1601/2818Processing frame 1602/2818Processing frame 1603/2818Processing frame 1604/2818Processing frame 1605/2818Processing frame 1606/2818Processing frame 1607/2818Processing frame 1608/2818Processing frame 1609/2818Processing frame 1610/2818Processing frame 1611/2818Processing frame 1612/2818Processing frame 1613/2818Processing frame 1614/2818Processing frame 1615/2818Processing frame 1616/2818Processing frame 1617/2818Processing frame 1618/2818Processing frame 1619/2818Processing frame 1620/2818Processing frame 1621/2818Processing frame 1622/2818Processing frame 1623/2818Processing frame 1624/2818Processing frame 1625/2818Processing frame 1626/2818Processing frame 1627/2818Processing frame 1628/2818Processing frame 1629/2818Processing frame 1630/2818Processing frame 1631/2818Processing frame 1632/2818Processing frame 1633/2818Processing frame 1634/2818Processing frame 1635/2818Processing frame 1636/2818Processing frame 1637/2818Processing frame 1638/2818Processing frame 1639/2818Processing frame 1640/2818Processing frame 1641/2818Processing frame 1642/2818Processing frame 1643/2818Processing frame 1644/2818Processing frame 1645/2818Processing frame 1646/2818Processing frame 1647/2818Processing frame 1648/2818Processing frame 1649/2818Processing frame 1650/2818Processing frame 1651/2818Processing frame 1652/2818Processing frame 1653/2818Processing frame 1654/2818Processing frame 1655/2818Processing frame 1656/2818Processing frame 1657/2818Processing frame 1658/2818Processing frame 1659/2818Processing frame 1660/2818Processing frame 1661/2818Processing frame 1662/2818Processing frame 1663/2818Processing frame 1664/2818Processing frame 1665/2818Processing frame 1666/2818Processing frame 1667/2818Processing frame 1668/2818Processing frame 1669/2818Processing frame 1670/2818Processing frame 1671/2818Processing frame 1672/2818Processing frame 1673/2818Processing frame 1674/2818Processing frame 1675/2818Processing frame 1676/2818Processing frame 1677/2818Processing frame 1678/2818Processing frame 1679/2818Processing frame 1680/2818Processing frame 1681/2818Processing frame 1682/2818Processing frame 1683/2818Processing frame 1684/2818Processing frame 1685/2818Processing frame 1686/2818Processing frame 1687/2818Processing frame 1688/2818Processing frame 1689/2818Processing frame 1690/2818Processing frame 1691/2818Processing frame 1692/2818Processing frame 1693/2818Processing frame 1694/2818Processing frame 1695/2818Processing frame 1696/2818Processing frame 1697/2818Processing frame 1698/2818Processing frame 1699/2818Processing frame 1700/2818Processing frame 1701/2818Processing frame 1702/2818Processing frame 1703/2818Processing frame 1704/2818Processing frame 1705/2818Processing frame 1706/2818Processing frame 1707/2818Processing frame 1708/2818Processing frame 1709/2818Processing frame 1710/2818Processing frame 1711/2818Processing frame 1712/2818Processing frame 1713/2818Processing frame 1714/2818Processing frame 1715/2818Processing frame 1716/2818Processing frame 1717/2818Processing frame 1718/2818Processing frame 1719/2818Processing frame 1720/2818Processing frame 1721/2818Processing frame 1722/2818Processing frame 1723/2818Processing frame 1724/2818Processing frame 1725/2818Processing frame 1726/2818Processing frame 1727/2818Processing frame 1728/2818Processing frame 1729/2818Processing frame 1730/2818Processing frame 1731/2818Processing frame 1732/2818Processing frame 1733/2818Processing frame 1734/2818Processing frame 1735/2818Processing frame 1736/2818Processing frame 1737/2818Processing frame 1738/2818Processing frame 1739/2818Processing frame 1740/2818Processing frame 1741/2818Processing frame 1742/2818Processing frame 1743/2818Processing frame 1744/2818Processing frame 1745/2818Processing frame 1746/2818Processing frame 1747/2818Processing frame 1748/2818Processing frame 1749/2818Processing frame 1750/2818Processing frame 1751/2818Processing frame 1752/2818Processing frame 1753/2818Processing frame 1754/2818Processing frame 1755/2818Processing frame 1756/2818Processing frame 1757/2818Processing frame 1758/2818Processing frame 1759/2818Processing frame 1760/2818Processing frame 1761/2818Processing frame 1762/2818Processing frame 1763/2818Processing frame 1764/2818Processing frame 1765/2818Processing frame 1766/2818Processing frame 1767/2818Processing frame 1768/2818Processing frame 1769/2818Processing frame 1770/2818Processing frame 1771/2818Processing frame 1772/2818Processing frame 1773/2818Processing frame 1774/2818Processing frame 1775/2818Processing frame 1776/2818Processing frame 1777/2818Processing frame 1778/2818Processing frame 1779/2818Processing frame 1780/2818Processing frame 1781/2818Processing frame 1782/2818Processing frame 1783/2818Processing frame 1784/2818Processing frame 1785/2818Processing frame 1786/2818Processing frame 1787/2818Processing frame 1788/2818Processing frame 1789/2818Processing frame 1790/2818Processing frame 1791/2818Processing frame 1792/2818Processing frame 1793/2818Processing frame 1794/2818Processing frame 1795/2818Processing frame 1796/2818Processing frame 1797/2818Processing frame 1798/2818Processing frame 1799/2818Processing frame 1800/2818Processing frame 1801/2818Processing frame 1802/2818Processing frame 1803/2818Processing frame 1804/2818Processing frame 1805/2818Processing frame 1806/2818Processing frame 1807/2818Processing frame 1808/2818Processing frame 1809/2818Processing frame 1810/2818Processing frame 1811/2818Processing frame 1812/2818Processing frame 1813/2818Processing frame 1814/2818Processing frame 1815/2818Processing frame 1816/2818Processing frame 1817/2818Processing frame 1818/2818Processing frame 1819/2818Processing frame 1820/2818Processing frame 1821/2818Processing frame 1822/2818Processing frame 1823/2818Processing frame 1824/2818Processing frame 1825/2818Processing frame 1826/2818Processing frame 1827/2818Processing frame 1828/2818Processing frame 1829/2818Processing frame 1830/2818Processing frame 1831/2818Processing frame 1832/2818Processing frame 1833/2818Processing frame 1834/2818Processing frame 1835/2818Processing frame 1836/2818Processing frame 1837/2818Processing frame 1838/2818Processing frame 1839/2818Processing frame 1840/2818Processing frame 1841/2818Processing frame 1842/2818Processing frame 1843/2818Processing frame 1844/2818Processing frame 1845/2818Processing frame 1846/2818Processing frame 1847/2818Processing frame 1848/2818Processing frame 1849/2818Processing frame 1850/2818Processing frame 1851/2818Processing frame 1852/2818Processing frame 1853/2818Processing frame 1854/2818Processing frame 1855/2818Processing frame 1856/2818Processing frame 1857/2818Processing frame 1858/2818Processing frame 1859/2818Processing frame 1860/2818Processing frame 1861/2818Processing frame 1862/2818Processing frame 1863/2818Processing frame 1864/2818Processing frame 1865/2818Processing frame 1866/2818Processing frame 1867/2818Processing frame 1868/2818Processing frame 1869/2818Processing frame 1870/2818Processing frame 1871/2818Processing frame 1872/2818Processing frame 1873/2818Processing frame 1874/2818Processing frame 1875/2818Processing frame 1876/2818Processing frame 1877/2818Processing frame 1878/2818Processing frame 1879/2818Processing frame 1880/2818Processing frame 1881/2818Processing frame 1882/2818Processing frame 1883/2818Processing frame 1884/2818Processing frame 1885/2818Processing frame 1886/2818Processing frame 1887/2818Processing frame 1888/2818Processing frame 1889/2818Processing frame 1890/2818Processing frame 1891/2818Processing frame 1892/2818Processing frame 1893/2818Processing frame 1894/2818Processing frame 1895/2818Processing frame 1896/2818Processing frame 1897/2818Processing frame 1898/2818Processing frame 1899/2818Processing frame 1900/2818Processing frame 1901/2818Processing frame 1902/2818Processing frame 1903/2818Processing frame 1904/2818Processing frame 1905/2818Processing frame 1906/2818Processing frame 1907/2818Processing frame 1908/2818Processing frame 1909/2818Processing frame 1910/2818Processing frame 1911/2818Processing frame 1912/2818Processing frame 1913/2818Processing frame 1914/2818Processing frame 1915/2818Processing frame 1916/2818Processing frame 1917/2818Processing frame 1918/2818Processing frame 1919/2818Processing frame 1920/2818Processing frame 1921/2818Processing frame 1922/2818Processing frame 1923/2818Processing frame 1924/2818Processing frame 1925/2818Processing frame 1926/2818Processing frame 1927/2818Processing frame 1928/2818Processing frame 1929/2818Processing frame 1930/2818Processing frame 1931/2818Processing frame 1932/2818Processing frame 1933/2818Processing frame 1934/2818Processing frame 1935/2818Processing frame 1936/2818Processing frame 1937/2818Processing frame 1938/2818Processing frame 1939/2818Processing frame 1940/2818Processing frame 1941/2818Processing frame 1942/2818Processing frame 1943/2818Processing frame 1944/2818Processing frame 1945/2818Processing frame 1946/2818Processing frame 1947/2818Processing frame 1948/2818Processing frame 1949/2818Processing frame 1950/2818Processing frame 1951/2818Processing frame 1952/2818Processing frame 1953/2818Processing frame 1954/2818Processing frame 1955/2818Processing frame 1956/2818Processing frame 1957/2818Processing frame 1958/2818Processing frame 1959/2818Processing frame 1960/2818Processing frame 1961/2818Processing frame 1962/2818Processing frame 1963/2818Processing frame 1964/2818Processing frame 1965/2818Processing frame 1966/2818Processing frame 1967/2818Processing frame 1968/2818Processing frame 1969/2818Processing frame 1970/2818Processing frame 1971/2818Processing frame 1972/2818Processing frame 1973/2818Processing frame 1974/2818Processing frame 1975/2818Processing frame 1976/2818Processing frame 1977/2818Processing frame 1978/2818Processing frame 1979/2818Processing frame 1980/2818Processing frame 1981/2818Processing frame 1982/2818Processing frame 1983/2818Processing frame 1984/2818Processing frame 1985/2818Processing frame 1986/2818Processing frame 1987/2818Processing frame 1988/2818Processing frame 1989/2818Processing frame 1990/2818Processing frame 1991/2818Processing frame 1992/2818Processing frame 1993/2818Processing frame 1994/2818Processing frame 1995/2818Processing frame 1996/2818Processing frame 1997/2818Processing frame 1998/2818Processing frame 1999/2818Processing frame 2000/2818Processing frame 2001/2818Processing frame 2002/2818Processing frame 2003/2818Processing frame 2004/2818Processing frame 2005/2818Processing frame 2006/2818Processing frame 2007/2818Processing frame 2008/2818Processing frame 2009/2818Processing frame 2010/2818Processing frame 2011/2818Processing frame 2012/2818Processing frame 2013/2818Processing frame 2014/2818Processing frame 2015/2818Processing frame 2016/2818Processing frame 2017/2818Processing frame 2018/2818Processing frame 2019/2818Processing frame 2020/2818Processing frame 2021/2818Processing frame 2022/2818Processing frame 2023/2818Processing frame 2024/2818Processing frame 2025/2818Processing frame 2026/2818Processing frame 2027/2818Processing frame 2028/2818Processing frame 2029/2818Processing frame 2030/2818Processing frame 2031/2818Processing frame 2032/2818Processing frame 2033/2818Processing frame 2034/2818Processing frame 2035/2818Processing frame 2036/2818Processing frame 2037/2818Processing frame 2038/2818Processing frame 2039/2818Processing frame 2040/2818Processing frame 2041/2818Processing frame 2042/2818Processing frame 2043/2818Processing frame 2044/2818Processing frame 2045/2818Processing frame 2046/2818Processing frame 2047/2818Processing frame 2048/2818Processing frame 2049/2818Processing frame 2050/2818Processing frame 2051/2818Processing frame 2052/2818Processing frame 2053/2818Processing frame 2054/2818Processing frame 2055/2818Processing frame 2056/2818Processing frame 2057/2818Processing frame 2058/2818Processing frame 2059/2818Processing frame 2060/2818Processing frame 2061/2818Processing frame 2062/2818Processing frame 2063/2818Processing frame 2064/2818Processing frame 2065/2818Processing frame 2066/2818Processing frame 2067/2818Processing frame 2068/2818Processing frame 2069/2818Processing frame 2070/2818Processing frame 2071/2818Processing frame 2072/2818Processing frame 2073/2818Processing frame 2074/2818Processing frame 2075/2818Processing frame 2076/2818Processing frame 2077/2818Processing frame 2078/2818Processing frame 2079/2818Processing frame 2080/2818Processing frame 2081/2818Processing frame 2082/2818Processing frame 2083/2818Processing frame 2084/2818Processing frame 2085/2818Processing frame 2086/2818Processing frame 2087/2818Processing frame 2088/2818Processing frame 2089/2818Processing frame 2090/2818Processing frame 2091/2818Processing frame 2092/2818Processing frame 2093/2818Processing frame 2094/2818Processing frame 2095/2818Processing frame 2096/2818Processing frame 2097/2818Processing frame 2098/2818Processing frame 2099/2818Processing frame 2100/2818Processing frame 2101/2818Processing frame 2102/2818Processing frame 2103/2818Processing frame 2104/2818Processing frame 2105/2818Processing frame 2106/2818Processing frame 2107/2818Processing frame 2108/2818Processing frame 2109/2818Processing frame 2110/2818Processing frame 2111/2818Processing frame 2112/2818Processing frame 2113/2818Processing frame 2114/2818Processing frame 2115/2818Processing frame 2116/2818Processing frame 2117/2818Processing frame 2118/2818Processing frame 2119/2818Processing frame 2120/2818Processing frame 2121/2818Processing frame 2122/2818Processing frame 2123/2818Processing frame 2124/2818Processing frame 2125/2818Processing frame 2126/2818Processing frame 2127/2818Processing frame 2128/2818Processing frame 2129/2818Processing frame 2130/2818Processing frame 2131/2818Processing frame 2132/2818Processing frame 2133/2818Processing frame 2134/2818Processing frame 2135/2818Processing frame 2136/2818Processing frame 2137/2818Processing frame 2138/2818Processing frame 2139/2818Processing frame 2140/2818Processing frame 2141/2818Processing frame 2142/2818Processing frame 2143/2818Processing frame 2144/2818Processing frame 2145/2818Processing frame 2146/2818Processing frame 2147/2818Processing frame 2148/2818Processing frame 2149/2818Processing frame 2150/2818Processing frame 2151/2818Processing frame 2152/2818Processing frame 2153/2818Processing frame 2154/2818Processing frame 2155/2818Processing frame 2156/2818Processing frame 2157/2818Processing frame 2158/2818Processing frame 2159/2818Processing frame 2160/2818Processing frame 2161/2818Processing frame 2162/2818Processing frame 2163/2818Processing frame 2164/2818Processing frame 2165/2818Processing frame 2166/2818Processing frame 2167/2818Processing frame 2168/2818Processing frame 2169/2818Processing frame 2170/2818Processing frame 2171/2818Processing frame 2172/2818Processing frame 2173/2818Processing frame 2174/2818Processing frame 2175/2818Processing frame 2176/2818Processing frame 2177/2818Processing frame 2178/2818Processing frame 2179/2818Processing frame 2180/2818Processing frame 2181/2818Processing frame 2182/2818Processing frame 2183/2818Processing frame 2184/2818Processing frame 2185/2818Processing frame 2186/2818Processing frame 2187/2818Processing frame 2188/2818Processing frame 2189/2818Processing frame 2190/2818Processing frame 2191/2818Processing frame 2192/2818Processing frame 2193/2818Processing frame 2194/2818Processing frame 2195/2818Processing frame 2196/2818Processing frame 2197/2818Processing frame 2198/2818Processing frame 2199/2818Processing frame 2200/2818Processing frame 2201/2818Processing frame 2202/2818Processing frame 2203/2818Processing frame 2204/2818Processing frame 2205/2818Processing frame 2206/2818Processing frame 2207/2818Processing frame 2208/2818Processing frame 2209/2818Processing frame 2210/2818Processing frame 2211/2818Processing frame 2212/2818Processing frame 2213/2818Processing frame 2214/2818Processing frame 2215/2818Processing frame 2216/2818Processing frame 2217/2818Processing frame 2218/2818Processing frame 2219/2818Processing frame 2220/2818Processing frame 2221/2818Processing frame 2222/2818Processing frame 2223/2818Processing frame 2224/2818Processing frame 2225/2818Processing frame 2226/2818Processing frame 2227/2818Processing frame 2228/2818Processing frame 2229/2818Processing frame 2230/2818Processing frame 2231/2818Processing frame 2232/2818Processing frame 2233/2818Processing frame 2234/2818Processing frame 2235/2818Processing frame 2236/2818Processing frame 2237/2818Processing frame 2238/2818Processing frame 2239/2818Processing frame 2240/2818Processing frame 2241/2818Processing frame 2242/2818Processing frame 2243/2818Processing frame 2244/2818Processing frame 2245/2818Processing frame 2246/2818Processing frame 2247/2818Processing frame 2248/2818Processing frame 2249/2818Processing frame 2250/2818Processing frame 2251/2818Processing frame 2252/2818Processing frame 2253/2818Processing frame 2254/2818Processing frame 2255/2818Processing frame 2256/2818Processing frame 2257/2818Processing frame 2258/2818Processing frame 2259/2818Processing frame 2260/2818Processing frame 2261/2818Processing frame 2262/2818Processing frame 2263/2818Processing frame 2264/2818Processing frame 2265/2818Processing frame 2266/2818Processing frame 2267/2818Processing frame 2268/2818Processing frame 2269/2818Processing frame 2270/2818Processing frame 2271/2818Processing frame 2272/2818Processing frame 2273/2818Processing frame 2274/2818Processing frame 2275/2818Processing frame 2276/2818Processing frame 2277/2818Processing frame 2278/2818Processing frame 2279/2818Processing frame 2280/2818Processing frame 2281/2818Processing frame 2282/2818Processing frame 2283/2818Processing frame 2284/2818Processing frame 2285/2818Processing frame 2286/2818Processing frame 2287/2818Processing frame 2288/2818Processing frame 2289/2818Processing frame 2290/2818Processing frame 2291/2818Processing frame 2292/2818Processing frame 2293/2818Processing frame 2294/2818Processing frame 2295/2818Processing frame 2296/2818Processing frame 2297/2818Processing frame 2298/2818Processing frame 2299/2818Processing frame 2300/2818Processing frame 2301/2818Processing frame 2302/2818Processing frame 2303/2818Processing frame 2304/2818Processing frame 2305/2818Processing frame 2306/2818Processing frame 2307/2818Processing frame 2308/2818Processing frame 2309/2818Processing frame 2310/2818Processing frame 2311/2818Processing frame 2312/2818Processing frame 2313/2818Processing frame 2314/2818Processing frame 2315/2818Processing frame 2316/2818Processing frame 2317/2818Processing frame 2318/2818Processing frame 2319/2818Processing frame 2320/2818Processing frame 2321/2818Processing frame 2322/2818Processing frame 2323/2818Processing frame 2324/2818Processing frame 2325/2818Processing frame 2326/2818Processing frame 2327/2818Processing frame 2328/2818Processing frame 2329/2818Processing frame 2330/2818Processing frame 2331/2818Processing frame 2332/2818Processing frame 2333/2818Processing frame 2334/2818Processing frame 2335/2818Processing frame 2336/2818Processing frame 2337/2818Processing frame 2338/2818Processing frame 2339/2818Processing frame 2340/2818Processing frame 2341/2818Processing frame 2342/2818Processing frame 2343/2818Processing frame 2344/2818Processing frame 2345/2818Processing frame 2346/2818Processing frame 2347/2818Processing frame 2348/2818Processing frame 2349/2818Processing frame 2350/2818Processing frame 2351/2818Processing frame 2352/2818Processing frame 2353/2818Processing frame 2354/2818Processing frame 2355/2818Processing frame 2356/2818Processing frame 2357/2818Processing frame 2358/2818Processing frame 2359/2818Processing frame 2360/2818Processing frame 2361/2818Processing frame 2362/2818Processing frame 2363/2818Processing frame 2364/2818Processing frame 2365/2818Processing frame 2366/2818Processing frame 2367/2818Processing frame 2368/2818Processing frame 2369/2818Processing frame 2370/2818Processing frame 2371/2818Processing frame 2372/2818Processing frame 2373/2818Processing frame 2374/2818Processing frame 2375/2818Processing frame 2376/2818Processing frame 2377/2818Processing frame 2378/2818Processing frame 2379/2818Processing frame 2380/2818Processing frame 2381/2818Processing frame 2382/2818Processing frame 2383/2818Processing frame 2384/2818Processing frame 2385/2818Processing frame 2386/2818Processing frame 2387/2818Processing frame 2388/2818Processing frame 2389/2818Processing frame 2390/2818Processing frame 2391/2818Processing frame 2392/2818Processing frame 2393/2818Processing frame 2394/2818Processing frame 2395/2818Processing frame 2396/2818Processing frame 2397/2818Processing frame 2398/2818Processing frame 2399/2818Processing frame 2400/2818Processing frame 2401/2818Processing frame 2402/2818Processing frame 2403/2818Processing frame 2404/2818Processing frame 2405/2818Processing frame 2406/2818Processing frame 2407/2818Processing frame 2408/2818Processing frame 2409/2818Processing frame 2410/2818Processing frame 2411/2818Processing frame 2412/2818Processing frame 2413/2818Processing frame 2414/2818Processing frame 2415/2818Processing frame 2416/2818Processing frame 2417/2818Processing frame 2418/2818Processing frame 2419/2818Processing frame 2420/2818Processing frame 2421/2818Processing frame 2422/2818Processing frame 2423/2818Processing frame 2424/2818Processing frame 2425/2818Processing frame 2426/2818Processing frame 2427/2818Processing frame 2428/2818Processing frame 2429/2818Processing frame 2430/2818Processing frame 2431/2818Processing frame 2432/2818Processing frame 2433/2818Processing frame 2434/2818Processing frame 2435/2818Processing frame 2436/2818Processing frame 2437/2818Processing frame 2438/2818Processing frame 2439/2818Processing frame 2440/2818Processing frame 2441/2818Processing frame 2442/2818Processing frame 2443/2818Processing frame 2444/2818Processing frame 2445/2818Processing frame 2446/2818Processing frame 2447/2818Processing frame 2448/2818Processing frame 2449/2818Processing frame 2450/2818Processing frame 2451/2818Processing frame 2452/2818Processing frame 2453/2818Processing frame 2454/2818Processing frame 2455/2818Processing frame 2456/2818Processing frame 2457/2818Processing frame 2458/2818Processing frame 2459/2818Processing frame 2460/2818Processing frame 2461/2818Processing frame 2462/2818Processing frame 2463/2818Processing frame 2464/2818Processing frame 2465/2818Processing frame 2466/2818Processing frame 2467/2818Processing frame 2468/2818Processing frame 2469/2818Processing frame 2470/2818Processing frame 2471/2818Processing frame 2472/2818Processing frame 2473/2818Processing frame 2474/2818Processing frame 2475/2818Processing frame 2476/2818Processing frame 2477/2818Processing frame 2478/2818Processing frame 2479/2818Processing frame 2480/2818Processing frame 2481/2818Processing frame 2482/2818Processing frame 2483/2818Processing frame 2484/2818Processing frame 2485/2818Processing frame 2486/2818Processing frame 2487/2818Processing frame 2488/2818Processing frame 2489/2818Processing frame 2490/2818Processing frame 2491/2818Processing frame 2492/2818Processing frame 2493/2818Processing frame 2494/2818Processing frame 2495/2818Processing frame 2496/2818Processing frame 2497/2818Processing frame 2498/2818Processing frame 2499/2818Processing frame 2500/2818Processing frame 2501/2818Processing frame 2502/2818Processing frame 2503/2818Processing frame 2504/2818Processing frame 2505/2818Processing frame 2506/2818Processing frame 2507/2818Processing frame 2508/2818Processing frame 2509/2818Processing frame 2510/2818Processing frame 2511/2818Processing frame 2512/2818Processing frame 2513/2818Processing frame 2514/2818Processing frame 2515/2818Processing frame 2516/2818Processing frame 2517/2818Processing frame 2518/2818Processing frame 2519/2818Processing frame 2520/2818Processing frame 2521/2818Processing frame 2522/2818Processing frame 2523/2818Processing frame 2524/2818Processing frame 2525/2818Processing frame 2526/2818Processing frame 2527/2818Processing frame 2528/2818Processing frame 2529/2818Processing frame 2530/2818Processing frame 2531/2818Processing frame 2532/2818Processing frame 2533/2818Processing frame 2534/2818Processing frame 2535/2818Processing frame 2536/2818Processing frame 2537/2818Processing frame 2538/2818Processing frame 2539/2818Processing frame 2540/2818Processing frame 2541/2818Processing frame 2542/2818Processing frame 2543/2818Processing frame 2544/2818Processing frame 2545/2818Processing frame 2546/2818Processing frame 2547/2818Processing frame 2548/2818Processing frame 2549/2818Processing frame 2550/2818Processing frame 2551/2818Processing frame 2552/2818Processing frame 2553/2818Processing frame 2554/2818Processing frame 2555/2818Processing frame 2556/2818Processing frame 2557/2818Processing frame 2558/2818Processing frame 2559/2818Processing frame 2560/2818Processing frame 2561/2818Processing frame 2562/2818Processing frame 2563/2818Processing frame 2564/2818Processing frame 2565/2818Processing frame 2566/2818Processing frame 2567/2818Processing frame 2568/2818Processing frame 2569/2818Processing frame 2570/2818Processing frame 2571/2818Processing frame 2572/2818Processing frame 2573/2818Processing frame 2574/2818Processing frame 2575/2818Processing frame 2576/2818Processing frame 2577/2818Processing frame 2578/2818Processing frame 2579/2818Processing frame 2580/2818Processing frame 2581/2818Processing frame 2582/2818Processing frame 2583/2818Processing frame 2584/2818Processing frame 2585/2818Processing frame 2586/2818Processing frame 2587/2818Processing frame 2588/2818Processing frame 2589/2818Processing frame 2590/2818Processing frame 2591/2818Processing frame 2592/2818Processing frame 2593/2818Processing frame 2594/2818Processing frame 2595/2818Processing frame 2596/2818Processing frame 2597/2818Processing frame 2598/2818Processing frame 2599/2818Processing frame 2600/2818Processing frame 2601/2818Processing frame 2602/2818Processing frame 2603/2818Processing frame 2604/2818Processing frame 2605/2818Processing frame 2606/2818Processing frame 2607/2818Processing frame 2608/2818Processing frame 2609/2818Processing frame 2610/2818Processing frame 2611/2818Processing frame 2612/2818Processing frame 2613/2818Processing frame 2614/2818Processing frame 2615/2818Processing frame 2616/2818Processing frame 2617/2818Processing frame 2618/2818Processing frame 2619/2818Processing frame 2620/2818Processing frame 2621/2818Processing frame 2622/2818Processing frame 2623/2818Processing frame 2624/2818Processing frame 2625/2818Processing frame 2626/2818Processing frame 2627/2818Processing frame 2628/2818Processing frame 2629/2818Processing frame 2630/2818Processing frame 2631/2818Processing frame 2632/2818Processing frame 2633/2818Processing frame 2634/2818Processing frame 2635/2818Processing frame 2636/2818Processing frame 2637/2818Processing frame 2638/2818Processing frame 2639/2818Processing frame 2640/2818Processing frame 2641/2818Processing frame 2642/2818Processing frame 2643/2818Processing frame 2644/2818Processing frame 2645/2818Processing frame 2646/2818Processing frame 2647/2818Processing frame 2648/2818Processing frame 2649/2818Processing frame 2650/2818Processing frame 2651/2818Processing frame 2652/2818Processing frame 2653/2818Processing frame 2654/2818Processing frame 2655/2818Processing frame 2656/2818Processing frame 2657/2818Processing frame 2658/2818Processing frame 2659/2818Processing frame 2660/2818Processing frame 2661/2818Processing frame 2662/2818Processing frame 2663/2818Processing frame 2664/2818Processing frame 2665/2818Processing frame 2666/2818Processing frame 2667/2818Processing frame 2668/2818Processing frame 2669/2818Processing frame 2670/2818Processing frame 2671/2818Processing frame 2672/2818Processing frame 2673/2818Processing frame 2674/2818Processing frame 2675/2818Processing frame 2676/2818Processing frame 2677/2818Processing frame 2678/2818Processing frame 2679/2818Processing frame 2680/2818Processing frame 2681/2818Processing frame 2682/2818Processing frame 2683/2818Processing frame 2684/2818Processing frame 2685/2818Processing frame 2686/2818Processing frame 2687/2818Processing frame 2688/2818Processing frame 2689/2818Processing frame 2690/2818Processing frame 2691/2818Processing frame 2692/2818Processing frame 2693/2818Processing frame 2694/2818Processing frame 2695/2818Processing frame 2696/2818Processing frame 2697/2818Processing frame 2698/2818Processing frame 2699/2818Processing frame 2700/2818Processing frame 2701/2818Processing frame 2702/2818Processing frame 2703/2818Processing frame 2704/2818Processing frame 2705/2818Processing frame 2706/2818Processing frame 2707/2818Processing frame 2708/2818Processing frame 2709/2818Processing frame 2710/2818Processing frame 2711/2818Processing frame 2712/2818Processing frame 2713/2818Processing frame 2714/2818Processing frame 2715/2818Processing frame 2716/2818Processing frame 2717/2818Processing frame 2718/2818Processing frame 2719/2818Processing frame 2720/2818Processing frame 2721/2818Processing frame 2722/2818Processing frame 2723/2818Processing frame 2724/2818Processing frame 2725/2818Processing frame 2726/2818Processing frame 2727/2818Processing frame 2728/2818Processing frame 2729/2818Processing frame 2730/2818Processing frame 2731/2818Processing frame 2732/2818Processing frame 2733/2818Processing frame 2734/2818Processing frame 2735/2818Processing frame 2736/2818Processing frame 2737/2818Processing frame 2738/2818Processing frame 2739/2818Processing frame 2740/2818Processing frame 2741/2818Processing frame 2742/2818Processing frame 2743/2818Processing frame 2744/2818Processing frame 2745/2818Processing frame 2746/2818Processing frame 2747/2818Processing frame 2748/2818Processing frame 2749/2818Processing frame 2750/2818Processing frame 2751/2818Processing frame 2752/2818Processing frame 2753/2818Processing frame 2754/2818Processing frame 2755/2818Processing frame 2756/2818Processing frame 2757/2818Processing frame 2758/2818Processing frame 2759/2818Processing frame 2760/2818Processing frame 2761/2818Processing frame 2762/2818Processing frame 2763/2818Processing frame 2764/2818Processing frame 2765/2818Processing frame 2766/2818Processing frame 2767/2818Processing frame 2768/2818Processing frame 2769/2818Processing frame 2770/2818Processing frame 2771/2818Processing frame 2772/2818Processing frame 2773/2818Processing frame 2774/2818Processing frame 2775/2818Processing frame 2776/2818Processing frame 2777/2818Processing frame 2778/2818Processing frame 2779/2818Processing frame 2780/2818Processing frame 2781/2818Processing frame 2782/2818Processing frame 2783/2818Processing frame 2784/2818Processing frame 2785/2818Processing frame 2786/2818Processing frame 2787/2818Processing frame 2788/2818Processing frame 2789/2818Processing frame 2790/2818Processing frame 2791/2818Processing frame 2792/2818Processing frame 2793/2818Processing frame 2794/2818Processing frame 2795/2818Processing frame 2796/2818Processing frame 2797/2818Processing frame 2798/2818Processing frame 2799/2818Processing frame 2800/2818Processing frame 2801/2818Processing frame 2802/2818Processing frame 2803/2818Processing frame 2804/2818Processing frame 2805/2818Processing frame 2806/2818Processing frame 2807/2818Processing frame 2808/2818Processing frame 2809/2818Processing frame 2810/2818Processing frame 2811/2818Processing frame 2812/2818Processing frame 2813/2818Processing frame 2814/2818Processing frame 2815/2818Processing frame 2816/2818Processing frame 2817/2818Processing frame 2818/2818
+Processed 2818 frames
+Average inference FPS: 36.28
+Output saved to: output_video2.mp4
+[2025-09-18 23:18:09] ✓ Inference completed successfully in 110 seconds
+[2025-09-18 23:18:09] ✓ Output video created: output_video2.mp4 (44M)
+[2025-09-18 23:18:09] ==================================
+[2025-09-18 23:18:09] RUNNING MODEL3 POST-PROCESSING
+[2025-09-18 23:18:09] ==================================
+[2025-09-18 23:18:09] Executing model3.py for post-processing...
+[2025-09-18 23:18:09] Model3 processing started at: Thu Sep 18 11:18:09 PM CEST 2025
+Using provided Triton server URL: gpu001:8086
+Processing video: ABODA/video2.avi
+Output will be saved to: output_video2.mp4
+🎬 Loading input video: ABODA/video2.avi
+📊 Video properties: 720x480 @ 29fps, 2818 total frames
+🎯 Output video: output_video2.mp4
+🤖 Using model: rtdetr with confidence threshold: 0.1
+📝 Video writer initialized: 720x480, 29fps
+Connecting to Triton server at: gpu001:8086
+✓ Successfully connected to Triton server at gpu001:8086
+🎬 Opened video: 29 fps, starting inference...
+🎯 Frame 0: 21 detections (0 persons, 1 objects)
+🔄 Processed 0/2818 frames (0.0 fps)
+🎯 Frame 5: 23 detections (0 persons, 1 objects)
+🎯 Frame 10: 19 detections (0 persons, 1 objects)
+🎯 Frame 15: 17 detections (0 persons, 1 objects)
+🎯 Frame 20: 15 detections (0 persons, 1 objects)
+🎯 Frame 25: 17 detections (0 persons, 1 objects)
+🎯 Frame 30: 16 detections (0 persons, 1 objects)
+🎯 Frame 35: 17 detections (0 persons, 1 objects)
+🎯 Frame 40: 16 detections (0 persons, 1 objects)
+🎯 Frame 45: 18 detections (0 persons, 1 objects)
+🎯 Frame 50: 16 detections (0 persons, 1 objects)
+🎯 Frame 55: 14 detections (0 persons, 1 objects)
+🎯 Frame 60: 13 detections (0 persons, 1 objects)
+🎯 Frame 65: 14 detections (0 persons, 1 objects)
+🎯 Frame 70: 15 detections (0 persons, 1 objects)
+🎯 Frame 75: 14 detections (0 persons, 1 objects)
+🎯 Frame 80: 17 detections (0 persons, 1 objects)
+🎯 Frame 85: 17 detections (0 persons, 1 objects)
+🎯 Frame 90: 17 detections (0 persons, 1 objects)
+🎯 Frame 95: 16 detections (0 persons, 1 objects)
+Processed 100 frames...
+🎯 Frame 100: 16 detections (0 persons, 1 objects)
+🎯 Frame 105: 15 detections (0 persons, 1 objects)
+🎯 Frame 110: 16 detections (0 persons, 1 objects)
+🎯 Frame 115: 14 detections (0 persons, 0 objects)
+🎯 Frame 120: 13 detections (0 persons, 0 objects)
+🎯 Frame 125: 13 detections (0 persons, 0 objects)
+🎯 Frame 130: 11 detections (0 persons, 0 objects)
+🎯 Frame 135: 11 detections (0 persons, 0 objects)
+🎯 Frame 140: 12 detections (0 persons, 0 objects)
+🎯 Frame 145: 13 detections (0 persons, 0 objects)
+🎯 Frame 150: 12 detections (0 persons, 0 objects)
+🎯 Frame 155: 13 detections (0 persons, 0 objects)
+🎯 Frame 160: 14 detections (0 persons, 0 objects)
+🎯 Frame 165: 14 detections (0 persons, 0 objects)
+🎯 Frame 170: 18 detections (0 persons, 1 objects)
+🎯 Frame 175: 15 detections (0 persons, 1 objects)
+🎯 Frame 180: 13 detections (0 persons, 0 objects)
+🎯 Frame 185: 14 detections (0 persons, 0 objects)
+🎯 Frame 190: 15 detections (0 persons, 0 objects)
+🎯 Frame 195: 15 detections (0 persons, 0 objects)
+Processed 200 frames...
+🎯 Frame 200: 16 detections (0 persons, 1 objects)
+🎯 Frame 205: 15 detections (0 persons, 0 objects)
+🎯 Frame 210: 16 detections (0 persons, 1 objects)
+🎯 Frame 215: 14 detections (0 persons, 1 objects)
+🎯 Frame 220: 14 detections (0 persons, 0 objects)
+🎯 Frame 225: 16 detections (0 persons, 0 objects)
+🎯 Frame 230: 15 detections (0 persons, 0 objects)
+🎯 Frame 235: 17 detections (0 persons, 0 objects)
+🎯 Frame 240: 21 detections (0 persons, 1 objects)
+🎯 Frame 245: 17 detections (0 persons, 0 objects)
+🎯 Frame 250: 20 detections (0 persons, 1 objects)
+🎯 Frame 255: 19 detections (0 persons, 0 objects)
+🎯 Frame 260: 17 detections (0 persons, 1 objects)
+🎯 Frame 265: 21 detections (0 persons, 1 objects)
+🎯 Frame 270: 27 detections (0 persons, 1 objects)
+🎯 Frame 275: 23 detections (0 persons, 1 objects)
+🎯 Frame 280: 21 detections (0 persons, 1 objects)
+🎯 Frame 285: 22 detections (0 persons, 1 objects)
+🎯 Frame 290: 18 detections (0 persons, 0 objects)
+🎯 Frame 295: 22 detections (0 persons, 0 objects)
+Processed 300 frames...
+🎯 Frame 300: 17 detections (0 persons, 1 objects)
+🎯 Frame 305: 15 detections (0 persons, 0 objects)
+🎯 Frame 310: 18 detections (0 persons, 1 objects)
+🎯 Frame 315: 14 detections (0 persons, 0 objects)
+🎯 Frame 320: 14 detections (0 persons, 0 objects)
+🎯 Frame 325: 16 detections (0 persons, 0 objects)
+🎯 Frame 330: 15 detections (0 persons, 0 objects)
+🎯 Frame 335: 15 detections (0 persons, 0 objects)
+🎯 Frame 340: 14 detections (0 persons, 0 objects)
+🎯 Frame 345: 12 detections (0 persons, 0 objects)
+🎯 Frame 350: 13 detections (0 persons, 0 objects)
+🎯 Frame 355: 18 detections (0 persons, 1 objects)
+🎯 Frame 360: 17 detections (0 persons, 0 objects)
+🎯 Frame 365: 19 detections (0 persons, 0 objects)
+🎯 Frame 370: 22 detections (0 persons, 1 objects)
+🎯 Frame 375: 18 detections (0 persons, 0 objects)
+🎯 Frame 380: 17 detections (0 persons, 0 objects)
+🎯 Frame 385: 19 detections (0 persons, 0 objects)
+🎯 Frame 390: 16 detections (0 persons, 0 objects)
+🎯 Frame 395: 16 detections (0 persons, 0 objects)
+Processed 400 frames...
+🎯 Frame 400: 14 detections (0 persons, 0 objects)
+🎯 Frame 405: 16 detections (0 persons, 0 objects)
+🎯 Frame 410: 14 detections (0 persons, 0 objects)
+🎯 Frame 415: 13 detections (0 persons, 0 objects)
+🎯 Frame 420: 13 detections (0 persons, 0 objects)
+🎯 Frame 425: 13 detections (0 persons, 0 objects)
+🎯 Frame 430: 12 detections (0 persons, 0 objects)
+🎯 Frame 435: 12 detections (0 persons, 0 objects)
+🎯 Frame 440: 13 detections (0 persons, 0 objects)
+🎯 Frame 445: 12 detections (0 persons, 0 objects)
+🎯 Frame 450: 12 detections (0 persons, 0 objects)
+🎯 Frame 455: 14 detections (0 persons, 0 objects)
+🎯 Frame 460: 13 detections (0 persons, 0 objects)
+🎯 Frame 465: 14 detections (0 persons, 0 objects)
+🎯 Frame 470: 14 detections (0 persons, 0 objects)
+🎯 Frame 475: 17 detections (0 persons, 0 objects)
+🎯 Frame 480: 15 detections (0 persons, 0 objects)
+🎯 Frame 485: 14 detections (0 persons, 0 objects)
+🎯 Frame 490: 14 detections (0 persons, 0 objects)
+🎯 Frame 495: 14 detections (0 persons, 0 objects)
+Processed 500 frames...
+🎯 Frame 500: 15 detections (0 persons, 0 objects)
+🔄 Processed 100/2818 frames (26.7 fps)
+🎯 Frame 505: 14 detections (0 persons, 0 objects)
+🎯 Frame 510: 15 detections (0 persons, 0 objects)
+🎯 Frame 515: 15 detections (0 persons, 0 objects)
+🎯 Frame 520: 13 detections (0 persons, 0 objects)
+🎯 Frame 525: 14 detections (0 persons, 0 objects)
+🎯 Frame 530: 15 detections (0 persons, 0 objects)
+🚨 ALERT: suitcase unattended for 19.4s
+🎯 Frame 535: 20 detections (0 persons, 1 objects)
+⚠️ Frame 535: 1 alert(s) - ['suitcase']
+🎯 Frame 540: 15 detections (0 persons, 0 objects)
+🎯 Frame 545: 15 detections (0 persons, 0 objects)
+🎯 Frame 550: 13 detections (0 persons, 0 objects)
+🎯 Frame 555: 16 detections (0 persons, 0 objects)
+🎯 Frame 560: 17 detections (0 persons, 0 objects)
+🎯 Frame 565: 18 detections (0 persons, 1 objects)
+🎯 Frame 570: 17 detections (0 persons, 0 objects)
+🎯 Frame 575: 18 detections (0 persons, 0 objects)
+🎯 Frame 580: 16 detections (0 persons, 0 objects)
+🎯 Frame 585: 17 detections (0 persons, 0 objects)
+🎯 Frame 590: 16 detections (0 persons, 0 objects)
+🎯 Frame 595: 16 detections (0 persons, 0 objects)
+Processed 600 frames...
+🎯 Frame 600: 20 detections (0 persons, 1 objects)
+🎯 Frame 605: 20 detections (0 persons, 1 objects)
+🎯 Frame 610: 21 detections (0 persons, 1 objects)
+🎯 Frame 615: 20 detections (0 persons, 1 objects)
+🎯 Frame 620: 16 detections (0 persons, 0 objects)
+🎯 Frame 625: 18 detections (0 persons, 0 objects)
+🎯 Frame 630: 19 detections (0 persons, 2 objects)
+🎯 Frame 635: 19 detections (0 persons, 1 objects)
+🎯 Frame 640: 20 detections (0 persons, 1 objects)
+🎯 Frame 645: 17 detections (0 persons, 0 objects)
+🎯 Frame 650: 16 detections (0 persons, 0 objects)
+🎯 Frame 655: 18 detections (0 persons, 0 objects)
+🎯 Frame 660: 17 detections (0 persons, 0 objects)
+🎯 Frame 665: 17 detections (0 persons, 0 objects)
+🎯 Frame 670: 14 detections (0 persons, 0 objects)
+🎯 Frame 675: 15 detections (0 persons, 0 objects)
+🎯 Frame 680: 15 detections (0 persons, 0 objects)
+🎯 Frame 685: 16 detections (0 persons, 0 objects)
+🎯 Frame 690: 17 detections (0 persons, 0 objects)
+🎯 Frame 695: 17 detections (0 persons, 0 objects)
+Processed 700 frames...
+🎯 Frame 700: 13 detections (0 persons, 0 objects)
+🎯 Frame 705: 16 detections (0 persons, 0 objects)
+🎯 Frame 710: 14 detections (0 persons, 0 objects)
+🎯 Frame 715: 16 detections (0 persons, 0 objects)
+🎯 Frame 720: 15 detections (0 persons, 0 objects)
+🎯 Frame 725: 16 detections (0 persons, 0 objects)
+🎯 Frame 730: 16 detections (0 persons, 0 objects)
+🎯 Frame 735: 15 detections (0 persons, 0 objects)
+🎯 Frame 740: 15 detections (0 persons, 0 objects)
+🎯 Frame 745: 15 detections (0 persons, 0 objects)
+🎯 Frame 750: 17 detections (0 persons, 1 objects)
+🎯 Frame 755: 14 detections (0 persons, 0 objects)
+🎯 Frame 760: 18 detections (0 persons, 1 objects)
+🎯 Frame 765: 15 detections (0 persons, 0 objects)
+🎯 Frame 770: 16 detections (0 persons, 0 objects)
+🎯 Frame 775: 18 detections (0 persons, 0 objects)
+🎯 Frame 780: 17 detections (0 persons, 0 objects)
+🎯 Frame 785: 15 detections (0 persons, 0 objects)
+🎯 Frame 790: 15 detections (0 persons, 0 objects)
+🎯 Frame 795: 16 detections (0 persons, 0 objects)
+Processed 800 frames...
+🎯 Frame 800: 20 detections (0 persons, 0 objects)
+🎯 Frame 805: 15 detections (0 persons, 0 objects)
+🎯 Frame 810: 13 detections (0 persons, 0 objects)
+🎯 Frame 815: 14 detections (0 persons, 0 objects)
+🎯 Frame 820: 13 detections (0 persons, 0 objects)
+🎯 Frame 825: 15 detections (0 persons, 0 objects)
+🎯 Frame 830: 12 detections (0 persons, 0 objects)
+🎯 Frame 835: 16 detections (0 persons, 0 objects)
+🎯 Frame 840: 13 detections (0 persons, 0 objects)
+🎯 Frame 845: 12 detections (0 persons, 0 objects)
+🎯 Frame 850: 14 detections (0 persons, 0 objects)
+🎯 Frame 855: 12 detections (0 persons, 0 objects)
+🎯 Frame 860: 13 detections (0 persons, 0 objects)
+🎯 Frame 865: 12 detections (0 persons, 0 objects)
+🎯 Frame 870: 13 detections (0 persons, 0 objects)
+🎯 Frame 875: 13 detections (0 persons, 0 objects)
+🎯 Frame 880: 12 detections (0 persons, 0 objects)
+🎯 Frame 885: 12 detections (0 persons, 0 objects)
+🎯 Frame 890: 12 detections (0 persons, 0 objects)
+🎯 Frame 895: 12 detections (0 persons, 0 objects)
+Processed 900 frames...
+🎯 Frame 900: 14 detections (0 persons, 0 objects)
+🎯 Frame 905: 17 detections (0 persons, 1 objects)
+🎯 Frame 910: 16 detections (0 persons, 0 objects)
+🎯 Frame 915: 16 detections (0 persons, 1 objects)
+🎯 Frame 920: 18 detections (0 persons, 1 objects)
+🎯 Frame 925: 18 detections (0 persons, 1 objects)
+🎯 Frame 930: 17 detections (0 persons, 1 objects)
+🎯 Frame 935: 18 detections (0 persons, 1 objects)
+🎯 Frame 940: 21 detections (0 persons, 1 objects)
+🎯 Frame 945: 10 detections (1 persons, 0 objects)
+🎯 Frame 950: 13 detections (1 persons, 3 objects)
+🎯 Frame 955: 14 detections (3 persons, 1 objects)
+🎯 Frame 960: 13 detections (2 persons, 0 objects)
+🎯 Frame 965: 12 detections (4 persons, 0 objects)
+🎯 Frame 970: 12 detections (3 persons, 0 objects)
+🎯 Frame 975: 16 detections (7 persons, 0 objects)
+🎯 Frame 980: 17 detections (5 persons, 3 objects)
+🎯 Frame 985: 20 detections (5 persons, 3 objects)
+🎯 Frame 990: 20 detections (7 persons, 7 objects)
+🎯 Frame 995: 20 detections (10 persons, 6 objects)
+Processed 1000 frames...
+🎯 Frame 1000: 36 detections (13 persons, 18 objects)
+🔄 Processed 200/2818 frames (26.9 fps)
+🎯 Frame 1005: 31 detections (11 persons, 15 objects)
+🎯 Frame 1010: 38 detections (8 persons, 20 objects)
+🎯 Frame 1015: 48 detections (15 persons, 21 objects)
+🎯 Frame 1020: 48 detections (16 persons, 26 objects)
+🎯 Frame 1025: 47 detections (16 persons, 22 objects)
+🎯 Frame 1030: 61 detections (11 persons, 36 objects)
+🎯 Frame 1035: 49 detections (13 persons, 28 objects)
+🎯 Frame 1040: 60 detections (18 persons, 31 objects)
+🎯 Frame 1045: 66 detections (18 persons, 40 objects)
+🎯 Frame 1050: 47 detections (11 persons, 30 objects)
+🎯 Frame 1055: 57 detections (22 persons, 27 objects)
+🎯 Frame 1060: 55 detections (16 persons, 35 objects)
+🎯 Frame 1065: 53 detections (17 persons, 29 objects)
+🎯 Frame 1070: 53 detections (13 persons, 34 objects)
+🎯 Frame 1075: 57 detections (19 persons, 34 objects)
+🎯 Frame 1080: 51 detections (17 persons, 27 objects)
+🎯 Frame 1085: 43 detections (9 persons, 27 objects)
+🎯 Frame 1090: 60 detections (11 persons, 39 objects)
+🎯 Frame 1095: 51 detections (10 persons, 28 objects)
+Processed 1100 frames...
+🎯 Frame 1100: 45 detections (12 persons, 27 objects)
+🎯 Frame 1105: 44 detections (15 persons, 22 objects)
+🎯 Frame 1110: 44 detections (18 persons, 20 objects)
+🎯 Frame 1115: 41 detections (11 persons, 23 objects)
+🎯 Frame 1120: 49 detections (13 persons, 30 objects)
+🎯 Frame 1125: 50 detections (20 persons, 23 objects)
+🎯 Frame 1130: 45 detections (12 persons, 26 objects)
+🎯 Frame 1135: 45 detections (15 persons, 25 objects)
+🎯 Frame 1140: 54 detections (22 persons, 26 objects)
+🎯 Frame 1145: 49 detections (18 persons, 23 objects)
+🎯 Frame 1150: 47 detections (12 persons, 29 objects)
+🎯 Frame 1155: 36 detections (12 persons, 18 objects)
+🎯 Frame 1160: 47 detections (10 persons, 29 objects)
+🎯 Frame 1165: 40 detections (10 persons, 22 objects)
+🎯 Frame 1170: 45 detections (13 persons, 25 objects)
+🎯 Frame 1175: 44 detections (15 persons, 18 objects)
+🎯 Frame 1180: 49 detections (24 persons, 18 objects)
+🎯 Frame 1185: 42 detections (20 persons, 14 objects)
+🎯 Frame 1190: 43 detections (18 persons, 16 objects)
+🎯 Frame 1195: 49 detections (19 persons, 21 objects)
+Processed 1200 frames...
+🎯 Frame 1200: 44 detections (16 persons, 18 objects)
+🎯 Frame 1205: 46 detections (13 persons, 24 objects)
+🎯 Frame 1210: 49 detections (17 persons, 24 objects)
+🎯 Frame 1215: 56 detections (19 persons, 27 objects)
+🎯 Frame 1220: 49 detections (15 persons, 26 objects)
+🎯 Frame 1225: 47 detections (19 persons, 18 objects)
+🎯 Frame 1230: 46 detections (14 persons, 22 objects)
+🎯 Frame 1235: 55 detections (23 persons, 22 objects)
+🎯 Frame 1240: 68 detections (21 persons, 37 objects)
+🎯 Frame 1245: 69 detections (22 persons, 35 objects)
+🎯 Frame 1250: 63 detections (26 persons, 28 objects)
+🎯 Frame 1255: 59 detections (24 persons, 21 objects)
+🎯 Frame 1260: 55 detections (25 persons, 19 objects)
+🎯 Frame 1265: 59 detections (35 persons, 16 objects)
+🎯 Frame 1270: 58 detections (27 persons, 21 objects)
+🎯 Frame 1275: 41 detections (25 persons, 10 objects)
+🎯 Frame 1280: 47 detections (27 persons, 13 objects)
+🎯 Frame 1285: 48 detections (21 persons, 17 objects)
+🎯 Frame 1290: 43 detections (16 persons, 20 objects)
+🎯 Frame 1295: 31 detections (13 persons, 12 objects)
+Processed 1300 frames...
+🎯 Frame 1300: 38 detections (20 persons, 11 objects)
+🎯 Frame 1305: 32 detections (10 persons, 11 objects)
+🎯 Frame 1310: 23 detections (9 persons, 6 objects)
+🎯 Frame 1315: 33 detections (15 persons, 11 objects)
+🎯 Frame 1320: 36 detections (12 persons, 18 objects)
+🎯 Frame 1325: 26 detections (9 persons, 10 objects)
+🎯 Frame 1330: 26 detections (8 persons, 11 objects)
+🎯 Frame 1335: 27 detections (13 persons, 8 objects)
+🎯 Frame 1340: 33 detections (14 persons, 13 objects)
+🎯 Frame 1345: 31 detections (9 persons, 15 objects)
+🎯 Frame 1350: 30 detections (9 persons, 14 objects)
+🎯 Frame 1355: 32 detections (14 persons, 9 objects)
+🎯 Frame 1360: 28 detections (10 persons, 9 objects)
+🎯 Frame 1365: 22 detections (7 persons, 6 objects)
+🎯 Frame 1370: 23 detections (9 persons, 5 objects)
+🎯 Frame 1375: 25 detections (15 persons, 1 objects)
+🎯 Frame 1380: 24 detections (11 persons, 7 objects)
+🎯 Frame 1385: 23 detections (8 persons, 7 objects)
+🎯 Frame 1390: 29 detections (13 persons, 7 objects)
+🎯 Frame 1395: 29 detections (17 persons, 6 objects)
+Processed 1400 frames...
+🎯 Frame 1400: 27 detections (13 persons, 6 objects)
+🎯 Frame 1405: 22 detections (9 persons, 4 objects)
+🎯 Frame 1410: 25 detections (10 persons, 5 objects)
+🎯 Frame 1415: 22 detections (9 persons, 2 objects)
+🎯 Frame 1420: 20 detections (8 persons, 3 objects)
+🎯 Frame 1425: 21 detections (9 persons, 3 objects)
+🎯 Frame 1430: 17 detections (6 persons, 2 objects)
+🎯 Frame 1435: 20 detections (8 persons, 2 objects)
+🎯 Frame 1440: 14 detections (5 persons, 0 objects)
+🎯 Frame 1445: 18 detections (5 persons, 0 objects)
+🎯 Frame 1450: 17 detections (4 persons, 0 objects)
+🎯 Frame 1455: 23 detections (2 persons, 1 objects)
+🎯 Frame 1460: 19 detections (3 persons, 0 objects)
+🎯 Frame 1465: 20 detections (5 persons, 0 objects)
+🎯 Frame 1470: 19 detections (1 persons, 1 objects)
+🎯 Frame 1475: 21 detections (3 persons, 1 objects)
+🎯 Frame 1480: 21 detections (3 persons, 1 objects)
+🎯 Frame 1485: 18 detections (3 persons, 1 objects)
+🎯 Frame 1490: 23 detections (3 persons, 1 objects)
+🎯 Frame 1495: 20 detections (4 persons, 1 objects)
+Processed 1500 frames...
+🎯 Frame 1500: 21 detections (2 persons, 1 objects)
+🔄 Processed 300/2818 frames (26.1 fps)
+🎯 Frame 1505: 22 detections (0 persons, 1 objects)
+🎯 Frame 1510: 22 detections (0 persons, 1 objects)
+🎯 Frame 1515: 22 detections (0 persons, 1 objects)
+🎯 Frame 1520: 24 detections (0 persons, 1 objects)
+🎯 Frame 1525: 20 detections (0 persons, 1 objects)
+🎯 Frame 1530: 22 detections (0 persons, 1 objects)
+🎯 Frame 1535: 20 detections (0 persons, 1 objects)
+🎯 Frame 1540: 20 detections (0 persons, 1 objects)
+🎯 Frame 1545: 16 detections (0 persons, 0 objects)
+🎯 Frame 1550: 16 detections (0 persons, 0 objects)
+🎯 Frame 1555: 15 detections (0 persons, 0 objects)
+🎯 Frame 1560: 16 detections (0 persons, 0 objects)
+🎯 Frame 1565: 15 detections (0 persons, 0 objects)
+🎯 Frame 1570: 17 detections (0 persons, 0 objects)
+🎯 Frame 1575: 17 detections (0 persons, 1 objects)
+🎯 Frame 1580: 17 detections (0 persons, 1 objects)
+🎯 Frame 1585: 19 detections (0 persons, 1 objects)
+🎯 Frame 1590: 17 detections (0 persons, 1 objects)
+🎯 Frame 1595: 16 detections (0 persons, 0 objects)
+Processed 1600 frames...
+🎯 Frame 1600: 15 detections (0 persons, 0 objects)
+🎯 Frame 1605: 18 detections (0 persons, 1 objects)
+🎯 Frame 1610: 17 detections (0 persons, 0 objects)
+🎯 Frame 1615: 15 detections (0 persons, 0 objects)
+🎯 Frame 1620: 14 detections (0 persons, 0 objects)
+🎯 Frame 1625: 14 detections (0 persons, 0 objects)
+🎯 Frame 1630: 15 detections (0 persons, 0 objects)
+🎯 Frame 1635: 17 detections (0 persons, 0 objects)
+🎯 Frame 1640: 16 detections (0 persons, 0 objects)
+🎯 Frame 1645: 17 detections (0 persons, 0 objects)
+🎯 Frame 1650: 18 detections (0 persons, 0 objects)
+🎯 Frame 1655: 18 detections (0 persons, 0 objects)
+🎯 Frame 1660: 17 detections (0 persons, 0 objects)
+🎯 Frame 1665: 17 detections (0 persons, 0 objects)
+🎯 Frame 1670: 20 detections (0 persons, 0 objects)
+🎯 Frame 1675: 19 detections (0 persons, 0 objects)
+🎯 Frame 1680: 19 detections (0 persons, 0 objects)
+🎯 Frame 1685: 16 detections (0 persons, 0 objects)
+🎯 Frame 1690: 17 detections (0 persons, 0 objects)
+🎯 Frame 1695: 19 detections (0 persons, 0 objects)
+Processed 1700 frames...
+🎯 Frame 1700: 18 detections (0 persons, 0 objects)
+🎯 Frame 1705: 18 detections (0 persons, 0 objects)
+🎯 Frame 1710: 20 detections (0 persons, 0 objects)
+🎯 Frame 1715: 17 detections (0 persons, 0 objects)
+🎯 Frame 1720: 18 detections (0 persons, 0 objects)
+🎯 Frame 1725: 15 detections (0 persons, 0 objects)
+🎯 Frame 1730: 19 detections (0 persons, 0 objects)
+🎯 Frame 1735: 14 detections (0 persons, 0 objects)
+🎯 Frame 1740: 18 detections (0 persons, 0 objects)
+🎯 Frame 1745: 16 detections (0 persons, 0 objects)
+🎯 Frame 1750: 15 detections (0 persons, 0 objects)
+🎯 Frame 1755: 16 detections (0 persons, 0 objects)
+🎯 Frame 1760: 13 detections (0 persons, 0 objects)
+🎯 Frame 1765: 16 detections (0 persons, 1 objects)
+🎯 Frame 1770: 13 detections (0 persons, 0 objects)
+🎯 Frame 1775: 17 detections (0 persons, 1 objects)
+🎯 Frame 1780: 15 detections (0 persons, 0 objects)
+🎯 Frame 1785: 12 detections (0 persons, 0 objects)
+🎯 Frame 1790: 14 detections (0 persons, 0 objects)
+🎯 Frame 1795: 13 detections (0 persons, 0 objects)
+Processed 1800 frames...
+🎯 Frame 1800: 17 detections (0 persons, 1 objects)
+🎯 Frame 1805: 18 detections (0 persons, 1 objects)
+🚨 ALERT: suitcase unattended for 25.3s
+🎯 Frame 1810: 18 detections (0 persons, 2 objects)
+⚠️ Frame 1810: 1 alert(s) - ['suitcase']
+🎯 Frame 1815: 19 detections (0 persons, 1 objects)
+🎯 Frame 1820: 18 detections (0 persons, 0 objects)
+🎯 Frame 1825: 19 detections (0 persons, 0 objects)
+🎯 Frame 1830: 19 detections (0 persons, 1 objects)
+🎯 Frame 1835: 16 detections (0 persons, 0 objects)
+🎯 Frame 1840: 17 detections (0 persons, 0 objects)
+🎯 Frame 1845: 17 detections (0 persons, 0 objects)
+🎯 Frame 1850: 19 detections (0 persons, 0 objects)
+🎯 Frame 1855: 17 detections (0 persons, 0 objects)
+🎯 Frame 1860: 20 detections (0 persons, 0 objects)
+🎯 Frame 1865: 19 detections (0 persons, 0 objects)
+🎯 Frame 1870: 19 detections (1 persons, 1 objects)
+🎯 Frame 1875: 19 detections (0 persons, 0 objects)
+🎯 Frame 1880: 20 detections (4 persons, 0 objects)
+🎯 Frame 1885: 17 detections (2 persons, 0 objects)
+🎯 Frame 1890: 12 detections (1 persons, 0 objects)
+🎯 Frame 1895: 19 detections (1 persons, 8 objects)
+Processed 1900 frames...
+🎯 Frame 1900: 13 detections (1 persons, 3 objects)
+🎯 Frame 1905: 13 detections (1 persons, 5 objects)
+🎯 Frame 1910: 14 detections (1 persons, 5 objects)
+🎯 Frame 1915: 11 detections (1 persons, 4 objects)
+🎯 Frame 1920: 13 detections (1 persons, 4 objects)
+🎯 Frame 1925: 14 detections (1 persons, 4 objects)
+🎯 Frame 1930: 11 detections (1 persons, 5 objects)
+🎯 Frame 1935: 13 detections (1 persons, 6 objects)
+🎯 Frame 1940: 10 detections (1 persons, 2 objects)
+🎯 Frame 1945: 9 detections (1 persons, 2 objects)
+🎯 Frame 1950: 18 detections (1 persons, 9 objects)
+🎯 Frame 1955: 14 detections (1 persons, 6 objects)
+🎯 Frame 1960: 13 detections (1 persons, 6 objects)
+🎯 Frame 1965: 12 detections (1 persons, 3 objects)
+🎯 Frame 1970: 15 detections (1 persons, 5 objects)
+🎯 Frame 1975: 16 detections (1 persons, 3 objects)
+🎯 Frame 1980: 18 detections (1 persons, 5 objects)
+🎯 Frame 1985: 14 detections (1 persons, 5 objects)
+🎯 Frame 1990: 13 detections (1 persons, 4 objects)
+🎯 Frame 1995: 16 detections (1 persons, 6 objects)
+Processed 2000 frames...
+🎯 Frame 2000: 17 detections (4 persons, 5 objects)
+🔄 Processed 400/2818 frames (26.3 fps)
+🎯 Frame 2005: 14 detections (4 persons, 3 objects)
+🎯 Frame 2010: 15 detections (3 persons, 6 objects)
+🎯 Frame 2015: 17 detections (4 persons, 5 objects)
+🎯 Frame 2020: 20 detections (4 persons, 5 objects)
+🎯 Frame 2025: 19 detections (2 persons, 11 objects)
+🎯 Frame 2030: 18 detections (2 persons, 8 objects)
+🎯 Frame 2035: 16 detections (2 persons, 8 objects)
+🎯 Frame 2040: 24 detections (3 persons, 11 objects)
+🎯 Frame 2045: 23 detections (2 persons, 10 objects)
+🎯 Frame 2050: 21 detections (2 persons, 10 objects)
+🎯 Frame 2055: 25 detections (2 persons, 11 objects)
+🎯 Frame 2060: 18 detections (2 persons, 9 objects)
+🎯 Frame 2065: 19 detections (2 persons, 10 objects)
+🎯 Frame 2070: 16 detections (2 persons, 9 objects)
+🎯 Frame 2075: 21 detections (3 persons, 7 objects)
+🎯 Frame 2080: 17 detections (4 persons, 5 objects)
+🎯 Frame 2085: 16 detections (4 persons, 8 objects)
+🎯 Frame 2090: 16 detections (4 persons, 7 objects)
+🎯 Frame 2095: 13 detections (3 persons, 5 objects)
+Processed 2100 frames...
+🎯 Frame 2100: 18 detections (2 persons, 9 objects)
+🎯 Frame 2105: 14 detections (2 persons, 7 objects)
+🎯 Frame 2110: 16 detections (3 persons, 7 objects)
+🎯 Frame 2115: 14 detections (2 persons, 5 objects)
+🎯 Frame 2120: 15 detections (2 persons, 8 objects)
+🎯 Frame 2125: 19 detections (2 persons, 10 objects)
+🎯 Frame 2130: 16 detections (2 persons, 7 objects)
+🎯 Frame 2135: 14 detections (3 persons, 4 objects)
+🎯 Frame 2140: 14 detections (2 persons, 4 objects)
+🎯 Frame 2145: 15 detections (3 persons, 3 objects)
+🎯 Frame 2150: 18 detections (3 persons, 6 objects)
+🎯 Frame 2155: 16 detections (1 persons, 4 objects)
+🎯 Frame 2160: 14 detections (3 persons, 3 objects)
+🎯 Frame 2165: 14 detections (3 persons, 3 objects)
+🎯 Frame 2170: 12 detections (2 persons, 3 objects)
+🎯 Frame 2175: 13 detections (2 persons, 4 objects)
+🎯 Frame 2180: 13 detections (5 persons, 2 objects)
+🎯 Frame 2185: 11 detections (2 persons, 3 objects)
+🎯 Frame 2190: 10 detections (2 persons, 2 objects)
+🎯 Frame 2195: 12 detections (1 persons, 5 objects)
+Processed 2200 frames...
+🎯 Frame 2200: 11 detections (1 persons, 4 objects)
+🎯 Frame 2205: 11 detections (1 persons, 4 objects)
+🎯 Frame 2210: 11 detections (1 persons, 4 objects)
+🎯 Frame 2215: 10 detections (1 persons, 3 objects)
+🎯 Frame 2220: 9 detections (1 persons, 2 objects)
+🎯 Frame 2225: 9 detections (1 persons, 2 objects)
+🎯 Frame 2230: 10 detections (1 persons, 3 objects)
+🎯 Frame 2235: 10 detections (1 persons, 3 objects)
+🎯 Frame 2240: 13 detections (2 persons, 5 objects)
+🎯 Frame 2245: 12 detections (2 persons, 3 objects)
+🎯 Frame 2250: 13 detections (1 persons, 6 objects)
+🎯 Frame 2255: 11 detections (1 persons, 4 objects)
+🎯 Frame 2260: 9 detections (1 persons, 3 objects)
+🎯 Frame 2265: 11 detections (3 persons, 3 objects)
+🎯 Frame 2270: 11 detections (2 persons, 4 objects)
+🎯 Frame 2275: 9 detections (1 persons, 2 objects)
+🎯 Frame 2280: 9 detections (1 persons, 3 objects)
+🎯 Frame 2285: 10 detections (1 persons, 2 objects)
+🎯 Frame 2290: 12 detections (1 persons, 0 objects)
+🎯 Frame 2295: 11 detections (1 persons, 1 objects)
+Processed 2300 frames...
+🎯 Frame 2300: 10 detections (1 persons, 0 objects)
+🎯 Frame 2305: 14 detections (1 persons, 0 objects)
+🎯 Frame 2310: 13 detections (1 persons, 0 objects)
+🎯 Frame 2315: 16 detections (0 persons, 0 objects)
+🎯 Frame 2320: 16 detections (1 persons, 0 objects)
+🎯 Frame 2325: 17 detections (0 persons, 0 objects)
+🎯 Frame 2330: 13 detections (1 persons, 0 objects)
+🎯 Frame 2335: 14 detections (1 persons, 0 objects)
+🎯 Frame 2340: 12 detections (1 persons, 0 objects)
+🎯 Frame 2345: 12 detections (1 persons, 0 objects)
+🎯 Frame 2350: 12 detections (1 persons, 0 objects)
+🎯 Frame 2355: 11 detections (1 persons, 0 objects)
+🎯 Frame 2360: 10 detections (0 persons, 0 objects)
+🎯 Frame 2365: 11 detections (0 persons, 0 objects)
+🎯 Frame 2370: 12 detections (0 persons, 0 objects)
+🎯 Frame 2375: 10 detections (0 persons, 0 objects)
+🎯 Frame 2380: 9 detections (0 persons, 0 objects)
+🎯 Frame 2385: 9 detections (0 persons, 0 objects)
+🎯 Frame 2390: 10 detections (0 persons, 0 objects)
+🎯 Frame 2395: 10 detections (0 persons, 0 objects)
+Processed 2400 frames...
+🚨 ALERT: suitcase unattended for 18.3s
+🎯 Frame 2400: 18 detections (0 persons, 1 objects)
+⚠️ Frame 2400: 1 alert(s) - ['suitcase']
+🎯 Frame 2405: 15 detections (0 persons, 1 objects)
+🎯 Frame 2410: 18 detections (0 persons, 1 objects)
+🎯 Frame 2415: 18 detections (0 persons, 1 objects)
+🎯 Frame 2420: 21 detections (0 persons, 1 objects)
+🎯 Frame 2425: 17 detections (0 persons, 1 objects)
+🎯 Frame 2430: 11 detections (0 persons, 0 objects)
+🎯 Frame 2435: 10 detections (0 persons, 0 objects)
+🎯 Frame 2440: 14 detections (0 persons, 0 objects)
+🎯 Frame 2445: 14 detections (0 persons, 0 objects)
+🎯 Frame 2450: 21 detections (0 persons, 0 objects)
+🎯 Frame 2455: 15 detections (0 persons, 0 objects)
+🎯 Frame 2460: 13 detections (0 persons, 0 objects)
+🎯 Frame 2465: 16 detections (4 persons, 0 objects)
+🎯 Frame 2470: 18 detections (5 persons, 0 objects)
+🎯 Frame 2475: 14 detections (1 persons, 0 objects)
+🎯 Frame 2480: 20 detections (0 persons, 0 objects)
+🎯 Frame 2485: 19 detections (0 persons, 0 objects)
+🎯 Frame 2490: 20 detections (3 persons, 2 objects)
+🎯 Frame 2495: 22 detections (5 persons, 1 objects)
+Processed 2500 frames...
+🎯 Frame 2500: 17 detections (1 persons, 1 objects)
+🔄 Processed 500/2818 frames (26.3 fps)
+🎯 Frame 2505: 20 detections (5 persons, 1 objects)
+🎯 Frame 2510: 19 detections (2 persons, 1 objects)
+🎯 Frame 2515: 17 detections (1 persons, 1 objects)
+🎯 Frame 2520: 17 detections (2 persons, 1 objects)
+🎯 Frame 2525: 17 detections (1 persons, 0 objects)
+🎯 Frame 2530: 22 detections (3 persons, 0 objects)
+🎯 Frame 2535: 30 detections (5 persons, 0 objects)
+🎯 Frame 2540: 22 detections (0 persons, 0 objects)
+🎯 Frame 2545: 22 detections (4 persons, 0 objects)
+🎯 Frame 2550: 25 detections (8 persons, 1 objects)
+🎯 Frame 2555: 27 detections (12 persons, 0 objects)
+🎯 Frame 2560: 27 detections (6 persons, 1 objects)
+🎯 Frame 2565: 26 detections (6 persons, 0 objects)
+🎯 Frame 2570: 25 detections (5 persons, 1 objects)
+🎯 Frame 2575: 27 detections (4 persons, 0 objects)
+🎯 Frame 2580: 26 detections (5 persons, 1 objects)
+🎯 Frame 2585: 28 detections (5 persons, 0 objects)
+🎯 Frame 2590: 25 detections (3 persons, 0 objects)
+🎯 Frame 2595: 26 detections (6 persons, 0 objects)
+Processed 2600 frames...
+🎯 Frame 2600: 20 detections (4 persons, 2 objects)
+🎯 Frame 2605: 23 detections (4 persons, 4 objects)
+🎯 Frame 2610: 24 detections (4 persons, 0 objects)
+🎯 Frame 2615: 28 detections (8 persons, 3 objects)
+🎯 Frame 2620: 18 detections (4 persons, 3 objects)
+🎯 Frame 2625: 27 detections (7 persons, 6 objects)
+🎯 Frame 2630: 28 detections (9 persons, 8 objects)
+🎯 Frame 2635: 26 detections (6 persons, 6 objects)
+🎯 Frame 2640: 20 detections (3 persons, 7 objects)
+🎯 Frame 2645: 18 detections (4 persons, 6 objects)
+🎯 Frame 2650: 17 detections (4 persons, 7 objects)
+🎯 Frame 2655: 19 detections (3 persons, 9 objects)
+🎯 Frame 2660: 23 detections (7 persons, 6 objects)
+🎯 Frame 2665: 22 detections (6 persons, 7 objects)
+🎯 Frame 2670: 25 detections (7 persons, 6 objects)
+🎯 Frame 2675: 25 detections (9 persons, 7 objects)
+🎯 Frame 2680: 25 detections (8 persons, 6 objects)
+🎯 Frame 2685: 24 detections (4 persons, 9 objects)
+🎯 Frame 2690: 35 detections (13 persons, 9 objects)
+🎯 Frame 2695: 33 detections (12 persons, 6 objects)
+Processed 2700 frames...
+🎯 Frame 2700: 32 detections (12 persons, 6 objects)
+🎯 Frame 2705: 33 detections (12 persons, 8 objects)
+🎯 Frame 2710: 41 detections (13 persons, 11 objects)
+🎯 Frame 2715: 40 detections (18 persons, 6 objects)
+🎯 Frame 2720: 40 detections (23 persons, 1 objects)
+🎯 Frame 2725: 29 detections (16 persons, 0 objects)
+🎯 Frame 2730: 31 detections (17 persons, 4 objects)
+🎯 Frame 2735: 31 detections (15 persons, 5 objects)
+🎯 Frame 2740: 28 detections (11 persons, 6 objects)
+🎯 Frame 2745: 37 detections (15 persons, 7 objects)
+🎯 Frame 2750: 33 detections (13 persons, 5 objects)
+🎯 Frame 2755: 31 detections (11 persons, 4 objects)
+🎯 Frame 2760: 33 detections (13 persons, 5 objects)
+🎯 Frame 2765: 33 detections (13 persons, 6 objects)
+🎯 Frame 2770: 31 detections (12 persons, 7 objects)
+🎯 Frame 2775: 27 detections (10 persons, 6 objects)
+🎯 Frame 2780: 23 detections (9 persons, 4 objects)
+🎯 Frame 2785: 21 detections (8 persons, 3 objects)
+🎯 Frame 2790: 25 detections (12 persons, 4 objects)
+🎯 Frame 2795: 27 detections (11 persons, 7 objects)
+Processed 2800 frames...
+🎯 Frame 2800: 31 detections (10 persons, 10 objects)
+🎯 Frame 2805: 26 detections (12 persons, 4 objects)
+🎯 Frame 2810: 26 detections (11 persons, 0 objects)
+🎯 Frame 2815: 31 detections (15 persons, 1 objects)
+📹 End of video reached at frame 2818
+Video capture released. Total frames in video: 2818
+✅ Saved output video to output_video2.mp4
+📊 Processed 564 frames with detections
+⚠️ Total unattended alerts: 3
+⏱️ Processing time: 21.5s (26.3 fps)
+✅ Video processing completed successfully!
+[2025-09-18 23:18:31] ✓ Model3 processing completed successfully in 22 seconds
+[2025-09-18 23:18:31] ==================================
+[2025-09-18 23:18:31] JOB COMPLETION SUMMARY
+[2025-09-18 23:18:31] ==================================
+[2025-09-18 23:18:31] Job completed successfully!
+[2025-09-18 23:18:31] Total job duration: 132 seconds
+[2025-09-18 23:18:31] Inference duration: 110 seconds
+[2025-09-18 23:18:31] Model3 duration: 22 seconds
+[2025-09-18 23:18:31] Final output files:
+[2025-09-18 23:18:31]   - output_video2.mp4 (14M)
+[2025-09-18 23:18:31]   - client_v2_7635.out (8.0K)
+[2025-09-18 23:18:31]   - client_v2_7650.out (128K)
+[2025-09-18 23:18:31]   - main.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7626.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7627.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7628.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7629.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7632.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7633.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7634.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7636.out (16K)
+[2025-09-18 23:18:31]   - triton_7645.out (16K)
+[2025-09-18 23:18:31]   - triton_7646.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7647.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7648.out (8.0K)
+[2025-09-18 23:18:31]   - triton_7649.out (8.0K)
+[2025-09-18 23:18:31]   - client_v2_7635.err (0)
+[2025-09-18 23:18:31]   - client_v2_7650.err (8.0K)
+[2025-09-18 23:18:31]   - triton_7626.err (0)
+[2025-09-18 23:18:31]   - triton_7627.err (0)
+[2025-09-18 23:18:31]   - triton_7628.err (0)
+[2025-09-18 23:18:31]   - triton_7629.err (8.0K)
+[2025-09-18 23:18:31]   - triton_7632.err (8.0K)
+[2025-09-18 23:18:31]   - triton_7633.err (224K)
+[2025-09-18 23:18:31]   - triton_7634.err (224K)
+[2025-09-18 23:18:31]   - triton_7636.err (8.0K)
+[2025-09-18 23:18:31]   - triton_7645.err (8.0K)
+[2025-09-18 23:18:31]   - triton_7646.err (224K)
+[2025-09-18 23:18:31]   - triton_7647.err (224K)
+[2025-09-18 23:18:31]   - triton_7648.err (224K)
+[2025-09-18 23:18:31]   - triton_7649.err (8.0M)
+[2025-09-18 23:18:31] Job finished at: Thu Sep 18 11:18:31 PM CEST 2025
+[2025-09-18 23:18:31] ==================================

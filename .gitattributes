@@ -2,3 +2,8 @@
 *.onnx filter=lfs diff=lfs merge=lfs -text
 *.engine filter=lfs diff=lfs merge=lfs -text
 *.plan filter=lfs diff=lfs merge=lfs -text
+input_file_ppt.mp4 filter=lfs diff=lfs merge=lfs -text
+input_ppt_final_demo.mp4 filter=lfs diff=lfs merge=lfs -text
+output_final.mp4 filter=lfs diff=lfs merge=lfs -text
+output_video2.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text

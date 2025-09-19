@@ -1,0 +1,321 @@
+[2025-09-18 23:25:05] ==================================
+[2025-09-18 23:25:05] TRITON CLIENT V2 JOB STARTING
+[2025-09-18 23:25:05] ==================================
+[2025-09-18 23:25:05] Job ID: 7654
+[2025-09-18 23:25:05] Job Name: triton-client-v2
+[2025-09-18 23:25:05] Node: gpu002
+[2025-09-18 23:25:05] Working directory: /home/ing-bwrxrp/Unattended-Object-Detection
+[2025-09-18 23:25:05] CPUs allocated: 2
+[2025-09-18 23:25:05] GPUs allocated: N/A
+[2025-09-18 23:25:05] Memory allocated: N/AMB
+[2025-09-18 23:25:05] Time limit: N/A
+[2025-09-18 23:25:05] User: ing-bwrxrp
+[2025-09-18 23:25:05] System information:
+[2025-09-18 23:25:05]   - CPU info: 2 cores available
+[2025-09-18 23:25:05]   - Memory: 2.0Ti total
+[2025-09-18 23:25:05]   - Disk space: 8.0E available
+[2025-09-18 23:25:05] GPU information:
+[2025-09-18 23:25:05]   - GPU: NVIDIA H100 80GB HBM3, 81559, 80995
+[2025-09-18 23:25:05] Checking required files...
+[2025-09-18 23:25:05]   ✓ Video file found: /home/ing-bwrxrp/Unattended-Object-Detection/input_ppt_final_demo.mp4 (6.0M)
+[2025-09-18 23:25:05]   ✓ Triton client script found
+[2025-09-18 23:25:05]   ✓ Model3 script found
+[2025-09-18 23:25:05] Python environment check...
+[2025-09-18 23:25:05]   ✓ UV package manager found: uv 0.8.14
+[2025-09-18 23:25:05] ==================================
+[2025-09-18 23:25:05] DETECTING TRITON SERVER
+[2025-09-18 23:25:05] ==================================
+[2025-09-18 23:25:05] ✓ Detected Triton server on node: gpu001
+[2025-09-18 23:25:05] ✓ Retrieved Triton server ports: HTTP=8086, gRPC=8106, Metrics=8675
+[2025-09-18 23:25:05] ==================================
+[2025-09-18 23:25:06] WAITING FOR TRITON SERVER
+[2025-09-18 23:25:06] ==================================
+[2025-09-18 23:25:06] Checking Triton server availability at gpu001:8086...
+Waiting for Triton server on node: gpu001:8086
+✓ Triton server is ready on gpu001:8086
+[2025-09-18 23:25:06] Performing additional health checks...
+[2025-09-18 23:25:06]   ✓ Server live check: OK
+[2025-09-18 23:25:06]   ✓ Server metadata accessible
+[2025-09-18 23:25:06] Server metadata:
+{
+  "name": "triton",
+  "version": "2.49.0",
+  "extensions": [
+    "classification",
+    "sequence",
+    "model_repository",
+    "model_repository(unload_dependents)",
+    "schedule_policy",
+    "model_configuration",
+    "system_shared_memory",
+    "cuda_shared_memory",
+    "binary_tensor_data",
+    "parameters",
+    "statistics",
+    "trace",
+    "logging"
+  ]
+}
+[2025-09-18 23:25:06] Listing models on Triton server...
+[2025-09-18 23:25:06] Models available on the server:
+{
+  "error": "Not Found"
+}
+[2025-09-18 23:25:06] ==================================
+[2025-09-18 23:25:06] MODEL STATUS CHECK
+[2025-09-18 23:25:06] ==================================
+[2025-09-18 23:25:06] Checking model 'rtdetr' status...
+[2025-09-18 23:25:06] Model status response received:
+{
+  "name": "rtdetr",
+  "versions": [
+    "1"
+  ],
+  "platform": "onnxruntime_onnx",
+  "inputs": [
+    {
+      "name": "images",
+      "datatype": "FP32",
+      "shape": [
+        1,
+        3,
+        640,
+        640
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output0",
+      "datatype": "FP32",
+      "shape": [
+        1,
+        300,
+        84
+      ]
+    }
+  ]
+}
+[2025-09-18 23:25:06] ⚠ WARNING: Model 'rtdetr' may not be ready
+[2025-09-18 23:25:06] Retrieving model metadata...
+[2025-09-18 23:25:06] Model configuration:
+{
+  "name": "rtdetr",
+  "platform": "onnxruntime_onnx",
+  "backend": "onnxruntime",
+  "runtime": "",
+  "version_policy": {
+    "latest": {
+      "num_versions": 1
+    }
+  },
+  "max_batch_size": 0,
+  "input": [
+    {
+      "name": "images",
+      "data_type": "TYPE_FP32",
+      "format": "FORMAT_NONE",
+      "dims": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "is_shape_tensor": false,
+      "allow_ragged_batch": false,
+      "optional": false,
+      "is_non_linear_format_io": false
+    }
+  ],
+  "output": [
+    {
+      "name": "output0",
+      "data_type": "TYPE_FP32",
+      "dims": [
+        1,
+        300,
+        84
+      ],
+      "label_filename": "",
+      "is_shape_tensor": false,
+      "is_non_linear_format_io": false
+    }
+  ],
+  "batch_input": [],
+  "batch_output": [],
+  "optimization": {
+    "priority": "PRIORITY_DEFAULT",
+    "input_pinned_memory": {
+      "enable": true
+    },
+    "output_pinned_memory": {
+      "enable": true
+    },
+    "gather_kernel_buffer_threshold": 0,
+    "eager_batching": false
+  },
+  "instance_group": [
+    {
+      "name": "rtdetr_0",
+      "kind": "KIND_GPU",
+      "count": 1,
+      "gpus": [
+        0
+      ],
+      "secondary_devices": [],
+      "profile": [],
+      "passive": false,
+      "host_policy": ""
+    }
+  ],
+  "default_model_filename": "model.onnx",
+  "cc_model_filenames": {},
+  "metric_tags": {},
+  "parameters": {
+    "inter_op_thread_count": {
+      "string_value": "1"
+    },
+    "intra_op_thread_count": {
+      "string_value": "1"
+    }
+  },
+  "model_warmup": []
+}
+[2025-09-18 23:25:06] ==================================
+[2025-09-18 23:25:06] STARTING VIDEO INFERENCE
+[2025-09-18 23:25:06] ==================================
+[2025-09-18 23:25:06] Running inference on /home/ing-bwrxrp/Unattended-Object-Detection/input_ppt_final_demo.mp4 with confidence threshold 0.5...
+[2025-09-18 23:25:06] Inference parameters:
+[2025-09-18 23:25:06]   - Input video: /home/ing-bwrxrp/Unattended-Object-Detection/input_ppt_final_demo.mp4
+[2025-09-18 23:25:06]   - Model name: rtdetr
+[2025-09-18 23:25:06]   - Server URL: gpu001:8086
+[2025-09-18 23:25:06]   - Output video: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_ppt_final_demo_inference_20250918_232503.mp4
+[2025-09-18 23:25:06]   - Confidence threshold: 0.5
+[2025-09-18 23:25:06] Inference started at: Thu Sep 18 11:25:06 PM CEST 2025
+[2025-09-18 23:25:06] Executing triton_client.py...
+Connected to Triton server at gpu001:8086
+Error listing models: HTTP Error 404: Not Found
+Model 'rtdetr' is ready
+Video info: 1280x720, 24.0 FPS, 192 frames
+Starting inference...
+Processing frame 1/192Processing frame 2/192Processing frame 3/192Processing frame 4/192Processing frame 5/192Processing frame 6/192Processing frame 7/192Processing frame 8/192Processing frame 9/192Processing frame 10/192Processing frame 11/192Processing frame 12/192Processing frame 13/192Processing frame 14/192Processing frame 15/192Processing frame 16/192Processing frame 17/192Processing frame 18/192Processing frame 19/192Processing frame 20/192Processing frame 21/192Processing frame 22/192Processing frame 23/192Processing frame 24/192Processing frame 25/192Processing frame 26/192Processing frame 27/192Processing frame 28/192Processing frame 29/192Processing frame 30/192Processing frame 31/192Processing frame 32/192Processing frame 33/192Processing frame 34/192Processing frame 35/192Processing frame 36/192Processing frame 37/192Processing frame 38/192Processing frame 39/192Processing frame 40/192Processing frame 41/192Processing frame 42/192Processing frame 43/192Processing frame 44/192Processing frame 45/192Processing frame 46/192Processing frame 47/192Processing frame 48/192Processing frame 49/192Processing frame 50/192Processing frame 51/192Processing frame 52/192Processing frame 53/192Processing frame 54/192Processing frame 55/192Processing frame 56/192Processing frame 57/192Processing frame 58/192Processing frame 59/192Processing frame 60/192Processing frame 61/192Processing frame 62/192Processing frame 63/192Processing frame 64/192Processing frame 65/192Processing frame 66/192Processing frame 67/192Processing frame 68/192Processing frame 69/192Processing frame 70/192Processing frame 71/192Processing frame 72/192Processing frame 73/192Processing frame 74/192Processing frame 75/192Processing frame 76/192Processing frame 77/192Processing frame 78/192Processing frame 79/192Processing frame 80/192Processing frame 81/192Processing frame 82/192Processing frame 83/192Processing frame 84/192Processing frame 85/192Processing frame 86/192Processing frame 87/192Processing frame 88/192Processing frame 89/192Processing frame 90/192Processing frame 91/192Processing frame 92/192Processing frame 93/192Processing frame 94/192Processing frame 95/192Processing frame 96/192Processing frame 97/192Processing frame 98/192Processing frame 99/192Processing frame 100/192Processing frame 101/192Processing frame 102/192Processing frame 103/192Processing frame 104/192Processing frame 105/192Processing frame 106/192Processing frame 107/192Processing frame 108/192Processing frame 109/192Processing frame 110/192Processing frame 111/192Processing frame 112/192Processing frame 113/192Processing frame 114/192Processing frame 115/192Processing frame 116/192Processing frame 117/192Processing frame 118/192Processing frame 119/192Processing frame 120/192Processing frame 121/192Processing frame 122/192Processing frame 123/192Processing frame 124/192Processing frame 125/192Processing frame 126/192Processing frame 127/192Processing frame 128/192Processing frame 129/192Processing frame 130/192Processing frame 131/192Processing frame 132/192Processing frame 133/192Processing frame 134/192Processing frame 135/192Processing frame 136/192Processing frame 137/192Processing frame 138/192Processing frame 139/192Processing frame 140/192Processing frame 141/192Processing frame 142/192Processing frame 143/192Processing frame 144/192Processing frame 145/192Processing frame 146/192Processing frame 147/192Processing frame 148/192Processing frame 149/192Processing frame 150/192Processing frame 151/192Processing frame 152/192Processing frame 153/192Processing frame 154/192Processing frame 155/192Processing frame 156/192Processing frame 157/192Processing frame 158/192Processing frame 159/192Processing frame 160/192Processing frame 161/192Processing frame 162/192Processing frame 163/192Processing frame 164/192Processing frame 165/192Processing frame 166/192Processing frame 167/192Processing frame 168/192Processing frame 169/192Processing frame 170/192Processing frame 171/192Processing frame 172/192Processing frame 173/192Processing frame 174/192Processing frame 175/192Processing frame 176/192Processing frame 177/192Processing frame 178/192Processing frame 179/192Processing frame 180/192Processing frame 181/192Processing frame 182/192Processing frame 183/192Processing frame 184/192Processing frame 185/192Processing frame 186/192Processing frame 187/192Processing frame 188/192Processing frame 189/192Processing frame 190/192Processing frame 191/192Processing frame 192/192
+Processed 192 frames
+Average inference FPS: 37.80
+Output saved to: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_ppt_final_demo_inference_20250918_232503.mp4
+[2025-09-18 23:25:15] ✓ Inference completed successfully in 9 seconds
+[2025-09-18 23:25:15] ✓ Output video created: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_ppt_final_demo_inference_20250918_232503.mp4 (18M)
+[2025-09-18 23:25:15] ==================================
+[2025-09-18 23:25:15] RUNNING MODEL3 POST-PROCESSING
+[2025-09-18 23:25:15] ==================================
+[2025-09-18 23:25:15] Executing model3.py for post-processing...
+[2025-09-18 23:25:15] Model3 processing started at: Thu Sep 18 11:25:15 PM CEST 2025
+Using provided Triton server URL: gpu001:8086
+Processing video: /home/ing-bwrxrp/Unattended-Object-Detection/input_ppt_final_demo.mp4
+Output will be saved to: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_ppt_final_demo_inference_20250918_232503.mp4
+🎬 Loading input video: /home/ing-bwrxrp/Unattended-Object-Detection/input_ppt_final_demo.mp4
+📊 Video properties: 1280x720 @ 24fps, 192 total frames
+🎯 Output video: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_ppt_final_demo_inference_20250918_232503.mp4
+🤖 Using model: rtdetr with confidence threshold: 0.5
+📝 Video writer initialized: 1280x720, 24fps
+Connecting to Triton server at: gpu001:8086
+✓ Successfully connected to Triton server at gpu001:8086
+🎬 Opened video: 24 fps, starting inference...
+🎯 Frame 0: 14 detections (11 persons, 1 objects)
+🔄 Processed 0/192 frames (0.0 fps)
+🎯 Frame 5: 14 detections (12 persons, 1 objects)
+🎯 Frame 10: 12 detections (9 persons, 3 objects)
+🎯 Frame 15: 12 detections (10 persons, 2 objects)
+🎯 Frame 20: 10 detections (7 persons, 3 objects)
+🎯 Frame 25: 16 detections (11 persons, 4 objects)
+🎯 Frame 30: 14 detections (10 persons, 4 objects)
+🎯 Frame 35: 14 detections (11 persons, 3 objects)
+🎯 Frame 40: 14 detections (10 persons, 3 objects)
+🎯 Frame 45: 15 detections (11 persons, 3 objects)
+🎯 Frame 50: 16 detections (9 persons, 6 objects)
+🎯 Frame 55: 20 detections (12 persons, 7 objects)
+🎯 Frame 60: 16 detections (10 persons, 5 objects)
+🎯 Frame 65: 19 detections (11 persons, 7 objects)
+🎯 Frame 70: 18 detections (11 persons, 7 objects)
+🎯 Frame 75: 21 detections (14 persons, 7 objects)
+🎯 Frame 80: 19 detections (14 persons, 5 objects)
+🎯 Frame 85: 17 detections (12 persons, 4 objects)
+🎯 Frame 90: 18 detections (11 persons, 5 objects)
+🎯 Frame 95: 20 detections (14 persons, 4 objects)
+Processed 100 frames...
+🎯 Frame 100: 17 detections (11 persons, 4 objects)
+🎯 Frame 105: 17 detections (12 persons, 3 objects)
+🎯 Frame 110: 18 detections (12 persons, 5 objects)
+🎯 Frame 115: 19 detections (10 persons, 7 objects)
+🎯 Frame 120: 16 detections (11 persons, 4 objects)
+🎯 Frame 125: 17 detections (9 persons, 7 objects)
+🎯 Frame 130: 19 detections (12 persons, 6 objects)
+🎯 Frame 135: 16 detections (9 persons, 6 objects)
+🎯 Frame 140: 15 detections (9 persons, 5 objects)
+🎯 Frame 145: 15 detections (11 persons, 4 objects)
+🎯 Frame 150: 15 detections (12 persons, 3 objects)
+🎯 Frame 155: 16 detections (13 persons, 3 objects)
+🎯 Frame 160: 13 detections (11 persons, 1 objects)
+🎯 Frame 165: 13 detections (11 persons, 2 objects)
+🎯 Frame 170: 13 detections (10 persons, 3 objects)
+🎯 Frame 175: 16 detections (12 persons, 4 objects)
+🎯 Frame 180: 13 detections (9 persons, 4 objects)
+🎯 Frame 185: 13 detections (9 persons, 4 objects)
+🎯 Frame 190: 14 detections (12 persons, 2 objects)
+📹 End of video reached at frame 192
+Video capture released. Total frames in video: 192
+✅ Saved output video to /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_ppt_final_demo_inference_20250918_232503.mp4
+📊 Processed 39 frames with detections
+⚠️ Total unattended alerts: 0
+⏱️ Processing time: 2.3s (16.7 fps)
+✅ Video processing completed successfully!
+[2025-09-18 23:25:18] ✓ Model3 processing completed successfully in 3 seconds
+[2025-09-18 23:25:18] ==================================
+[2025-09-18 23:25:18] JOB COMPLETION SUMMARY
+[2025-09-18 23:25:18] ==================================
+[2025-09-18 23:25:18] Job completed successfully!
+[2025-09-18 23:25:18] Total job duration: 13 seconds
+[2025-09-18 23:25:18] Inference duration: 9 seconds
+[2025-09-18 23:25:18] Model3 duration: 3 seconds
+[2025-09-18 23:25:18] Final output files:
+[2025-09-18 23:25:18]   - /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_ppt_final_demo_inference_20250918_232503.mp4 (6.0M)
+[2025-09-18 23:25:18]   - client_v2_7635.out (8.0K)
+[2025-09-18 23:25:18]   - client_v2_7650.out (128K)
+[2025-09-18 23:25:18]   - client_v2_7651.out (128K)
+[2025-09-18 23:25:18]   - client_v2_7652.out (48K)
+[2025-09-18 23:25:18]   - client_v2_7653.out (24K)
+[2025-09-18 23:25:18]   - client_v2_7654.out (16K)
+[2025-09-18 23:25:18]   - main.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7626.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7627.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7628.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7629.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7632.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7633.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7634.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7636.out (16K)
+[2025-09-18 23:25:18]   - triton_7645.out (16K)
+[2025-09-18 23:25:18]   - triton_7646.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7647.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7648.out (8.0K)
+[2025-09-18 23:25:18]   - triton_7649.out (8.0K)
+[2025-09-18 23:25:18]   - client_v2_7635.err (0)
+[2025-09-18 23:25:18]   - client_v2_7650.err (8.0K)
+[2025-09-18 23:25:18]   - client_v2_7651.err (0)
+[2025-09-18 23:25:18]   - client_v2_7652.err (0)
+[2025-09-18 23:25:18]   - client_v2_7653.err (0)
+[2025-09-18 23:25:18]   - client_v2_7654.err (0)
+[2025-09-18 23:25:18]   - triton_7626.err (0)
+[2025-09-18 23:25:18]   - triton_7627.err (0)
+[2025-09-18 23:25:18]   - triton_7628.err (0)
+[2025-09-18 23:25:18]   - triton_7629.err (8.0K)
+[2025-09-18 23:25:18]   - triton_7632.err (8.0K)
+[2025-09-18 23:25:18]   - triton_7633.err (224K)
+[2025-09-18 23:25:18]   - triton_7634.err (224K)
+[2025-09-18 23:25:18]   - triton_7636.err (8.0K)
+[2025-09-18 23:25:18]   - triton_7645.err (8.0K)
+[2025-09-18 23:25:18]   - triton_7646.err (224K)
+[2025-09-18 23:25:18]   - triton_7647.err (224K)
+[2025-09-18 23:25:18]   - triton_7648.err (224K)
+[2025-09-18 23:25:18]   - triton_7649.err (20M)
+[2025-09-18 23:25:18] Job finished at: Thu Sep 18 11:25:18 PM CEST 2025
+[2025-09-18 23:25:18] ==================================

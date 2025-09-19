@@ -1,0 +1,27 @@
+Job started on gpu001 at Thu Sep 18 11:15:54 PM CEST 2025
+Working dir: /home/ing-bwrxrp/Unattended-Object-Detection
+Generating random ports for Triton server...
+Generated ports: HTTP=8086, gRPC=8106, Metrics=8675
+Starting rootless docker...
+Using model repo: /home/ing-bwrxrp/Unattended-Object-Detection/model_repository
+Starting Triton server...
+
+=============================
+== Triton Inference Server ==
+=============================
+
+NVIDIA Release 24.08 (build 107631419)
+Triton Server Version 2.49.0
+
+Copyright (c) 2018-2024, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+NOTE: CUDA Forward Compatibility mode ENABLED.
+  Using CUDA 12.6 driver version 560.35.03 with kernel driver version 550.90.07.
+  See https://docs.nvidia.com/deploy/cuda-compatibility/ for details.
+
