@@ -1,0 +1,2151 @@
+[2025-09-19 06:48:45] ==================================
+[2025-09-19 06:48:45] TRITON CLIENT V2 JOB STARTING
+[2025-09-19 06:48:45] ==================================
+[2025-09-19 06:48:45] Job ID: 7666
+[2025-09-19 06:48:45] Job Name: triton-client-v2
+[2025-09-19 06:48:45] Node: gpu001
+[2025-09-19 06:48:45] Working directory: /home/ing-bwrxrp/Unattended-Object-Detection
+[2025-09-19 06:48:45] CPUs allocated: 2
+[2025-09-19 06:48:45] GPUs allocated: N/A
+[2025-09-19 06:48:45] Memory allocated: N/AMB
+[2025-09-19 06:48:45] Time limit: N/A
+[2025-09-19 06:48:45] User: ing-bwrxrp
+[2025-09-19 06:48:45] System information:
+[2025-09-19 06:48:45]   - CPU info: 2 cores available
+[2025-09-19 06:48:45]   - Memory: 2.0Ti total
+[2025-09-19 06:48:45]   - Disk space: 8.0E available
+[2025-09-19 06:48:45] GPU information:
+[2025-09-19 06:48:45]   - GPU: NVIDIA H100 80GB HBM3, 81559, 79474
+[2025-09-19 06:48:45] Checking required files...
+[2025-09-19 06:48:45]   ✓ Video file found: /home/ing-bwrxrp/Unattended-Object-Detection/ABODA/video1.avi (6.0M)
+[2025-09-19 06:48:45]   ✓ Triton client script found
+[2025-09-19 06:48:45]   ✓ Model3 script found
+[2025-09-19 06:48:45] Python environment check...
+[2025-09-19 06:48:45]   ✓ UV package manager found: uv 0.8.14
+[2025-09-19 06:48:45] ==================================
+[2025-09-19 06:48:45] DETECTING TRITON SERVER
+[2025-09-19 06:48:45] ==================================
+[2025-09-19 06:48:45] ✓ Detected Triton server on node: gpu001
+[2025-09-19 06:48:45] ✓ Retrieved Triton server ports: HTTP=8002, gRPC=8726, Metrics=8503
+[2025-09-19 06:48:45] ==================================
+[2025-09-19 06:48:45] WAITING FOR TRITON SERVER
+[2025-09-19 06:48:45] ==================================
+[2025-09-19 06:48:45] Checking Triton server availability at gpu001:8002...
+Waiting for Triton server on node: gpu001:8002
+✓ Triton server is ready on gpu001:8002
+[2025-09-19 06:48:45] Performing additional health checks...
+[2025-09-19 06:48:45]   ✓ Server live check: OK
+[2025-09-19 06:48:45]   ✓ Server metadata accessible
+[2025-09-19 06:48:45] Server metadata:
+{
+  "name": "triton",
+  "version": "2.49.0",
+  "extensions": [
+    "classification",
+    "sequence",
+    "model_repository",
+    "model_repository(unload_dependents)",
+    "schedule_policy",
+    "model_configuration",
+    "system_shared_memory",
+    "cuda_shared_memory",
+    "binary_tensor_data",
+    "parameters",
+    "statistics",
+    "trace",
+    "logging"
+  ]
+}
+[2025-09-19 06:48:45] Listing models on Triton server...
+[2025-09-19 06:48:45] Models available on the server:
+{
+  "error": "Not Found"
+}
+[2025-09-19 06:48:45] ==================================
+[2025-09-19 06:48:45] MODEL STATUS CHECK
+[2025-09-19 06:48:45] ==================================
+[2025-09-19 06:48:45] Checking model 'rtdetr' status...
+[2025-09-19 06:48:45] Model status response received:
+{
+  "name": "rtdetr",
+  "versions": [
+    "1"
+  ],
+  "platform": "onnxruntime_onnx",
+  "inputs": [
+    {
+      "name": "images",
+      "datatype": "FP32",
+      "shape": [
+        1,
+        3,
+        640,
+        640
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output0",
+      "datatype": "FP32",
+      "shape": [
+        1,
+        300,
+        84
+      ]
+    }
+  ]
+}
+[2025-09-19 06:48:45] ⚠ WARNING: Model 'rtdetr' may not be ready
+[2025-09-19 06:48:45] Retrieving model metadata...
+[2025-09-19 06:48:45] Model configuration:
+{
+  "name": "rtdetr",
+  "platform": "onnxruntime_onnx",
+  "backend": "onnxruntime",
+  "runtime": "",
+  "version_policy": {
+    "latest": {
+      "num_versions": 1
+    }
+  },
+  "max_batch_size": 0,
+  "input": [
+    {
+      "name": "images",
+      "data_type": "TYPE_FP32",
+      "format": "FORMAT_NONE",
+      "dims": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "is_shape_tensor": false,
+      "allow_ragged_batch": false,
+      "optional": false,
+      "is_non_linear_format_io": false
+    }
+  ],
+  "output": [
+    {
+      "name": "output0",
+      "data_type": "TYPE_FP32",
+      "dims": [
+        1,
+        300,
+        84
+      ],
+      "label_filename": "",
+      "is_shape_tensor": false,
+      "is_non_linear_format_io": false
+    }
+  ],
+  "batch_input": [],
+  "batch_output": [],
+  "optimization": {
+    "priority": "PRIORITY_DEFAULT",
+    "input_pinned_memory": {
+      "enable": true
+    },
+    "output_pinned_memory": {
+      "enable": true
+    },
+    "gather_kernel_buffer_threshold": 0,
+    "eager_batching": false
+  },
+  "instance_group": [
+    {
+      "name": "rtdetr_0",
+      "kind": "KIND_GPU",
+      "count": 1,
+      "gpus": [
+        0
+      ],
+      "secondary_devices": [],
+      "profile": [],
+      "passive": false,
+      "host_policy": ""
+    }
+  ],
+  "default_model_filename": "model.onnx",
+  "cc_model_filenames": {},
+  "metric_tags": {},
+  "parameters": {
+    "intra_op_thread_count": {
+      "string_value": "1"
+    },
+    "inter_op_thread_count": {
+      "string_value": "1"
+    }
+  },
+  "model_warmup": []
+}
+[2025-09-19 06:48:45] ==================================
+[2025-09-19 06:48:45] STARTING VIDEO INFERENCE
+[2025-09-19 06:48:45] ==================================
+[2025-09-19 06:48:45] Running inference on /home/ing-bwrxrp/Unattended-Object-Detection/ABODA/video1.avi with confidence threshold 0.5...
+[2025-09-19 06:48:45] Inference parameters:
+[2025-09-19 06:48:45]   - Input video: /home/ing-bwrxrp/Unattended-Object-Detection/ABODA/video1.avi
+[2025-09-19 06:48:45]   - Model name: rtdetr
+[2025-09-19 06:48:45]   - Server URL: gpu001:8002
+[2025-09-19 06:48:45]   - Output video: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/video1_inference_20250919_064843.mp4
+[2025-09-19 06:48:45]   - Confidence threshold: 0.5
+[2025-09-19 06:48:45] Inference started at: Fri Sep 19 06:48:45 AM CEST 2025
+[2025-09-19 06:48:45] Executing triton_client.py...
+Connected to Triton server at gpu001:8002
+Error listing models: HTTP Error 404: Not Found
+Model 'rtdetr' is ready
+Video info: 640x480, 29.97 FPS, 2189 frames
+Starting inference...
+Processing frame 1/2189Processing frame 2/2189Processing frame 3/2189Processing frame 4/2189Processing frame 5/2189Processing frame 6/2189Processing frame 7/2189Processing frame 8/2189Processing frame 9/2189Processing frame 10/2189Processing frame 11/2189Processing frame 12/2189Processing frame 13/2189Processing frame 14/2189Processing frame 15/2189Processing frame 16/2189Processing frame 17/2189Processing frame 18/2189Processing frame 19/2189Processing frame 20/2189Processing frame 21/2189Processing frame 22/2189Processing frame 23/2189Processing frame 24/2189Processing frame 25/2189Processing frame 26/2189Processing frame 27/2189Processing frame 28/2189Processing frame 29/2189Processing frame 30/2189Processing frame 31/2189Processing frame 32/2189Processing frame 33/2189Processing frame 34/2189Processing frame 35/2189Processing frame 36/2189Processing frame 37/2189Processing frame 38/2189Processing frame 39/2189Processing frame 40/2189Processing frame 41/2189Processing frame 42/2189Processing frame 43/2189Processing frame 44/2189Processing frame 45/2189Processing frame 46/2189Processing frame 47/2189Processing frame 48/2189Processing frame 49/2189Processing frame 50/2189Processing frame 51/2189Processing frame 52/2189Processing frame 53/2189Processing frame 54/2189Processing frame 55/2189Processing frame 56/2189Processing frame 57/2189Processing frame 58/2189Processing frame 59/2189Processing frame 60/2189Processing frame 61/2189Processing frame 62/2189Processing frame 63/2189Processing frame 64/2189Processing frame 65/2189Processing frame 66/2189Processing frame 67/2189Processing frame 68/2189Processing frame 69/2189Processing frame 70/2189Processing frame 71/2189Processing frame 72/2189Processing frame 73/2189Processing frame 74/2189Processing frame 75/2189Processing frame 76/2189Processing frame 77/2189Processing frame 78/2189Processing frame 79/2189Processing frame 80/2189Processing frame 81/2189Processing frame 82/2189Processing frame 83/2189Processing frame 84/2189Processing frame 85/2189Processing frame 86/2189Processing frame 87/2189Processing frame 88/2189Processing frame 89/2189Processing frame 90/2189Processing frame 91/2189Processing frame 92/2189Processing frame 93/2189Processing frame 94/2189Processing frame 95/2189Processing frame 96/2189Processing frame 97/2189Processing frame 98/2189Processing frame 99/2189Processing frame 100/2189Processing frame 101/2189Processing frame 102/2189Processing frame 103/2189Processing frame 104/2189Processing frame 105/2189Processing frame 106/2189Processing frame 107/2189Processing frame 108/2189Processing frame 109/2189Processing frame 110/2189Processing frame 111/2189Processing frame 112/2189Processing frame 113/2189Processing frame 114/2189Processing frame 115/2189Processing frame 116/2189Processing frame 117/2189Processing frame 118/2189Processing frame 119/2189Processing frame 120/2189Processing frame 121/2189Processing frame 122/2189Processing frame 123/2189Processing frame 124/2189Processing frame 125/2189Processing frame 126/2189Processing frame 127/2189Processing frame 128/2189Processing frame 129/2189Processing frame 130/2189Processing frame 131/2189Processing frame 132/2189Processing frame 133/2189Processing frame 134/2189Processing frame 135/2189Processing frame 136/2189Processing frame 137/2189Processing frame 138/2189Processing frame 139/2189Processing frame 140/2189Processing frame 141/2189Processing frame 142/2189Processing frame 143/2189Processing frame 144/2189Processing frame 145/2189Processing frame 146/2189Processing frame 147/2189Processing frame 148/2189Processing frame 149/2189Processing frame 150/2189Processing frame 151/2189Processing frame 152/2189Processing frame 153/2189Processing frame 154/2189Processing frame 155/2189Processing frame 156/2189Processing frame 157/2189Processing frame 158/2189Processing frame 159/2189Processing frame 160/2189Processing frame 161/2189Processing frame 162/2189Processing frame 163/2189Processing frame 164/2189Processing frame 165/2189Processing frame 166/2189Processing frame 167/2189Processing frame 168/2189Processing frame 169/2189Processing frame 170/2189Processing frame 171/2189Processing frame 172/2189Processing frame 173/2189Processing frame 174/2189Processing frame 175/2189Processing frame 176/2189Processing frame 177/2189Processing frame 178/2189Processing frame 179/2189Processing frame 180/2189Processing frame 181/2189Processing frame 182/2189Processing frame 183/2189Processing frame 184/2189Processing frame 185/2189Processing frame 186/2189Processing frame 187/2189Processing frame 188/2189Processing frame 189/2189Processing frame 190/2189Processing frame 191/2189Processing frame 192/2189Processing frame 193/2189Processing frame 194/2189Processing frame 195/2189Processing frame 196/2189Processing frame 197/2189Processing frame 198/2189Processing frame 199/2189Processing frame 200/2189Processing frame 201/2189Processing frame 202/2189Processing frame 203/2189Processing frame 204/2189Processing frame 205/2189Processing frame 206/2189Processing frame 207/2189Processing frame 208/2189Processing frame 209/2189Processing frame 210/2189Processing frame 211/2189Processing frame 212/2189Processing frame 213/2189Processing frame 214/2189Processing frame 215/2189Processing frame 216/2189Processing frame 217/2189Processing frame 218/2189Processing frame 219/2189Processing frame 220/2189Processing frame 221/2189Processing frame 222/2189Processing frame 223/2189Processing frame 224/2189Processing frame 225/2189Processing frame 226/2189Processing frame 227/2189Processing frame 228/2189Processing frame 229/2189Processing frame 230/2189Processing frame 231/2189Processing frame 232/2189Processing frame 233/2189Processing frame 234/2189Processing frame 235/2189Processing frame 236/2189Processing frame 237/2189Processing frame 238/2189Processing frame 239/2189Processing frame 240/2189Processing frame 241/2189Processing frame 242/2189Processing frame 243/2189Processing frame 244/2189Processing frame 245/2189Processing frame 246/2189Processing frame 247/2189Processing frame 248/2189Processing frame 249/2189Processing frame 250/2189Processing frame 251/2189Processing frame 252/2189Processing frame 253/2189Processing frame 254/2189Processing frame 255/2189Processing frame 256/2189Processing frame 257/2189Processing frame 258/2189Processing frame 259/2189Processing frame 260/2189Processing frame 261/2189Processing frame 262/2189Processing frame 263/2189Processing frame 264/2189Processing frame 265/2189Processing frame 266/2189Processing frame 267/2189Processing frame 268/2189Processing frame 269/2189Processing frame 270/2189Processing frame 271/2189Processing frame 272/2189Processing frame 273/2189Processing frame 274/2189Processing frame 275/2189Processing frame 276/2189Processing frame 277/2189Processing frame 278/2189Processing frame 279/2189Processing frame 280/2189Processing frame 281/2189Processing frame 282/2189Processing frame 283/2189Processing frame 284/2189Processing frame 285/2189Processing frame 286/2189Processing frame 287/2189Processing frame 288/2189Processing frame 289/2189Processing frame 290/2189Processing frame 291/2189Processing frame 292/2189Processing frame 293/2189Processing frame 294/2189Processing frame 295/2189Processing frame 296/2189Processing frame 297/2189Processing frame 298/2189Processing frame 299/2189Processing frame 300/2189Processing frame 301/2189Processing frame 302/2189Processing frame 303/2189Processing frame 304/2189Processing frame 305/2189Processing frame 306/2189Processing frame 307/2189Processing frame 308/2189Processing frame 309/2189Processing frame 310/2189Processing frame 311/2189Processing frame 312/2189Processing frame 313/2189Processing frame 314/2189Processing frame 315/2189Processing frame 316/2189Processing frame 317/2189Processing frame 318/2189Processing frame 319/2189Processing frame 320/2189Processing frame 321/2189Processing frame 322/2189Processing frame 323/2189Processing frame 324/2189Processing frame 325/2189Processing frame 326/2189Processing frame 327/2189Processing frame 328/2189Processing frame 329/2189Processing frame 330/2189Processing frame 331/2189Processing frame 332/2189Processing frame 333/2189Processing frame 334/2189Processing frame 335/2189Processing frame 336/2189Processing frame 337/2189Processing frame 338/2189Processing frame 339/2189Processing frame 340/2189Processing frame 341/2189Processing frame 342/2189Processing frame 343/2189Processing frame 344/2189Processing frame 345/2189Processing frame 346/2189Processing frame 347/2189Processing frame 348/2189Processing frame 349/2189Processing frame 350/2189Processing frame 351/2189Processing frame 352/2189Processing frame 353/2189Processing frame 354/2189Processing frame 355/2189Processing frame 356/2189Processing frame 357/2189Processing frame 358/2189Processing frame 359/2189Processing frame 360/2189Processing frame 361/2189Processing frame 362/2189Processing frame 363/2189Processing frame 364/2189Processing frame 365/2189Processing frame 366/2189Processing frame 367/2189Processing frame 368/2189Processing frame 369/2189Processing frame 370/2189Processing frame 371/2189Processing frame 372/2189Processing frame 373/2189Processing frame 374/2189Processing frame 375/2189Processing frame 376/2189Processing frame 377/2189Processing frame 378/2189Processing frame 379/2189Processing frame 380/2189Processing frame 381/2189Processing frame 382/2189Processing frame 383/2189Processing frame 384/2189Processing frame 385/2189Processing frame 386/2189Processing frame 387/2189Processing frame 388/2189Processing frame 389/2189Processing frame 390/2189Processing frame 391/2189Processing frame 392/2189Processing frame 393/2189Processing frame 394/2189Processing frame 395/2189Processing frame 396/2189Processing frame 397/2189Processing frame 398/2189Processing frame 399/2189Processing frame 400/2189Processing frame 401/2189Processing frame 402/2189Processing frame 403/2189Processing frame 404/2189Processing frame 405/2189Processing frame 406/2189Processing frame 407/2189Processing frame 408/2189Processing frame 409/2189Processing frame 410/2189Processing frame 411/2189Processing frame 412/2189Processing frame 413/2189Processing frame 414/2189Processing frame 415/2189Processing frame 416/2189Processing frame 417/2189Processing frame 418/2189Processing frame 419/2189Processing frame 420/2189Processing frame 421/2189Processing frame 422/2189Processing frame 423/2189Processing frame 424/2189Processing frame 425/2189Processing frame 426/2189Processing frame 427/2189Processing frame 428/2189Processing frame 429/2189Processing frame 430/2189Processing frame 431/2189Processing frame 432/2189Processing frame 433/2189Processing frame 434/2189Processing frame 435/2189Processing frame 436/2189Processing frame 437/2189Processing frame 438/2189Processing frame 439/2189Processing frame 440/2189Processing frame 441/2189Processing frame 442/2189Processing frame 443/2189Processing frame 444/2189Processing frame 445/2189Processing frame 446/2189Processing frame 447/2189Processing frame 448/2189Processing frame 449/2189Processing frame 450/2189Processing frame 451/2189Processing frame 452/2189Processing frame 453/2189Processing frame 454/2189Processing frame 455/2189Processing frame 456/2189Processing frame 457/2189Processing frame 458/2189Processing frame 459/2189Processing frame 460/2189Processing frame 461/2189Processing frame 462/2189Processing frame 463/2189Processing frame 464/2189Processing frame 465/2189Processing frame 466/2189Processing frame 467/2189Processing frame 468/2189Processing frame 469/2189Processing frame 470/2189Processing frame 471/2189Processing frame 472/2189Processing frame 473/2189Processing frame 474/2189Processing frame 475/2189Processing frame 476/2189Processing frame 477/2189Processing frame 478/2189Processing frame 479/2189Processing frame 480/2189Processing frame 481/2189Processing frame 482/2189Processing frame 483/2189Processing frame 484/2189Processing frame 485/2189Processing frame 486/2189Processing frame 487/2189Processing frame 488/2189Processing frame 489/2189Processing frame 490/2189Processing frame 491/2189Processing frame 492/2189Processing frame 493/2189Processing frame 494/2189Processing frame 495/2189Processing frame 496/2189Processing frame 497/2189Processing frame 498/2189Processing frame 499/2189Processing frame 500/2189Processing frame 501/2189Processing frame 502/2189Processing frame 503/2189Processing frame 504/2189Processing frame 505/2189Processing frame 506/2189Processing frame 507/2189Processing frame 508/2189Processing frame 509/2189Processing frame 510/2189Processing frame 511/2189Processing frame 512/2189Processing frame 513/2189Processing frame 514/2189Processing frame 515/2189Processing frame 516/2189Processing frame 517/2189Processing frame 518/2189Processing frame 519/2189Processing frame 520/2189Processing frame 521/2189Processing frame 522/2189Processing frame 523/2189Processing frame 524/2189Processing frame 525/2189Processing frame 526/2189Processing frame 527/2189Processing frame 528/2189Processing frame 529/2189Processing frame 530/2189Processing frame 531/2189Processing frame 532/2189Processing frame 533/2189Processing frame 534/2189Processing frame 535/2189Processing frame 536/2189Processing frame 537/2189Processing frame 538/2189Processing frame 539/2189Processing frame 540/2189Processing frame 541/2189Processing frame 542/2189Processing frame 543/2189Processing frame 544/2189Processing frame 545/2189Processing frame 546/2189Processing frame 547/2189Processing frame 548/2189Processing frame 549/2189Processing frame 550/2189Processing frame 551/2189Processing frame 552/2189Processing frame 553/2189Processing frame 554/2189Processing frame 555/2189Processing frame 556/2189Processing frame 557/2189Processing frame 558/2189Processing frame 559/2189Processing frame 560/2189Processing frame 561/2189Processing frame 562/2189Processing frame 563/2189Processing frame 564/2189Processing frame 565/2189Processing frame 566/2189Processing frame 567/2189Processing frame 568/2189Processing frame 569/2189Processing frame 570/2189Processing frame 571/2189Processing frame 572/2189Processing frame 573/2189Processing frame 574/2189Processing frame 575/2189Processing frame 576/2189Processing frame 577/2189Processing frame 578/2189Processing frame 579/2189Processing frame 580/2189Processing frame 581/2189Processing frame 582/2189Processing frame 583/2189Processing frame 584/2189Processing frame 585/2189Processing frame 586/2189Processing frame 587/2189Processing frame 588/2189Processing frame 589/2189Processing frame 590/2189Processing frame 591/2189Processing frame 592/2189Processing frame 593/2189Processing frame 594/2189Processing frame 595/2189Processing frame 596/2189Processing frame 597/2189Processing frame 598/2189Processing frame 599/2189Processing frame 600/2189Processing frame 601/2189Processing frame 602/2189Processing frame 603/2189Processing frame 604/2189Processing frame 605/2189Processing frame 606/2189Processing frame 607/2189Processing frame 608/2189Processing frame 609/2189Processing frame 610/2189Processing frame 611/2189Processing frame 612/2189Processing frame 613/2189Processing frame 614/2189Processing frame 615/2189Processing frame 616/2189Processing frame 617/2189Processing frame 618/2189Processing frame 619/2189Processing frame 620/2189Processing frame 621/2189Processing frame 622/2189Processing frame 623/2189Processing frame 624/2189Processing frame 625/2189Processing frame 626/2189Processing frame 627/2189Processing frame 628/2189Processing frame 629/2189Processing frame 630/2189Processing frame 631/2189Processing frame 632/2189Processing frame 633/2189Processing frame 634/2189Processing frame 635/2189Processing frame 636/2189Processing frame 637/2189Processing frame 638/2189Processing frame 639/2189Processing frame 640/2189Processing frame 641/2189Processing frame 642/2189Processing frame 643/2189Processing frame 644/2189Processing frame 645/2189Processing frame 646/2189Processing frame 647/2189Processing frame 648/2189Processing frame 649/2189Processing frame 650/2189Processing frame 651/2189Processing frame 652/2189Processing frame 653/2189Processing frame 654/2189Processing frame 655/2189Processing frame 656/2189Processing frame 657/2189Processing frame 658/2189Processing frame 659/2189Processing frame 660/2189Processing frame 661/2189Processing frame 662/2189Processing frame 663/2189Processing frame 664/2189Processing frame 665/2189Processing frame 666/2189Processing frame 667/2189Processing frame 668/2189Processing frame 669/2189Processing frame 670/2189Processing frame 671/2189Processing frame 672/2189Processing frame 673/2189Processing frame 674/2189Processing frame 675/2189Processing frame 676/2189Processing frame 677/2189Processing frame 678/2189Processing frame 679/2189Processing frame 680/2189Processing frame 681/2189Processing frame 682/2189Processing frame 683/2189Processing frame 684/2189Processing frame 685/2189Processing frame 686/2189Processing frame 687/2189Processing frame 688/2189Processing frame 689/2189Processing frame 690/2189Processing frame 691/2189Processing frame 692/2189Processing frame 693/2189Processing frame 694/2189Processing frame 695/2189Processing frame 696/2189Processing frame 697/2189Processing frame 698/2189Processing frame 699/2189Processing frame 700/2189Processing frame 701/2189Processing frame 702/2189Processing frame 703/2189Processing frame 704/2189Processing frame 705/2189Processing frame 706/2189Processing frame 707/2189Processing frame 708/2189Processing frame 709/2189Processing frame 710/2189Processing frame 711/2189Processing frame 712/2189Processing frame 713/2189Processing frame 714/2189Processing frame 715/2189Processing frame 716/2189Processing frame 717/2189Processing frame 718/2189Processing frame 719/2189Processing frame 720/2189Processing frame 721/2189Processing frame 722/2189Processing frame 723/2189Processing frame 724/2189Processing frame 725/2189Processing frame 726/2189Processing frame 727/2189Processing frame 728/2189Processing frame 729/2189Processing frame 730/2189Processing frame 731/2189Processing frame 732/2189Processing frame 733/2189Processing frame 734/2189Processing frame 735/2189Processing frame 736/2189Processing frame 737/2189Processing frame 738/2189Processing frame 739/2189Processing frame 740/2189Processing frame 741/2189Processing frame 742/2189Processing frame 743/2189Processing frame 744/2189Processing frame 745/2189Processing frame 746/2189Processing frame 747/2189Processing frame 748/2189Processing frame 749/2189Processing frame 750/2189Processing frame 751/2189Processing frame 752/2189Processing frame 753/2189Processing frame 754/2189Processing frame 755/2189Processing frame 756/2189Processing frame 757/2189Processing frame 758/2189Processing frame 759/2189Processing frame 760/2189Processing frame 761/2189Processing frame 762/2189Processing frame 763/2189Processing frame 764/2189Processing frame 765/2189Processing frame 766/2189Processing frame 767/2189Processing frame 768/2189Processing frame 769/2189Processing frame 770/2189Processing frame 771/2189Processing frame 772/2189Processing frame 773/2189Processing frame 774/2189Processing frame 775/2189Processing frame 776/2189Processing frame 777/2189Processing frame 778/2189Processing frame 779/2189Processing frame 780/2189Processing frame 781/2189Processing frame 782/2189Processing frame 783/2189Processing frame 784/2189Processing frame 785/2189Processing frame 786/2189Processing frame 787/2189Processing frame 788/2189Processing frame 789/2189Processing frame 790/2189Processing frame 791/2189Processing frame 792/2189Processing frame 793/2189Processing frame 794/2189Processing frame 795/2189Processing frame 796/2189Processing frame 797/2189Processing frame 798/2189Processing frame 799/2189Processing frame 800/2189Processing frame 801/2189Processing frame 802/2189Processing frame 803/2189Processing frame 804/2189Processing frame 805/2189Processing frame 806/2189Processing frame 807/2189Processing frame 808/2189Processing frame 809/2189Processing frame 810/2189Processing frame 811/2189Processing frame 812/2189Processing frame 813/2189Processing frame 814/2189Processing frame 815/2189Processing frame 816/2189Processing frame 817/2189Processing frame 818/2189Processing frame 819/2189Processing frame 820/2189Processing frame 821/2189Processing frame 822/2189Processing frame 823/2189Processing frame 824/2189Processing frame 825/2189Processing frame 826/2189Processing frame 827/2189Processing frame 828/2189Processing frame 829/2189Processing frame 830/2189Processing frame 831/2189Processing frame 832/2189Processing frame 833/2189Processing frame 834/2189Processing frame 835/2189Processing frame 836/2189Processing frame 837/2189Processing frame 838/2189Processing frame 839/2189Processing frame 840/2189Processing frame 841/2189Processing frame 842/2189Processing frame 843/2189Processing frame 844/2189Processing frame 845/2189Processing frame 846/2189Processing frame 847/2189Processing frame 848/2189Processing frame 849/2189Processing frame 850/2189Processing frame 851/2189Processing frame 852/2189Processing frame 853/2189Processing frame 854/2189Processing frame 855/2189Processing frame 856/2189Processing frame 857/2189Processing frame 858/2189Processing frame 859/2189Processing frame 860/2189Processing frame 861/2189Processing frame 862/2189Processing frame 863/2189Processing frame 864/2189Processing frame 865/2189Processing frame 866/2189Processing frame 867/2189Processing frame 868/2189Processing frame 869/2189Processing frame 870/2189Processing frame 871/2189Processing frame 872/2189Processing frame 873/2189Processing frame 874/2189Processing frame 875/2189Processing frame 876/2189Processing frame 877/2189Processing frame 878/2189Processing frame 879/2189Processing frame 880/2189Processing frame 881/2189Processing frame 882/2189Processing frame 883/2189Processing frame 884/2189Processing frame 885/2189Processing frame 886/2189Processing frame 887/2189Processing frame 888/2189Processing frame 889/2189Processing frame 890/2189Processing frame 891/2189Processing frame 892/2189Processing frame 893/2189Processing frame 894/2189Processing frame 895/2189Processing frame 896/2189Processing frame 897/2189Processing frame 898/2189Processing frame 899/2189Processing frame 900/2189Processing frame 901/2189Processing frame 902/2189Processing frame 903/2189Processing frame 904/2189Processing frame 905/2189Processing frame 906/2189Processing frame 907/2189Processing frame 908/2189Processing frame 909/2189Processing frame 910/2189Processing frame 911/2189Processing frame 912/2189Processing frame 913/2189Processing frame 914/2189Processing frame 915/2189Processing frame 916/2189Processing frame 917/2189Processing frame 918/2189Processing frame 919/2189Processing frame 920/2189Processing frame 921/2189Processing frame 922/2189Processing frame 923/2189Processing frame 924/2189Processing frame 925/2189Processing frame 926/2189Processing frame 927/2189Processing frame 928/2189Processing frame 929/2189Processing frame 930/2189Processing frame 931/2189Processing frame 932/2189Processing frame 933/2189Processing frame 934/2189Processing frame 935/2189Processing frame 936/2189Processing frame 937/2189Processing frame 938/2189Processing frame 939/2189Processing frame 940/2189Processing frame 941/2189Processing frame 942/2189Processing frame 943/2189Processing frame 944/2189Processing frame 945/2189Processing frame 946/2189Processing frame 947/2189Processing frame 948/2189Processing frame 949/2189Processing frame 950/2189Processing frame 951/2189Processing frame 952/2189Processing frame 953/2189Processing frame 954/2189Processing frame 955/2189Processing frame 956/2189Processing frame 957/2189Processing frame 958/2189Processing frame 959/2189Processing frame 960/2189Processing frame 961/2189Processing frame 962/2189Processing frame 963/2189Processing frame 964/2189Processing frame 965/2189Processing frame 966/2189Processing frame 967/2189Processing frame 968/2189Processing frame 969/2189Processing frame 970/2189Processing frame 971/2189Processing frame 972/2189Processing frame 973/2189Processing frame 974/2189Processing frame 975/2189Processing frame 976/2189Processing frame 977/2189Processing frame 978/2189Processing frame 979/2189Processing frame 980/2189Processing frame 981/2189Processing frame 982/2189Processing frame 983/2189Processing frame 984/2189Processing frame 985/2189Processing frame 986/2189Processing frame 987/2189Processing frame 988/2189Processing frame 989/2189Processing frame 990/2189Processing frame 991/2189Processing frame 992/2189Processing frame 993/2189Processing frame 994/2189Processing frame 995/2189Processing frame 996/2189Processing frame 997/2189Processing frame 998/2189Processing frame 999/2189Processing frame 1000/2189Processing frame 1001/2189Processing frame 1002/2189Processing frame 1003/2189Processing frame 1004/2189Processing frame 1005/2189Processing frame 1006/2189Processing frame 1007/2189Processing frame 1008/2189Processing frame 1009/2189Processing frame 1010/2189Processing frame 1011/2189Processing frame 1012/2189Processing frame 1013/2189Processing frame 1014/2189Processing frame 1015/2189Processing frame 1016/2189Processing frame 1017/2189Processing frame 1018/2189Processing frame 1019/2189Processing frame 1020/2189Processing frame 1021/2189Processing frame 1022/2189Processing frame 1023/2189Processing frame 1024/2189Processing frame 1025/2189Processing frame 1026/2189Processing frame 1027/2189Processing frame 1028/2189Processing frame 1029/2189Processing frame 1030/2189Processing frame 1031/2189Processing frame 1032/2189Processing frame 1033/2189Processing frame 1034/2189Processing frame 1035/2189Processing frame 1036/2189Processing frame 1037/2189Processing frame 1038/2189Processing frame 1039/2189Processing frame 1040/2189Processing frame 1041/2189Processing frame 1042/2189Processing frame 1043/2189Processing frame 1044/2189Processing frame 1045/2189Processing frame 1046/2189Processing frame 1047/2189Processing frame 1048/2189Processing frame 1049/2189Processing frame 1050/2189Processing frame 1051/2189Processing frame 1052/2189Processing frame 1053/2189Processing frame 1054/2189Processing frame 1055/2189Processing frame 1056/2189Processing frame 1057/2189Processing frame 1058/2189Processing frame 1059/2189Processing frame 1060/2189Processing frame 1061/2189Processing frame 1062/2189Processing frame 1063/2189Processing frame 1064/2189Processing frame 1065/2189Processing frame 1066/2189Processing frame 1067/2189Processing frame 1068/2189Processing frame 1069/2189Processing frame 1070/2189Processing frame 1071/2189Processing frame 1072/2189Processing frame 1073/2189Processing frame 1074/2189Processing frame 1075/2189Processing frame 1076/2189Processing frame 1077/2189Processing frame 1078/2189Processing frame 1079/2189Processing frame 1080/2189Processing frame 1081/2189Processing frame 1082/2189Processing frame 1083/2189Processing frame 1084/2189Processing frame 1085/2189Processing frame 1086/2189Processing frame 1087/2189Processing frame 1088/2189Processing frame 1089/2189Processing frame 1090/2189Processing frame 1091/2189Processing frame 1092/2189Processing frame 1093/2189Processing frame 1094/2189Processing frame 1095/2189Processing frame 1096/2189Processing frame 1097/2189Processing frame 1098/2189Processing frame 1099/2189Processing frame 1100/2189Processing frame 1101/2189Processing frame 1102/2189Processing frame 1103/2189Processing frame 1104/2189Processing frame 1105/2189Processing frame 1106/2189Processing frame 1107/2189Processing frame 1108/2189Processing frame 1109/2189Processing frame 1110/2189Processing frame 1111/2189Processing frame 1112/2189Processing frame 1113/2189Processing frame 1114/2189Processing frame 1115/2189Processing frame 1116/2189Processing frame 1117/2189Processing frame 1118/2189Processing frame 1119/2189Processing frame 1120/2189Processing frame 1121/2189Processing frame 1122/2189Processing frame 1123/2189Processing frame 1124/2189Processing frame 1125/2189Processing frame 1126/2189Processing frame 1127/2189Processing frame 1128/2189Processing frame 1129/2189Processing frame 1130/2189Processing frame 1131/2189Processing frame 1132/2189Processing frame 1133/2189Processing frame 1134/2189Processing frame 1135/2189Processing frame 1136/2189Processing frame 1137/2189Processing frame 1138/2189Processing frame 1139/2189Processing frame 1140/2189Processing frame 1141/2189Processing frame 1142/2189Processing frame 1143/2189Processing frame 1144/2189Processing frame 1145/2189Processing frame 1146/2189Processing frame 1147/2189Processing frame 1148/2189Processing frame 1149/2189Processing frame 1150/2189Processing frame 1151/2189Processing frame 1152/2189Processing frame 1153/2189Processing frame 1154/2189Processing frame 1155/2189Processing frame 1156/2189Processing frame 1157/2189Processing frame 1158/2189Processing frame 1159/2189Processing frame 1160/2189Processing frame 1161/2189Processing frame 1162/2189Processing frame 1163/2189Processing frame 1164/2189Processing frame 1165/2189Processing frame 1166/2189Processing frame 1167/2189Processing frame 1168/2189Processing frame 1169/2189Processing frame 1170/2189Processing frame 1171/2189Processing frame 1172/2189Processing frame 1173/2189Processing frame 1174/2189Processing frame 1175/2189Processing frame 1176/2189Processing frame 1177/2189Processing frame 1178/2189Processing frame 1179/2189Processing frame 1180/2189Processing frame 1181/2189Processing frame 1182/2189Processing frame 1183/2189Processing frame 1184/2189Processing frame 1185/2189Processing frame 1186/2189Processing frame 1187/2189Processing frame 1188/2189Processing frame 1189/2189Processing frame 1190/2189Processing frame 1191/2189Processing frame 1192/2189Processing frame 1193/2189Processing frame 1194/2189Processing frame 1195/2189Processing frame 1196/2189Processing frame 1197/2189Processing frame 1198/2189Processing frame 1199/2189Processing frame 1200/2189Processing frame 1201/2189Processing frame 1202/2189Processing frame 1203/2189Processing frame 1204/2189Processing frame 1205/2189Processing frame 1206/2189Processing frame 1207/2189Processing frame 1208/2189Processing frame 1209/2189Processing frame 1210/2189Processing frame 1211/2189Processing frame 1212/2189Processing frame 1213/2189Processing frame 1214/2189Processing frame 1215/2189Processing frame 1216/2189Processing frame 1217/2189Processing frame 1218/2189Processing frame 1219/2189Processing frame 1220/2189Processing frame 1221/2189Processing frame 1222/2189Processing frame 1223/2189Processing frame 1224/2189Processing frame 1225/2189Processing frame 1226/2189Processing frame 1227/2189Processing frame 1228/2189Processing frame 1229/2189Processing frame 1230/2189Processing frame 1231/2189Processing frame 1232/2189Processing frame 1233/2189Processing frame 1234/2189Processing frame 1235/2189Processing frame 1236/2189Processing frame 1237/2189Processing frame 1238/2189Processing frame 1239/2189Processing frame 1240/2189Processing frame 1241/2189Processing frame 1242/2189Processing frame 1243/2189Processing frame 1244/2189Processing frame 1245/2189Processing frame 1246/2189Processing frame 1247/2189Processing frame 1248/2189Processing frame 1249/2189Processing frame 1250/2189Processing frame 1251/2189Processing frame 1252/2189Processing frame 1253/2189Processing frame 1254/2189Processing frame 1255/2189Processing frame 1256/2189Processing frame 1257/2189Processing frame 1258/2189Processing frame 1259/2189Processing frame 1260/2189Processing frame 1261/2189Processing frame 1262/2189Processing frame 1263/2189Processing frame 1264/2189Processing frame 1265/2189Processing frame 1266/2189Processing frame 1267/2189Processing frame 1268/2189Processing frame 1269/2189Processing frame 1270/2189Processing frame 1271/2189Processing frame 1272/2189Processing frame 1273/2189Processing frame 1274/2189Processing frame 1275/2189Processing frame 1276/2189Processing frame 1277/2189Processing frame 1278/2189Processing frame 1279/2189Processing frame 1280/2189Processing frame 1281/2189Processing frame 1282/2189Processing frame 1283/2189Processing frame 1284/2189Processing frame 1285/2189Processing frame 1286/2189Processing frame 1287/2189Processing frame 1288/2189Processing frame 1289/2189Processing frame 1290/2189Processing frame 1291/2189Processing frame 1292/2189Processing frame 1293/2189Processing frame 1294/2189Processing frame 1295/2189Processing frame 1296/2189Processing frame 1297/2189Processing frame 1298/2189Processing frame 1299/2189Processing frame 1300/2189Processing frame 1301/2189Processing frame 1302/2189Processing frame 1303/2189Processing frame 1304/2189Processing frame 1305/2189Processing frame 1306/2189Processing frame 1307/2189Processing frame 1308/2189Processing frame 1309/2189Processing frame 1310/2189Processing frame 1311/2189Processing frame 1312/2189Processing frame 1313/2189Processing frame 1314/2189Processing frame 1315/2189Processing frame 1316/2189Processing frame 1317/2189Processing frame 1318/2189Processing frame 1319/2189Processing frame 1320/2189Processing frame 1321/2189Processing frame 1322/2189Processing frame 1323/2189Processing frame 1324/2189Processing frame 1325/2189Processing frame 1326/2189Processing frame 1327/2189Processing frame 1328/2189Processing frame 1329/2189Processing frame 1330/2189Processing frame 1331/2189Processing frame 1332/2189Processing frame 1333/2189Processing frame 1334/2189Processing frame 1335/2189Processing frame 1336/2189Processing frame 1337/2189Processing frame 1338/2189Processing frame 1339/2189Processing frame 1340/2189Processing frame 1341/2189Processing frame 1342/2189Processing frame 1343/2189Processing frame 1344/2189Processing frame 1345/2189Processing frame 1346/2189Processing frame 1347/2189Processing frame 1348/2189Processing frame 1349/2189Processing frame 1350/2189Processing frame 1351/2189Processing frame 1352/2189Processing frame 1353/2189Processing frame 1354/2189Processing frame 1355/2189Processing frame 1356/2189Processing frame 1357/2189Processing frame 1358/2189Processing frame 1359/2189Processing frame 1360/2189Processing frame 1361/2189Processing frame 1362/2189Processing frame 1363/2189Processing frame 1364/2189Processing frame 1365/2189Processing frame 1366/2189Processing frame 1367/2189Processing frame 1368/2189Processing frame 1369/2189Processing frame 1370/2189Processing frame 1371/2189Processing frame 1372/2189Processing frame 1373/2189Processing frame 1374/2189Processing frame 1375/2189Processing frame 1376/2189Processing frame 1377/2189Processing frame 1378/2189Processing frame 1379/2189Processing frame 1380/2189Processing frame 1381/2189Processing frame 1382/2189Processing frame 1383/2189Processing frame 1384/2189Processing frame 1385/2189Processing frame 1386/2189Processing frame 1387/2189Processing frame 1388/2189Processing frame 1389/2189Processing frame 1390/2189Processing frame 1391/2189Processing frame 1392/2189Processing frame 1393/2189Processing frame 1394/2189Processing frame 1395/2189Processing frame 1396/2189Processing frame 1397/2189Processing frame 1398/2189Processing frame 1399/2189Processing frame 1400/2189Processing frame 1401/2189Processing frame 1402/2189Processing frame 1403/2189Processing frame 1404/2189Processing frame 1405/2189Processing frame 1406/2189Processing frame 1407/2189Processing frame 1408/2189Processing frame 1409/2189Processing frame 1410/2189Processing frame 1411/2189Processing frame 1412/2189Processing frame 1413/2189Processing frame 1414/2189Processing frame 1415/2189Processing frame 1416/2189Processing frame 1417/2189Processing frame 1418/2189Processing frame 1419/2189Processing frame 1420/2189Processing frame 1421/2189Processing frame 1422/2189Processing frame 1423/2189Processing frame 1424/2189Processing frame 1425/2189Processing frame 1426/2189Processing frame 1427/2189Processing frame 1428/2189Processing frame 1429/2189Processing frame 1430/2189Processing frame 1431/2189Processing frame 1432/2189Processing frame 1433/2189Processing frame 1434/2189Processing frame 1435/2189Processing frame 1436/2189Processing frame 1437/2189Processing frame 1438/2189Processing frame 1439/2189Processing frame 1440/2189Processing frame 1441/2189Processing frame 1442/2189Processing frame 1443/2189Processing frame 1444/2189Processing frame 1445/2189Processing frame 1446/2189Processing frame 1447/2189Processing frame 1448/2189Processing frame 1449/2189Processing frame 1450/2189Processing frame 1451/2189Processing frame 1452/2189Processing frame 1453/2189Processing frame 1454/2189Processing frame 1455/2189Processing frame 1456/2189Processing frame 1457/2189Processing frame 1458/2189Processing frame 1459/2189Processing frame 1460/2189Processing frame 1461/2189Processing frame 1462/2189Processing frame 1463/2189Processing frame 1464/2189Processing frame 1465/2189Processing frame 1466/2189Processing frame 1467/2189Processing frame 1468/2189Processing frame 1469/2189Processing frame 1470/2189Processing frame 1471/2189Processing frame 1472/2189Processing frame 1473/2189Processing frame 1474/2189Processing frame 1475/2189Processing frame 1476/2189Processing frame 1477/2189Processing frame 1478/2189Processing frame 1479/2189Processing frame 1480/2189Processing frame 1481/2189Processing frame 1482/2189Processing frame 1483/2189Processing frame 1484/2189Processing frame 1485/2189Processing frame 1486/2189Processing frame 1487/2189Processing frame 1488/2189Processing frame 1489/2189Processing frame 1490/2189Processing frame 1491/2189Processing frame 1492/2189Processing frame 1493/2189Processing frame 1494/2189Processing frame 1495/2189Processing frame 1496/2189Processing frame 1497/2189Processing frame 1498/2189Processing frame 1499/2189Processing frame 1500/2189Processing frame 1501/2189Processing frame 1502/2189Processing frame 1503/2189Processing frame 1504/2189Processing frame 1505/2189Processing frame 1506/2189Processing frame 1507/2189Processing frame 1508/2189Processing frame 1509/2189Processing frame 1510/2189Processing frame 1511/2189Processing frame 1512/2189Processing frame 1513/2189Processing frame 1514/2189Processing frame 1515/2189Processing frame 1516/2189Processing frame 1517/2189Processing frame 1518/2189Processing frame 1519/2189Processing frame 1520/2189Processing frame 1521/2189Processing frame 1522/2189Processing frame 1523/2189Processing frame 1524/2189Processing frame 1525/2189Processing frame 1526/2189Processing frame 1527/2189Processing frame 1528/2189Processing frame 1529/2189Processing frame 1530/2189Processing frame 1531/2189Processing frame 1532/2189Processing frame 1533/2189Processing frame 1534/2189Processing frame 1535/2189Processing frame 1536/2189Processing frame 1537/2189Processing frame 1538/2189Processing frame 1539/2189Processing frame 1540/2189Processing frame 1541/2189Processing frame 1542/2189Processing frame 1543/2189Processing frame 1544/2189Processing frame 1545/2189Processing frame 1546/2189Processing frame 1547/2189Processing frame 1548/2189Processing frame 1549/2189Processing frame 1550/2189Processing frame 1551/2189Processing frame 1552/2189Processing frame 1553/2189Processing frame 1554/2189Processing frame 1555/2189Processing frame 1556/2189Processing frame 1557/2189Processing frame 1558/2189Processing frame 1559/2189Processing frame 1560/2189Processing frame 1561/2189Processing frame 1562/2189Processing frame 1563/2189Processing frame 1564/2189Processing frame 1565/2189Processing frame 1566/2189Processing frame 1567/2189Processing frame 1568/2189Processing frame 1569/2189Processing frame 1570/2189Processing frame 1571/2189Processing frame 1572/2189Processing frame 1573/2189Processing frame 1574/2189Processing frame 1575/2189Processing frame 1576/2189Processing frame 1577/2189Processing frame 1578/2189Processing frame 1579/2189Processing frame 1580/2189Processing frame 1581/2189Processing frame 1582/2189Processing frame 1583/2189Processing frame 1584/2189Processing frame 1585/2189Processing frame 1586/2189Processing frame 1587/2189Processing frame 1588/2189Processing frame 1589/2189Processing frame 1590/2189Processing frame 1591/2189Processing frame 1592/2189Processing frame 1593/2189Processing frame 1594/2189Processing frame 1595/2189Processing frame 1596/2189Processing frame 1597/2189Processing frame 1598/2189Processing frame 1599/2189Processing frame 1600/2189Processing frame 1601/2189Processing frame 1602/2189Processing frame 1603/2189Processing frame 1604/2189Processing frame 1605/2189Processing frame 1606/2189Processing frame 1607/2189Processing frame 1608/2189Processing frame 1609/2189Processing frame 1610/2189Processing frame 1611/2189Processing frame 1612/2189Processing frame 1613/2189Processing frame 1614/2189Processing frame 1615/2189Processing frame 1616/2189Processing frame 1617/2189Processing frame 1618/2189Processing frame 1619/2189Processing frame 1620/2189Processing frame 1621/2189Processing frame 1622/2189Processing frame 1623/2189Processing frame 1624/2189Processing frame 1625/2189Processing frame 1626/2189Processing frame 1627/2189Processing frame 1628/2189Processing frame 1629/2189Processing frame 1630/2189Processing frame 1631/2189Processing frame 1632/2189Processing frame 1633/2189Processing frame 1634/2189Processing frame 1635/2189Processing frame 1636/2189Processing frame 1637/2189Processing frame 1638/2189Processing frame 1639/2189Processing frame 1640/2189Processing frame 1641/2189Processing frame 1642/2189Processing frame 1643/2189Processing frame 1644/2189Processing frame 1645/2189Processing frame 1646/2189Processing frame 1647/2189Processing frame 1648/2189Processing frame 1649/2189Processing frame 1650/2189Processing frame 1651/2189Processing frame 1652/2189Processing frame 1653/2189Processing frame 1654/2189Processing frame 1655/2189Processing frame 1656/2189Processing frame 1657/2189Processing frame 1658/2189Processing frame 1659/2189Processing frame 1660/2189Processing frame 1661/2189Processing frame 1662/2189Processing frame 1663/2189Processing frame 1664/2189Processing frame 1665/2189Processing frame 1666/2189Processing frame 1667/2189Processing frame 1668/2189Processing frame 1669/2189Processing frame 1670/2189Processing frame 1671/2189Processing frame 1672/2189Processing frame 1673/2189Processing frame 1674/2189Processing frame 1675/2189Processing frame 1676/2189Processing frame 1677/2189Processing frame 1678/2189Processing frame 1679/2189Processing frame 1680/2189Processing frame 1681/2189Processing frame 1682/2189Processing frame 1683/2189Processing frame 1684/2189Processing frame 1685/2189Processing frame 1686/2189Processing frame 1687/2189Processing frame 1688/2189Processing frame 1689/2189Processing frame 1690/2189Processing frame 1691/2189Processing frame 1692/2189Processing frame 1693/2189Processing frame 1694/2189Processing frame 1695/2189Processing frame 1696/2189Processing frame 1697/2189Processing frame 1698/2189Processing frame 1699/2189Processing frame 1700/2189Processing frame 1701/2189Processing frame 1702/2189Processing frame 1703/2189Processing frame 1704/2189Processing frame 1705/2189Processing frame 1706/2189Processing frame 1707/2189Processing frame 1708/2189Processing frame 1709/2189Processing frame 1710/2189Processing frame 1711/2189Processing frame 1712/2189Processing frame 1713/2189Processing frame 1714/2189Processing frame 1715/2189Processing frame 1716/2189Processing frame 1717/2189Processing frame 1718/2189Processing frame 1719/2189Processing frame 1720/2189Processing frame 1721/2189Processing frame 1722/2189Processing frame 1723/2189Processing frame 1724/2189Processing frame 1725/2189Processing frame 1726/2189Processing frame 1727/2189Processing frame 1728/2189Processing frame 1729/2189Processing frame 1730/2189Processing frame 1731/2189Processing frame 1732/2189Processing frame 1733/2189Processing frame 1734/2189Processing frame 1735/2189Processing frame 1736/2189Processing frame 1737/2189Processing frame 1738/2189Processing frame 1739/2189Processing frame 1740/2189Processing frame 1741/2189Processing frame 1742/2189Processing frame 1743/2189Processing frame 1744/2189Processing frame 1745/2189Processing frame 1746/2189Processing frame 1747/2189Processing frame 1748/2189Processing frame 1749/2189Processing frame 1750/2189Processing frame 1751/2189Processing frame 1752/2189Processing frame 1753/2189Processing frame 1754/2189Processing frame 1755/2189Processing frame 1756/2189Processing frame 1757/2189Processing frame 1758/2189Processing frame 1759/2189Processing frame 1760/2189Processing frame 1761/2189Processing frame 1762/2189Processing frame 1763/2189Processing frame 1764/2189Processing frame 1765/2189Processing frame 1766/2189Processing frame 1767/2189Processing frame 1768/2189Processing frame 1769/2189Processing frame 1770/2189Processing frame 1771/2189Processing frame 1772/2189Processing frame 1773/2189Processing frame 1774/2189Processing frame 1775/2189Processing frame 1776/2189Processing frame 1777/2189Processing frame 1778/2189Processing frame 1779/2189Processing frame 1780/2189Processing frame 1781/2189Processing frame 1782/2189Processing frame 1783/2189Processing frame 1784/2189Processing frame 1785/2189Processing frame 1786/2189Processing frame 1787/2189Processing frame 1788/2189Processing frame 1789/2189Processing frame 1790/2189Processing frame 1791/2189Processing frame 1792/2189Processing frame 1793/2189Processing frame 1794/2189Processing frame 1795/2189Processing frame 1796/2189Processing frame 1797/2189Processing frame 1798/2189Processing frame 1799/2189Processing frame 1800/2189Processing frame 1801/2189Processing frame 1802/2189Processing frame 1803/2189Processing frame 1804/2189Processing frame 1805/2189Processing frame 1806/2189Processing frame 1807/2189Processing frame 1808/2189Processing frame 1809/2189Processing frame 1810/2189Processing frame 1811/2189Processing frame 1812/2189Processing frame 1813/2189Processing frame 1814/2189Processing frame 1815/2189Processing frame 1816/2189Processing frame 1817/2189Processing frame 1818/2189Processing frame 1819/2189Processing frame 1820/2189Processing frame 1821/2189Processing frame 1822/2189Processing frame 1823/2189Processing frame 1824/2189Processing frame 1825/2189Processing frame 1826/2189Processing frame 1827/2189Processing frame 1828/2189Processing frame 1829/2189Processing frame 1830/2189Processing frame 1831/2189Processing frame 1832/2189Processing frame 1833/2189Processing frame 1834/2189Processing frame 1835/2189Processing frame 1836/2189Processing frame 1837/2189Processing frame 1838/2189Processing frame 1839/2189Processing frame 1840/2189Processing frame 1841/2189Processing frame 1842/2189Processing frame 1843/2189Processing frame 1844/2189Processing frame 1845/2189Processing frame 1846/2189Processing frame 1847/2189Processing frame 1848/2189Processing frame 1849/2189Processing frame 1850/2189Processing frame 1851/2189Processing frame 1852/2189Processing frame 1853/2189Processing frame 1854/2189Processing frame 1855/2189Processing frame 1856/2189Processing frame 1857/2189Processing frame 1858/2189Processing frame 1859/2189Processing frame 1860/2189Processing frame 1861/2189Processing frame 1862/2189Processing frame 1863/2189Processing frame 1864/2189Processing frame 1865/2189Processing frame 1866/2189Processing frame 1867/2189Processing frame 1868/2189Processing frame 1869/2189Processing frame 1870/2189Processing frame 1871/2189Processing frame 1872/2189Processing frame 1873/2189Processing frame 1874/2189Processing frame 1875/2189Processing frame 1876/2189Processing frame 1877/2189Processing frame 1878/2189Processing frame 1879/2189Processing frame 1880/2189Processing frame 1881/2189Processing frame 1882/2189Processing frame 1883/2189Processing frame 1884/2189Processing frame 1885/2189Processing frame 1886/2189Processing frame 1887/2189Processing frame 1888/2189Processing frame 1889/2189Processing frame 1890/2189Processing frame 1891/2189Processing frame 1892/2189Processing frame 1893/2189Processing frame 1894/2189Processing frame 1895/2189Processing frame 1896/2189Processing frame 1897/2189Processing frame 1898/2189Processing frame 1899/2189Processing frame 1900/2189Processing frame 1901/2189Processing frame 1902/2189Processing frame 1903/2189Processing frame 1904/2189Processing frame 1905/2189Processing frame 1906/2189Processing frame 1907/2189Processing frame 1908/2189Processing frame 1909/2189Processing frame 1910/2189Processing frame 1911/2189Processing frame 1912/2189Processing frame 1913/2189Processing frame 1914/2189Processing frame 1915/2189Processing frame 1916/2189Processing frame 1917/2189Processing frame 1918/2189Processing frame 1919/2189Processing frame 1920/2189Processing frame 1921/2189Processing frame 1922/2189Processing frame 1923/2189Processing frame 1924/2189Processing frame 1925/2189Processing frame 1926/2189Processing frame 1927/2189Processing frame 1928/2189Processing frame 1929/2189Processing frame 1930/2189Processing frame 1931/2189Processing frame 1932/2189Processing frame 1933/2189Processing frame 1934/2189Processing frame 1935/2189Processing frame 1936/2189Processing frame 1937/2189Processing frame 1938/2189Processing frame 1939/2189Processing frame 1940/2189Processing frame 1941/2189Processing frame 1942/2189Processing frame 1943/2189Processing frame 1944/2189Processing frame 1945/2189Processing frame 1946/2189Processing frame 1947/2189Processing frame 1948/2189Processing frame 1949/2189Processing frame 1950/2189Processing frame 1951/2189Processing frame 1952/2189Processing frame 1953/2189Processing frame 1954/2189Processing frame 1955/2189Processing frame 1956/2189Processing frame 1957/2189Processing frame 1958/2189Processing frame 1959/2189Processing frame 1960/2189Processing frame 1961/2189Processing frame 1962/2189Processing frame 1963/2189Processing frame 1964/2189Processing frame 1965/2189Processing frame 1966/2189Processing frame 1967/2189Processing frame 1968/2189Processing frame 1969/2189Processing frame 1970/2189Processing frame 1971/2189Processing frame 1972/2189Processing frame 1973/2189Processing frame 1974/2189Processing frame 1975/2189Processing frame 1976/2189Processing frame 1977/2189Processing frame 1978/2189Processing frame 1979/2189Processing frame 1980/2189Processing frame 1981/2189Processing frame 1982/2189Processing frame 1983/2189Processing frame 1984/2189Processing frame 1985/2189Processing frame 1986/2189Processing frame 1987/2189Processing frame 1988/2189Processing frame 1989/2189Processing frame 1990/2189Processing frame 1991/2189Processing frame 1992/2189Processing frame 1993/2189Processing frame 1994/2189Processing frame 1995/2189Processing frame 1996/2189Processing frame 1997/2189Processing frame 1998/2189Processing frame 1999/2189Processing frame 2000/2189Processing frame 2001/2189Processing frame 2002/2189Processing frame 2003/2189Processing frame 2004/2189Processing frame 2005/2189Processing frame 2006/2189Processing frame 2007/2189Processing frame 2008/2189Processing frame 2009/2189Processing frame 2010/2189Processing frame 2011/2189Processing frame 2012/2189Processing frame 2013/2189Processing frame 2014/2189Processing frame 2015/2189Processing frame 2016/2189Processing frame 2017/2189Processing frame 2018/2189Processing frame 2019/2189Processing frame 2020/2189Processing frame 2021/2189Processing frame 2022/2189Processing frame 2023/2189Processing frame 2024/2189Processing frame 2025/2189Processing frame 2026/2189Processing frame 2027/2189Processing frame 2028/2189Processing frame 2029/2189Processing frame 2030/2189Processing frame 2031/2189Processing frame 2032/2189Processing frame 2033/2189Processing frame 2034/2189Processing frame 2035/2189Processing frame 2036/2189Processing frame 2037/2189Processing frame 2038/2189Processing frame 2039/2189Processing frame 2040/2189Processing frame 2041/2189Processing frame 2042/2189Processing frame 2043/2189Processing frame 2044/2189Processing frame 2045/2189Processing frame 2046/2189Processing frame 2047/2189Processing frame 2048/2189Processing frame 2049/2189Processing frame 2050/2189Processing frame 2051/2189Processing frame 2052/2189Processing frame 2053/2189Processing frame 2054/2189Processing frame 2055/2189Processing frame 2056/2189Processing frame 2057/2189Processing frame 2058/2189Processing frame 2059/2189Processing frame 2060/2189Processing frame 2061/2189Processing frame 2062/2189Processing frame 2063/2189Processing frame 2064/2189Processing frame 2065/2189Processing frame 2066/2189Processing frame 2067/2189Processing frame 2068/2189Processing frame 2069/2189Processing frame 2070/2189Processing frame 2071/2189Processing frame 2072/2189Processing frame 2073/2189Processing frame 2074/2189Processing frame 2075/2189Processing frame 2076/2189Processing frame 2077/2189Processing frame 2078/2189Processing frame 2079/2189Processing frame 2080/2189Processing frame 2081/2189Processing frame 2082/2189Processing frame 2083/2189Processing frame 2084/2189Processing frame 2085/2189Processing frame 2086/2189Processing frame 2087/2189Processing frame 2088/2189Processing frame 2089/2189Processing frame 2090/2189Processing frame 2091/2189Processing frame 2092/2189Processing frame 2093/2189Processing frame 2094/2189Processing frame 2095/2189Processing frame 2096/2189Processing frame 2097/2189Processing frame 2098/2189Processing frame 2099/2189Processing frame 2100/2189Processing frame 2101/2189Processing frame 2102/2189Processing frame 2103/2189Processing frame 2104/2189Processing frame 2105/2189Processing frame 2106/2189Processing frame 2107/2189Processing frame 2108/2189Processing frame 2109/2189Processing frame 2110/2189Processing frame 2111/2189Processing frame 2112/2189Processing frame 2113/2189Processing frame 2114/2189Processing frame 2115/2189Processing frame 2116/2189Processing frame 2117/2189Processing frame 2118/2189Processing frame 2119/2189Processing frame 2120/2189Processing frame 2121/2189Processing frame 2122/2189Processing frame 2123/2189Processing frame 2124/2189Processing frame 2125/2189Processing frame 2126/2189Processing frame 2127/2189Processing frame 2128/2189Processing frame 2129/2189Processing frame 2130/2189Processing frame 2131/2189Processing frame 2132/2189Processing frame 2133/2189Processing frame 2134/2189Processing frame 2135/2189Processing frame 2136/2189Processing frame 2137/2189Processing frame 2138/2189Processing frame 2139/2189Processing frame 2140/2189Processing frame 2141/2189Processing frame 2142/2189Processing frame 2143/2189Processing frame 2144/2189Processing frame 2145/2189Processing frame 2146/2189Processing frame 2147/2189Processing frame 2148/2189Processing frame 2149/2189Processing frame 2150/2189Processing frame 2151/2189Processing frame 2152/2189Processing frame 2153/2189Processing frame 2154/2189Processing frame 2155/2189Processing frame 2156/2189Processing frame 2157/2189Processing frame 2158/2189Processing frame 2159/2189Processing frame 2160/2189Processing frame 2161/2189Processing frame 2162/2189Processing frame 2163/2189Processing frame 2164/2189Processing frame 2165/2189Processing frame 2166/2189Processing frame 2167/2189Processing frame 2168/2189Processing frame 2169/2189Processing frame 2170/2189Processing frame 2171/2189Processing frame 2172/2189Processing frame 2173/2189Processing frame 2174/2189Processing frame 2175/2189Processing frame 2176/2189Processing frame 2177/2189Processing frame 2178/2189Processing frame 2179/2189Processing frame 2180/2189Processing frame 2181/2189Processing frame 2182/2189Processing frame 2183/2189Processing frame 2184/2189Processing frame 2185/2189Processing frame 2186/2189Processing frame 2187/2189Processing frame 2188/2189Processing frame 2189/2189
+Processed 2189 frames
+Average inference FPS: 39.07
+Output saved to: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/video1_inference_20250919_064843.mp4
+[2025-09-19 06:50:04] ✓ Inference completed successfully in 79 seconds
+[2025-09-19 06:50:04] ✓ Output video created: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/video1_inference_20250919_064843.mp4 (18M)
+[2025-09-19 06:50:04] ==================================
+[2025-09-19 06:50:04] RUNNING MODEL3 POST-PROCESSING
+[2025-09-19 06:50:04] ==================================
+[2025-09-19 06:50:04] Executing model3.py for post-processing...
+[2025-09-19 06:50:04] Model3 processing started at: Fri Sep 19 06:50:04 AM CEST 2025
+Using provided Triton server URL: gpu001:8002
+Processing video: /home/ing-bwrxrp/Unattended-Object-Detection/ABODA/video1.avi
+Output will be saved to: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/video1_inference_20250919_064843.mp4
+🎬 Loading input video: /home/ing-bwrxrp/Unattended-Object-Detection/ABODA/video1.avi
+📊 Video properties: 640x480 @ 29fps, 2189 total frames
+🎯 Output video: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/video1_inference_20250919_064843.mp4
+🤖 Using model: rtdetr with confidence threshold: 0.5
+📝 Video writer initialized: 640x480, 29fps
+Connecting to Triton server at: gpu001:8002
+✓ Successfully connected to Triton server at gpu001:8002
+🎬 Opened video: 29 fps, starting inference...
+🔄 Processed 0/2189 frames (0.0 fps)
+🎯 Frame 33: 1 detections (0 persons, 0 objects)
+🎯 Frame 77: 1 detections (0 persons, 0 objects)
+🎯 Frame 78: 1 detections (0 persons, 0 objects)
+🎯 Frame 93: 1 detections (0 persons, 0 objects)
+🎯 Frame 94: 1 detections (0 persons, 0 objects)
+🎯 Frame 97: 1 detections (0 persons, 0 objects)
+Processed 100 frames...
+🔄 Processed 100/2189 frames (28.3 fps)
+🎯 Frame 131: 1 detections (1 persons, 0 objects)
+🎯 Frame 132: 1 detections (1 persons, 0 objects)
+🎯 Frame 133: 1 detections (1 persons, 0 objects)
+🎯 Frame 134: 1 detections (1 persons, 0 objects)
+🎯 Frame 135: 1 detections (1 persons, 0 objects)
+🎯 Frame 136: 1 detections (1 persons, 0 objects)
+🎯 Frame 137: 1 detections (1 persons, 0 objects)
+🎯 Frame 138: 1 detections (1 persons, 0 objects)
+🎯 Frame 139: 1 detections (1 persons, 0 objects)
+🎯 Frame 140: 1 detections (1 persons, 0 objects)
+🎯 Frame 141: 1 detections (1 persons, 0 objects)
+🎯 Frame 142: 1 detections (1 persons, 0 objects)
+🎯 Frame 143: 1 detections (1 persons, 0 objects)
+🎯 Frame 144: 1 detections (1 persons, 0 objects)
+🎯 Frame 145: 1 detections (1 persons, 0 objects)
+🎯 Frame 146: 1 detections (1 persons, 0 objects)
+🎯 Frame 147: 1 detections (1 persons, 0 objects)
+🎯 Frame 148: 1 detections (1 persons, 0 objects)
+🎯 Frame 149: 1 detections (1 persons, 0 objects)
+🎯 Frame 150: 1 detections (1 persons, 0 objects)
+🎯 Frame 151: 1 detections (1 persons, 0 objects)
+🎯 Frame 152: 1 detections (1 persons, 0 objects)
+🎯 Frame 153: 1 detections (1 persons, 0 objects)
+🎯 Frame 154: 1 detections (1 persons, 0 objects)
+🎯 Frame 155: 1 detections (1 persons, 0 objects)
+🎯 Frame 156: 1 detections (1 persons, 0 objects)
+🎯 Frame 157: 1 detections (1 persons, 0 objects)
+🎯 Frame 158: 1 detections (1 persons, 0 objects)
+🎯 Frame 159: 1 detections (1 persons, 0 objects)
+🎯 Frame 160: 1 detections (1 persons, 0 objects)
+🎯 Frame 161: 1 detections (1 persons, 0 objects)
+🎯 Frame 162: 1 detections (1 persons, 0 objects)
+🎯 Frame 163: 1 detections (1 persons, 0 objects)
+🎯 Frame 164: 1 detections (1 persons, 0 objects)
+🎯 Frame 165: 1 detections (1 persons, 0 objects)
+🎯 Frame 166: 1 detections (1 persons, 0 objects)
+🎯 Frame 167: 1 detections (1 persons, 0 objects)
+🎯 Frame 168: 1 detections (1 persons, 0 objects)
+🎯 Frame 169: 1 detections (1 persons, 0 objects)
+🎯 Frame 170: 1 detections (1 persons, 0 objects)
+🎯 Frame 171: 1 detections (1 persons, 0 objects)
+🎯 Frame 172: 1 detections (1 persons, 0 objects)
+🎯 Frame 173: 1 detections (1 persons, 0 objects)
+🎯 Frame 174: 1 detections (1 persons, 0 objects)
+🎯 Frame 175: 2 detections (1 persons, 0 objects)
+🎯 Frame 176: 1 detections (1 persons, 0 objects)
+🎯 Frame 177: 1 detections (1 persons, 0 objects)
+🎯 Frame 178: 1 detections (1 persons, 0 objects)
+🎯 Frame 179: 2 detections (1 persons, 0 objects)
+🎯 Frame 180: 2 detections (1 persons, 0 objects)
+🎯 Frame 181: 1 detections (1 persons, 0 objects)
+🎯 Frame 182: 2 detections (1 persons, 0 objects)
+🎯 Frame 183: 2 detections (1 persons, 0 objects)
+🎯 Frame 184: 1 detections (1 persons, 0 objects)
+🎯 Frame 185: 1 detections (1 persons, 0 objects)
+🎯 Frame 186: 1 detections (1 persons, 0 objects)
+🎯 Frame 187: 1 detections (1 persons, 0 objects)
+🎯 Frame 188: 1 detections (1 persons, 0 objects)
+🎯 Frame 189: 1 detections (1 persons, 0 objects)
+🎯 Frame 190: 1 detections (1 persons, 0 objects)
+🎯 Frame 191: 1 detections (1 persons, 0 objects)
+🎯 Frame 192: 1 detections (1 persons, 0 objects)
+🎯 Frame 193: 1 detections (1 persons, 0 objects)
+🎯 Frame 194: 1 detections (1 persons, 0 objects)
+🎯 Frame 195: 1 detections (1 persons, 0 objects)
+🎯 Frame 196: 1 detections (1 persons, 0 objects)
+🎯 Frame 197: 1 detections (1 persons, 0 objects)
+🎯 Frame 198: 1 detections (1 persons, 0 objects)
+🎯 Frame 199: 1 detections (1 persons, 0 objects)
+Processed 200 frames...
+🎯 Frame 200: 1 detections (1 persons, 0 objects)
+🔄 Processed 200/2189 frames (28.6 fps)
+🎯 Frame 201: 1 detections (1 persons, 0 objects)
+🎯 Frame 202: 1 detections (1 persons, 0 objects)
+🎯 Frame 203: 1 detections (1 persons, 0 objects)
+🎯 Frame 204: 2 detections (1 persons, 0 objects)
+🎯 Frame 205: 2 detections (1 persons, 0 objects)
+🎯 Frame 206: 2 detections (1 persons, 0 objects)
+🎯 Frame 207: 1 detections (1 persons, 0 objects)
+🎯 Frame 208: 1 detections (1 persons, 0 objects)
+🎯 Frame 209: 1 detections (1 persons, 0 objects)
+🎯 Frame 210: 1 detections (1 persons, 0 objects)
+🎯 Frame 211: 1 detections (1 persons, 0 objects)
+🎯 Frame 212: 1 detections (1 persons, 0 objects)
+🎯 Frame 213: 1 detections (1 persons, 0 objects)
+🎯 Frame 214: 1 detections (1 persons, 0 objects)
+🎯 Frame 215: 1 detections (1 persons, 0 objects)
+🎯 Frame 216: 1 detections (1 persons, 0 objects)
+🎯 Frame 217: 1 detections (1 persons, 0 objects)
+🎯 Frame 218: 1 detections (1 persons, 0 objects)
+🎯 Frame 219: 1 detections (1 persons, 0 objects)
+🎯 Frame 220: 1 detections (1 persons, 0 objects)
+🎯 Frame 221: 1 detections (1 persons, 0 objects)
+🎯 Frame 222: 2 detections (1 persons, 0 objects)
+🎯 Frame 223: 1 detections (1 persons, 0 objects)
+🎯 Frame 224: 1 detections (1 persons, 0 objects)
+🎯 Frame 225: 1 detections (1 persons, 0 objects)
+🎯 Frame 226: 1 detections (1 persons, 0 objects)
+🎯 Frame 227: 1 detections (1 persons, 0 objects)
+🎯 Frame 228: 2 detections (1 persons, 0 objects)
+🎯 Frame 229: 2 detections (1 persons, 0 objects)
+🎯 Frame 230: 2 detections (1 persons, 0 objects)
+🎯 Frame 231: 2 detections (1 persons, 0 objects)
+🎯 Frame 232: 2 detections (1 persons, 0 objects)
+🎯 Frame 233: 2 detections (1 persons, 0 objects)
+🎯 Frame 234: 2 detections (1 persons, 0 objects)
+🎯 Frame 235: 2 detections (1 persons, 0 objects)
+🎯 Frame 236: 3 detections (2 persons, 0 objects)
+🎯 Frame 237: 3 detections (2 persons, 0 objects)
+🎯 Frame 238: 3 detections (2 persons, 0 objects)
+🎯 Frame 239: 3 detections (2 persons, 0 objects)
+🎯 Frame 240: 3 detections (2 persons, 0 objects)
+🎯 Frame 241: 3 detections (2 persons, 0 objects)
+🎯 Frame 242: 3 detections (2 persons, 0 objects)
+🎯 Frame 243: 3 detections (2 persons, 0 objects)
+🎯 Frame 244: 3 detections (2 persons, 0 objects)
+🎯 Frame 245: 3 detections (2 persons, 0 objects)
+🎯 Frame 246: 3 detections (2 persons, 0 objects)
+🎯 Frame 247: 3 detections (2 persons, 0 objects)
+🎯 Frame 248: 3 detections (2 persons, 0 objects)
+🎯 Frame 249: 3 detections (2 persons, 0 objects)
+🎯 Frame 250: 3 detections (2 persons, 0 objects)
+🎯 Frame 251: 3 detections (2 persons, 0 objects)
+🎯 Frame 252: 2 detections (2 persons, 0 objects)
+🎯 Frame 253: 2 detections (2 persons, 0 objects)
+🎯 Frame 254: 3 detections (3 persons, 0 objects)
+🎯 Frame 255: 2 detections (2 persons, 0 objects)
+🎯 Frame 256: 2 detections (2 persons, 0 objects)
+🎯 Frame 257: 3 detections (2 persons, 0 objects)
+🎯 Frame 258: 3 detections (2 persons, 0 objects)
+🎯 Frame 259: 2 detections (2 persons, 0 objects)
+🎯 Frame 260: 2 detections (2 persons, 0 objects)
+🎯 Frame 261: 2 detections (2 persons, 0 objects)
+🎯 Frame 262: 2 detections (2 persons, 0 objects)
+🎯 Frame 263: 2 detections (2 persons, 0 objects)
+🎯 Frame 264: 2 detections (2 persons, 0 objects)
+🎯 Frame 265: 2 detections (2 persons, 0 objects)
+🎯 Frame 266: 2 detections (2 persons, 0 objects)
+🎯 Frame 267: 2 detections (2 persons, 0 objects)
+🎯 Frame 268: 2 detections (2 persons, 0 objects)
+🎯 Frame 269: 2 detections (2 persons, 0 objects)
+🎯 Frame 270: 2 detections (2 persons, 0 objects)
+🎯 Frame 271: 2 detections (2 persons, 0 objects)
+🎯 Frame 272: 2 detections (1 persons, 0 objects)
+🎯 Frame 273: 1 detections (1 persons, 0 objects)
+🎯 Frame 274: 1 detections (1 persons, 0 objects)
+🎯 Frame 275: 2 detections (2 persons, 0 objects)
+🎯 Frame 276: 2 detections (2 persons, 0 objects)
+🎯 Frame 277: 2 detections (2 persons, 0 objects)
+🎯 Frame 278: 2 detections (2 persons, 0 objects)
+🎯 Frame 279: 2 detections (2 persons, 0 objects)
+🎯 Frame 280: 2 detections (2 persons, 0 objects)
+🎯 Frame 281: 2 detections (2 persons, 0 objects)
+🎯 Frame 282: 2 detections (2 persons, 0 objects)
+🎯 Frame 283: 2 detections (2 persons, 0 objects)
+🎯 Frame 284: 2 detections (2 persons, 0 objects)
+🎯 Frame 285: 3 detections (2 persons, 0 objects)
+🎯 Frame 286: 3 detections (2 persons, 0 objects)
+🎯 Frame 287: 2 detections (2 persons, 0 objects)
+🎯 Frame 288: 2 detections (2 persons, 0 objects)
+🎯 Frame 289: 2 detections (2 persons, 0 objects)
+🎯 Frame 290: 3 detections (2 persons, 0 objects)
+🎯 Frame 291: 3 detections (2 persons, 0 objects)
+🎯 Frame 292: 3 detections (2 persons, 0 objects)
+🎯 Frame 293: 3 detections (2 persons, 0 objects)
+🎯 Frame 294: 2 detections (2 persons, 0 objects)
+🎯 Frame 295: 2 detections (2 persons, 0 objects)
+🎯 Frame 296: 3 detections (2 persons, 0 objects)
+🎯 Frame 297: 3 detections (2 persons, 0 objects)
+🎯 Frame 298: 3 detections (2 persons, 0 objects)
+🎯 Frame 299: 3 detections (2 persons, 0 objects)
+Processed 300 frames...
+🎯 Frame 300: 3 detections (2 persons, 0 objects)
+🔄 Processed 300/2189 frames (28.6 fps)
+🎯 Frame 301: 3 detections (2 persons, 0 objects)
+🎯 Frame 302: 4 detections (2 persons, 0 objects)
+🎯 Frame 303: 3 detections (2 persons, 0 objects)
+🎯 Frame 304: 2 detections (1 persons, 0 objects)
+🎯 Frame 305: 2 detections (1 persons, 0 objects)
+🎯 Frame 306: 3 detections (2 persons, 0 objects)
+🎯 Frame 307: 3 detections (2 persons, 0 objects)
+🎯 Frame 308: 3 detections (2 persons, 0 objects)
+🎯 Frame 309: 2 detections (1 persons, 0 objects)
+🎯 Frame 310: 2 detections (1 persons, 0 objects)
+🎯 Frame 311: 1 detections (1 persons, 0 objects)
+🎯 Frame 312: 1 detections (1 persons, 0 objects)
+🎯 Frame 313: 1 detections (1 persons, 0 objects)
+🎯 Frame 314: 1 detections (1 persons, 0 objects)
+🎯 Frame 315: 2 detections (1 persons, 0 objects)
+🎯 Frame 316: 2 detections (1 persons, 0 objects)
+🎯 Frame 317: 2 detections (1 persons, 0 objects)
+🎯 Frame 318: 2 detections (1 persons, 0 objects)
+🎯 Frame 319: 1 detections (1 persons, 0 objects)
+🎯 Frame 320: 2 detections (1 persons, 0 objects)
+🎯 Frame 321: 2 detections (1 persons, 0 objects)
+🎯 Frame 322: 2 detections (1 persons, 0 objects)
+🎯 Frame 323: 1 detections (1 persons, 0 objects)
+🎯 Frame 324: 1 detections (1 persons, 0 objects)
+🎯 Frame 325: 1 detections (1 persons, 0 objects)
+🎯 Frame 326: 2 detections (1 persons, 0 objects)
+🎯 Frame 327: 1 detections (1 persons, 0 objects)
+🎯 Frame 328: 1 detections (1 persons, 0 objects)
+🎯 Frame 329: 1 detections (1 persons, 0 objects)
+🎯 Frame 330: 2 detections (1 persons, 0 objects)
+🎯 Frame 331: 2 detections (1 persons, 0 objects)
+🎯 Frame 332: 1 detections (1 persons, 0 objects)
+🎯 Frame 333: 1 detections (1 persons, 0 objects)
+🎯 Frame 334: 1 detections (1 persons, 0 objects)
+🎯 Frame 335: 1 detections (1 persons, 0 objects)
+🎯 Frame 336: 1 detections (1 persons, 0 objects)
+🎯 Frame 337: 1 detections (1 persons, 0 objects)
+🎯 Frame 338: 1 detections (1 persons, 0 objects)
+🎯 Frame 339: 1 detections (1 persons, 0 objects)
+🎯 Frame 340: 1 detections (1 persons, 0 objects)
+🎯 Frame 341: 1 detections (1 persons, 0 objects)
+🎯 Frame 342: 1 detections (1 persons, 0 objects)
+🎯 Frame 343: 1 detections (1 persons, 0 objects)
+🎯 Frame 344: 1 detections (1 persons, 0 objects)
+🎯 Frame 345: 1 detections (1 persons, 0 objects)
+🎯 Frame 346: 1 detections (1 persons, 0 objects)
+🎯 Frame 347: 1 detections (1 persons, 0 objects)
+🎯 Frame 348: 1 detections (1 persons, 0 objects)
+🎯 Frame 349: 1 detections (1 persons, 0 objects)
+🎯 Frame 350: 1 detections (1 persons, 0 objects)
+🎯 Frame 351: 1 detections (1 persons, 0 objects)
+🎯 Frame 352: 1 detections (1 persons, 0 objects)
+🎯 Frame 353: 1 detections (1 persons, 0 objects)
+🎯 Frame 354: 1 detections (1 persons, 0 objects)
+🎯 Frame 355: 1 detections (1 persons, 0 objects)
+🎯 Frame 356: 1 detections (1 persons, 0 objects)
+🎯 Frame 357: 2 detections (1 persons, 0 objects)
+🎯 Frame 358: 1 detections (1 persons, 0 objects)
+🎯 Frame 359: 1 detections (1 persons, 0 objects)
+🎯 Frame 360: 1 detections (1 persons, 0 objects)
+🎯 Frame 361: 1 detections (1 persons, 0 objects)
+🎯 Frame 362: 1 detections (1 persons, 0 objects)
+🎯 Frame 363: 1 detections (1 persons, 0 objects)
+🎯 Frame 364: 1 detections (1 persons, 0 objects)
+🎯 Frame 365: 1 detections (1 persons, 0 objects)
+🎯 Frame 366: 1 detections (1 persons, 0 objects)
+🎯 Frame 367: 1 detections (1 persons, 0 objects)
+🎯 Frame 368: 1 detections (1 persons, 0 objects)
+🎯 Frame 369: 1 detections (1 persons, 0 objects)
+🎯 Frame 370: 1 detections (1 persons, 0 objects)
+🎯 Frame 371: 1 detections (1 persons, 0 objects)
+🎯 Frame 372: 1 detections (1 persons, 0 objects)
+🎯 Frame 373: 1 detections (1 persons, 0 objects)
+🎯 Frame 374: 1 detections (1 persons, 0 objects)
+🎯 Frame 375: 2 detections (1 persons, 0 objects)
+🎯 Frame 376: 2 detections (1 persons, 0 objects)
+🎯 Frame 377: 1 detections (1 persons, 0 objects)
+🎯 Frame 378: 1 detections (1 persons, 0 objects)
+🎯 Frame 379: 1 detections (1 persons, 0 objects)
+🎯 Frame 380: 1 detections (1 persons, 0 objects)
+🎯 Frame 381: 1 detections (1 persons, 0 objects)
+🎯 Frame 382: 1 detections (1 persons, 0 objects)
+🎯 Frame 383: 1 detections (1 persons, 0 objects)
+🎯 Frame 384: 1 detections (1 persons, 0 objects)
+🎯 Frame 385: 1 detections (1 persons, 0 objects)
+🎯 Frame 386: 1 detections (1 persons, 0 objects)
+🎯 Frame 387: 1 detections (1 persons, 0 objects)
+🎯 Frame 388: 1 detections (1 persons, 0 objects)
+🎯 Frame 389: 1 detections (1 persons, 0 objects)
+🎯 Frame 390: 1 detections (1 persons, 0 objects)
+🎯 Frame 391: 1 detections (1 persons, 0 objects)
+🎯 Frame 392: 1 detections (1 persons, 0 objects)
+🎯 Frame 393: 1 detections (1 persons, 0 objects)
+🎯 Frame 394: 1 detections (1 persons, 0 objects)
+🎯 Frame 395: 1 detections (1 persons, 0 objects)
+🎯 Frame 396: 1 detections (1 persons, 0 objects)
+🎯 Frame 397: 1 detections (1 persons, 0 objects)
+🎯 Frame 398: 1 detections (1 persons, 0 objects)
+Processed 400 frames...
+🔄 Processed 400/2189 frames (28.7 fps)
+🎯 Frame 461: 1 detections (1 persons, 0 objects)
+🎯 Frame 463: 1 detections (1 persons, 0 objects)
+🎯 Frame 464: 1 detections (1 persons, 0 objects)
+🎯 Frame 467: 1 detections (1 persons, 0 objects)
+🎯 Frame 468: 1 detections (1 persons, 0 objects)
+🎯 Frame 469: 1 detections (1 persons, 0 objects)
+🎯 Frame 470: 1 detections (1 persons, 0 objects)
+🎯 Frame 471: 1 detections (1 persons, 0 objects)
+🎯 Frame 472: 1 detections (1 persons, 0 objects)
+🎯 Frame 473: 1 detections (1 persons, 0 objects)
+🎯 Frame 474: 1 detections (1 persons, 0 objects)
+🎯 Frame 475: 1 detections (1 persons, 0 objects)
+🎯 Frame 476: 1 detections (1 persons, 0 objects)
+🎯 Frame 477: 1 detections (1 persons, 0 objects)
+🎯 Frame 478: 1 detections (1 persons, 0 objects)
+🎯 Frame 479: 1 detections (1 persons, 0 objects)
+🎯 Frame 480: 1 detections (1 persons, 0 objects)
+🎯 Frame 481: 1 detections (1 persons, 0 objects)
+🎯 Frame 482: 1 detections (1 persons, 0 objects)
+🎯 Frame 483: 1 detections (1 persons, 0 objects)
+🎯 Frame 484: 1 detections (1 persons, 0 objects)
+🎯 Frame 485: 1 detections (1 persons, 0 objects)
+🎯 Frame 486: 1 detections (1 persons, 0 objects)
+🎯 Frame 487: 1 detections (1 persons, 0 objects)
+🎯 Frame 488: 1 detections (1 persons, 0 objects)
+🎯 Frame 489: 1 detections (1 persons, 0 objects)
+🎯 Frame 490: 1 detections (1 persons, 0 objects)
+🎯 Frame 491: 1 detections (1 persons, 0 objects)
+🎯 Frame 492: 1 detections (1 persons, 0 objects)
+🎯 Frame 493: 1 detections (1 persons, 0 objects)
+🎯 Frame 494: 1 detections (1 persons, 0 objects)
+🎯 Frame 495: 1 detections (1 persons, 0 objects)
+🎯 Frame 496: 1 detections (1 persons, 0 objects)
+🎯 Frame 497: 1 detections (1 persons, 0 objects)
+🎯 Frame 498: 1 detections (1 persons, 0 objects)
+🎯 Frame 499: 1 detections (1 persons, 0 objects)
+Processed 500 frames...
+🎯 Frame 500: 1 detections (1 persons, 0 objects)
+🔄 Processed 500/2189 frames (28.7 fps)
+🎯 Frame 501: 1 detections (1 persons, 0 objects)
+🎯 Frame 502: 1 detections (1 persons, 0 objects)
+🎯 Frame 503: 1 detections (1 persons, 0 objects)
+🎯 Frame 504: 1 detections (1 persons, 0 objects)
+🎯 Frame 505: 1 detections (1 persons, 0 objects)
+🎯 Frame 506: 1 detections (1 persons, 0 objects)
+🎯 Frame 507: 1 detections (1 persons, 0 objects)
+🎯 Frame 508: 1 detections (1 persons, 0 objects)
+🎯 Frame 509: 1 detections (1 persons, 0 objects)
+🎯 Frame 510: 1 detections (1 persons, 0 objects)
+🎯 Frame 511: 1 detections (1 persons, 0 objects)
+🎯 Frame 512: 1 detections (1 persons, 0 objects)
+🎯 Frame 513: 1 detections (1 persons, 0 objects)
+🎯 Frame 514: 1 detections (1 persons, 0 objects)
+🎯 Frame 515: 1 detections (1 persons, 0 objects)
+🎯 Frame 516: 1 detections (1 persons, 0 objects)
+🎯 Frame 517: 1 detections (1 persons, 0 objects)
+🎯 Frame 518: 1 detections (1 persons, 0 objects)
+🎯 Frame 519: 1 detections (1 persons, 0 objects)
+🎯 Frame 520: 1 detections (1 persons, 0 objects)
+🎯 Frame 521: 1 detections (1 persons, 0 objects)
+🎯 Frame 522: 1 detections (1 persons, 0 objects)
+🎯 Frame 523: 1 detections (1 persons, 0 objects)
+🎯 Frame 524: 1 detections (1 persons, 0 objects)
+🎯 Frame 525: 1 detections (1 persons, 0 objects)
+🎯 Frame 526: 3 detections (1 persons, 1 objects)
+🎯 Frame 527: 1 detections (1 persons, 0 objects)
+🎯 Frame 528: 1 detections (1 persons, 0 objects)
+🎯 Frame 529: 1 detections (1 persons, 0 objects)
+🎯 Frame 530: 1 detections (1 persons, 0 objects)
+🎯 Frame 531: 1 detections (1 persons, 0 objects)
+🎯 Frame 532: 1 detections (1 persons, 0 objects)
+🎯 Frame 533: 1 detections (1 persons, 0 objects)
+🎯 Frame 534: 1 detections (1 persons, 0 objects)
+🎯 Frame 535: 1 detections (1 persons, 0 objects)
+🎯 Frame 536: 1 detections (1 persons, 0 objects)
+🎯 Frame 537: 1 detections (1 persons, 0 objects)
+🎯 Frame 538: 1 detections (1 persons, 0 objects)
+🎯 Frame 539: 1 detections (1 persons, 0 objects)
+🎯 Frame 540: 1 detections (1 persons, 0 objects)
+🎯 Frame 541: 1 detections (1 persons, 0 objects)
+🎯 Frame 542: 1 detections (1 persons, 0 objects)
+🎯 Frame 543: 1 detections (1 persons, 0 objects)
+🎯 Frame 544: 1 detections (1 persons, 0 objects)
+🎯 Frame 545: 1 detections (1 persons, 0 objects)
+🎯 Frame 546: 1 detections (1 persons, 0 objects)
+🎯 Frame 547: 1 detections (1 persons, 0 objects)
+🎯 Frame 548: 1 detections (1 persons, 0 objects)
+🎯 Frame 549: 1 detections (1 persons, 0 objects)
+🎯 Frame 550: 1 detections (1 persons, 0 objects)
+🎯 Frame 551: 1 detections (1 persons, 0 objects)
+🎯 Frame 552: 1 detections (1 persons, 0 objects)
+🎯 Frame 553: 1 detections (1 persons, 0 objects)
+🎯 Frame 554: 1 detections (1 persons, 0 objects)
+🎯 Frame 555: 1 detections (1 persons, 0 objects)
+🎯 Frame 556: 1 detections (1 persons, 0 objects)
+🎯 Frame 557: 1 detections (1 persons, 0 objects)
+🎯 Frame 558: 1 detections (1 persons, 0 objects)
+🎯 Frame 559: 1 detections (1 persons, 0 objects)
+🎯 Frame 560: 1 detections (1 persons, 0 objects)
+🎯 Frame 561: 1 detections (1 persons, 0 objects)
+🎯 Frame 562: 1 detections (1 persons, 0 objects)
+🎯 Frame 563: 1 detections (1 persons, 0 objects)
+🎯 Frame 564: 1 detections (1 persons, 0 objects)
+🎯 Frame 565: 1 detections (1 persons, 0 objects)
+🎯 Frame 566: 1 detections (1 persons, 0 objects)
+🎯 Frame 567: 1 detections (1 persons, 0 objects)
+🎯 Frame 568: 1 detections (1 persons, 0 objects)
+🎯 Frame 569: 1 detections (1 persons, 0 objects)
+🎯 Frame 570: 1 detections (1 persons, 0 objects)
+🎯 Frame 571: 1 detections (1 persons, 0 objects)
+🎯 Frame 572: 1 detections (1 persons, 0 objects)
+🎯 Frame 573: 1 detections (1 persons, 0 objects)
+🎯 Frame 574: 1 detections (1 persons, 0 objects)
+🎯 Frame 575: 1 detections (1 persons, 0 objects)
+🎯 Frame 576: 1 detections (1 persons, 0 objects)
+🎯 Frame 577: 2 detections (2 persons, 0 objects)
+🎯 Frame 578: 2 detections (2 persons, 0 objects)
+🎯 Frame 579: 2 detections (2 persons, 0 objects)
+🎯 Frame 580: 2 detections (2 persons, 0 objects)
+🎯 Frame 581: 2 detections (2 persons, 0 objects)
+🎯 Frame 582: 2 detections (2 persons, 0 objects)
+🎯 Frame 583: 2 detections (2 persons, 0 objects)
+🎯 Frame 584: 2 detections (2 persons, 0 objects)
+🎯 Frame 585: 2 detections (2 persons, 0 objects)
+🎯 Frame 586: 2 detections (2 persons, 0 objects)
+🎯 Frame 587: 2 detections (2 persons, 0 objects)
+🎯 Frame 588: 2 detections (2 persons, 0 objects)
+🎯 Frame 589: 2 detections (2 persons, 0 objects)
+🎯 Frame 590: 2 detections (2 persons, 0 objects)
+🎯 Frame 591: 2 detections (2 persons, 0 objects)
+🎯 Frame 592: 3 detections (2 persons, 0 objects)
+🎯 Frame 593: 3 detections (2 persons, 0 objects)
+🎯 Frame 594: 3 detections (2 persons, 0 objects)
+🎯 Frame 595: 3 detections (2 persons, 0 objects)
+🎯 Frame 596: 3 detections (2 persons, 0 objects)
+🎯 Frame 597: 3 detections (2 persons, 0 objects)
+🎯 Frame 598: 3 detections (2 persons, 0 objects)
+🎯 Frame 599: 3 detections (2 persons, 0 objects)
+Processed 600 frames...
+🎯 Frame 600: 3 detections (2 persons, 0 objects)
+🔄 Processed 600/2189 frames (28.7 fps)
+🎯 Frame 601: 3 detections (2 persons, 0 objects)
+🎯 Frame 602: 3 detections (2 persons, 0 objects)
+🎯 Frame 603: 3 detections (2 persons, 0 objects)
+🎯 Frame 604: 2 detections (2 persons, 0 objects)
+🎯 Frame 605: 2 detections (2 persons, 0 objects)
+🎯 Frame 606: 2 detections (2 persons, 0 objects)
+🎯 Frame 607: 2 detections (2 persons, 0 objects)
+🎯 Frame 608: 2 detections (2 persons, 0 objects)
+🎯 Frame 609: 2 detections (2 persons, 0 objects)
+🎯 Frame 610: 2 detections (2 persons, 0 objects)
+🎯 Frame 611: 2 detections (2 persons, 0 objects)
+🎯 Frame 612: 2 detections (2 persons, 0 objects)
+🎯 Frame 613: 2 detections (2 persons, 0 objects)
+🎯 Frame 614: 2 detections (2 persons, 0 objects)
+🎯 Frame 615: 2 detections (2 persons, 0 objects)
+🎯 Frame 616: 2 detections (2 persons, 0 objects)
+🎯 Frame 617: 1 detections (1 persons, 0 objects)
+🎯 Frame 618: 2 detections (1 persons, 0 objects)
+🎯 Frame 619: 1 detections (1 persons, 0 objects)
+🎯 Frame 620: 1 detections (1 persons, 0 objects)
+🎯 Frame 621: 1 detections (1 persons, 0 objects)
+🎯 Frame 622: 2 detections (1 persons, 0 objects)
+🎯 Frame 623: 2 detections (1 persons, 0 objects)
+🎯 Frame 624: 1 detections (1 persons, 0 objects)
+🎯 Frame 625: 1 detections (1 persons, 0 objects)
+🎯 Frame 626: 2 detections (1 persons, 0 objects)
+🎯 Frame 627: 2 detections (1 persons, 0 objects)
+🎯 Frame 628: 1 detections (1 persons, 0 objects)
+🎯 Frame 629: 1 detections (1 persons, 0 objects)
+🎯 Frame 630: 1 detections (1 persons, 0 objects)
+🎯 Frame 631: 2 detections (1 persons, 0 objects)
+🎯 Frame 632: 2 detections (1 persons, 0 objects)
+🎯 Frame 633: 2 detections (1 persons, 0 objects)
+🎯 Frame 634: 2 detections (1 persons, 0 objects)
+🎯 Frame 635: 2 detections (1 persons, 0 objects)
+🎯 Frame 636: 1 detections (1 persons, 0 objects)
+🎯 Frame 637: 1 detections (1 persons, 0 objects)
+🎯 Frame 638: 1 detections (1 persons, 0 objects)
+🎯 Frame 639: 1 detections (1 persons, 0 objects)
+🎯 Frame 640: 1 detections (1 persons, 0 objects)
+🎯 Frame 641: 1 detections (1 persons, 0 objects)
+🎯 Frame 642: 2 detections (1 persons, 0 objects)
+🎯 Frame 643: 1 detections (1 persons, 0 objects)
+🎯 Frame 644: 1 detections (1 persons, 0 objects)
+🎯 Frame 645: 1 detections (1 persons, 0 objects)
+🎯 Frame 646: 2 detections (1 persons, 0 objects)
+🎯 Frame 647: 3 detections (1 persons, 1 objects)
+🎯 Frame 648: 1 detections (1 persons, 0 objects)
+🎯 Frame 649: 1 detections (1 persons, 0 objects)
+🎯 Frame 650: 1 detections (1 persons, 0 objects)
+🎯 Frame 651: 2 detections (1 persons, 0 objects)
+🎯 Frame 652: 1 detections (1 persons, 0 objects)
+🎯 Frame 653: 1 detections (1 persons, 0 objects)
+🎯 Frame 654: 1 detections (1 persons, 0 objects)
+🎯 Frame 655: 1 detections (1 persons, 0 objects)
+🎯 Frame 656: 1 detections (1 persons, 0 objects)
+🎯 Frame 657: 1 detections (1 persons, 0 objects)
+🎯 Frame 658: 1 detections (1 persons, 0 objects)
+🎯 Frame 659: 1 detections (1 persons, 0 objects)
+🎯 Frame 660: 1 detections (1 persons, 0 objects)
+🎯 Frame 661: 1 detections (1 persons, 0 objects)
+🎯 Frame 662: 1 detections (1 persons, 0 objects)
+🎯 Frame 663: 1 detections (1 persons, 0 objects)
+🎯 Frame 664: 1 detections (1 persons, 0 objects)
+🎯 Frame 665: 1 detections (1 persons, 0 objects)
+🎯 Frame 666: 1 detections (1 persons, 0 objects)
+🎯 Frame 667: 1 detections (1 persons, 0 objects)
+🎯 Frame 668: 1 detections (1 persons, 0 objects)
+🎯 Frame 669: 1 detections (1 persons, 0 objects)
+🎯 Frame 670: 1 detections (1 persons, 0 objects)
+🎯 Frame 671: 1 detections (1 persons, 0 objects)
+🎯 Frame 672: 1 detections (1 persons, 0 objects)
+🎯 Frame 673: 1 detections (1 persons, 0 objects)
+🎯 Frame 674: 1 detections (1 persons, 0 objects)
+🎯 Frame 675: 1 detections (1 persons, 0 objects)
+🎯 Frame 676: 1 detections (1 persons, 0 objects)
+🎯 Frame 677: 1 detections (1 persons, 0 objects)
+🎯 Frame 678: 1 detections (1 persons, 0 objects)
+🎯 Frame 679: 1 detections (1 persons, 0 objects)
+🎯 Frame 680: 1 detections (1 persons, 0 objects)
+🎯 Frame 681: 1 detections (1 persons, 0 objects)
+🎯 Frame 682: 1 detections (1 persons, 0 objects)
+🎯 Frame 683: 1 detections (1 persons, 0 objects)
+🎯 Frame 684: 1 detections (1 persons, 0 objects)
+🎯 Frame 685: 1 detections (1 persons, 0 objects)
+🎯 Frame 686: 1 detections (1 persons, 0 objects)
+🎯 Frame 687: 1 detections (1 persons, 0 objects)
+🎯 Frame 688: 1 detections (1 persons, 0 objects)
+🎯 Frame 689: 1 detections (1 persons, 0 objects)
+🎯 Frame 690: 1 detections (1 persons, 0 objects)
+🎯 Frame 691: 1 detections (1 persons, 0 objects)
+🎯 Frame 692: 1 detections (1 persons, 0 objects)
+🎯 Frame 693: 1 detections (1 persons, 0 objects)
+🎯 Frame 694: 1 detections (1 persons, 0 objects)
+🎯 Frame 695: 1 detections (1 persons, 0 objects)
+🎯 Frame 696: 1 detections (1 persons, 0 objects)
+🎯 Frame 697: 1 detections (1 persons, 0 objects)
+🎯 Frame 698: 1 detections (1 persons, 0 objects)
+🎯 Frame 699: 1 detections (1 persons, 0 objects)
+Processed 700 frames...
+🎯 Frame 700: 1 detections (1 persons, 0 objects)
+🔄 Processed 700/2189 frames (28.7 fps)
+🎯 Frame 701: 1 detections (1 persons, 0 objects)
+🎯 Frame 702: 1 detections (1 persons, 0 objects)
+🎯 Frame 703: 1 detections (1 persons, 0 objects)
+🎯 Frame 704: 1 detections (1 persons, 0 objects)
+🎯 Frame 705: 1 detections (1 persons, 0 objects)
+🎯 Frame 706: 1 detections (1 persons, 0 objects)
+🎯 Frame 707: 1 detections (1 persons, 0 objects)
+🎯 Frame 708: 1 detections (1 persons, 0 objects)
+🎯 Frame 709: 1 detections (1 persons, 0 objects)
+🎯 Frame 710: 1 detections (1 persons, 0 objects)
+🎯 Frame 711: 1 detections (1 persons, 0 objects)
+🎯 Frame 712: 1 detections (1 persons, 0 objects)
+🎯 Frame 718: 1 detections (1 persons, 0 objects)
+🎯 Frame 719: 1 detections (1 persons, 0 objects)
+🎯 Frame 720: 1 detections (1 persons, 0 objects)
+🎯 Frame 728: 1 detections (1 persons, 0 objects)
+🎯 Frame 729: 1 detections (1 persons, 0 objects)
+🎯 Frame 731: 1 detections (1 persons, 0 objects)
+🎯 Frame 732: 1 detections (1 persons, 0 objects)
+🎯 Frame 733: 1 detections (1 persons, 0 objects)
+🎯 Frame 734: 1 detections (1 persons, 0 objects)
+🎯 Frame 735: 1 detections (1 persons, 0 objects)
+🎯 Frame 736: 1 detections (1 persons, 0 objects)
+🎯 Frame 737: 1 detections (1 persons, 0 objects)
+🎯 Frame 738: 2 detections (1 persons, 1 objects)
+🎯 Frame 739: 1 detections (1 persons, 0 objects)
+🎯 Frame 740: 1 detections (1 persons, 0 objects)
+🎯 Frame 741: 1 detections (1 persons, 0 objects)
+🎯 Frame 742: 1 detections (1 persons, 0 objects)
+🎯 Frame 743: 1 detections (1 persons, 0 objects)
+🎯 Frame 744: 1 detections (1 persons, 0 objects)
+🎯 Frame 745: 1 detections (1 persons, 0 objects)
+🎯 Frame 746: 1 detections (1 persons, 0 objects)
+🎯 Frame 747: 1 detections (1 persons, 0 objects)
+🎯 Frame 748: 1 detections (1 persons, 0 objects)
+🎯 Frame 749: 1 detections (1 persons, 0 objects)
+🎯 Frame 750: 1 detections (1 persons, 0 objects)
+🎯 Frame 751: 1 detections (1 persons, 0 objects)
+🎯 Frame 752: 1 detections (1 persons, 0 objects)
+🎯 Frame 753: 1 detections (1 persons, 0 objects)
+🎯 Frame 754: 1 detections (1 persons, 0 objects)
+🎯 Frame 755: 1 detections (1 persons, 0 objects)
+🎯 Frame 756: 1 detections (1 persons, 0 objects)
+🎯 Frame 757: 2 detections (1 persons, 0 objects)
+🎯 Frame 758: 1 detections (1 persons, 0 objects)
+🎯 Frame 759: 1 detections (1 persons, 0 objects)
+🎯 Frame 760: 1 detections (1 persons, 0 objects)
+🎯 Frame 761: 1 detections (1 persons, 0 objects)
+🎯 Frame 762: 1 detections (1 persons, 0 objects)
+🎯 Frame 763: 1 detections (1 persons, 0 objects)
+🎯 Frame 764: 1 detections (1 persons, 0 objects)
+🎯 Frame 765: 1 detections (1 persons, 0 objects)
+🎯 Frame 766: 1 detections (1 persons, 0 objects)
+🎯 Frame 767: 2 detections (1 persons, 0 objects)
+🎯 Frame 768: 2 detections (1 persons, 0 objects)
+🎯 Frame 769: 2 detections (1 persons, 0 objects)
+🎯 Frame 770: 2 detections (1 persons, 0 objects)
+🎯 Frame 771: 2 detections (1 persons, 0 objects)
+🎯 Frame 772: 2 detections (1 persons, 0 objects)
+🎯 Frame 773: 3 detections (1 persons, 0 objects)
+🎯 Frame 774: 1 detections (1 persons, 0 objects)
+🎯 Frame 775: 1 detections (1 persons, 0 objects)
+🎯 Frame 776: 2 detections (1 persons, 0 objects)
+🎯 Frame 777: 2 detections (1 persons, 0 objects)
+🎯 Frame 778: 2 detections (1 persons, 0 objects)
+🎯 Frame 779: 2 detections (1 persons, 0 objects)
+🎯 Frame 780: 2 detections (1 persons, 0 objects)
+🎯 Frame 781: 2 detections (1 persons, 0 objects)
+🎯 Frame 782: 2 detections (1 persons, 0 objects)
+🎯 Frame 783: 2 detections (1 persons, 0 objects)
+🎯 Frame 784: 2 detections (1 persons, 0 objects)
+🎯 Frame 785: 2 detections (1 persons, 0 objects)
+🎯 Frame 786: 2 detections (1 persons, 0 objects)
+🎯 Frame 787: 2 detections (1 persons, 0 objects)
+🎯 Frame 788: 2 detections (1 persons, 0 objects)
+🎯 Frame 789: 2 detections (1 persons, 0 objects)
+🎯 Frame 790: 2 detections (1 persons, 0 objects)
+🎯 Frame 791: 1 detections (1 persons, 0 objects)
+🎯 Frame 792: 1 detections (1 persons, 0 objects)
+🎯 Frame 793: 1 detections (1 persons, 0 objects)
+🎯 Frame 794: 1 detections (1 persons, 0 objects)
+🎯 Frame 795: 2 detections (1 persons, 0 objects)
+🎯 Frame 796: 1 detections (1 persons, 0 objects)
+🎯 Frame 797: 1 detections (1 persons, 0 objects)
+🎯 Frame 798: 1 detections (1 persons, 0 objects)
+🎯 Frame 799: 1 detections (1 persons, 0 objects)
+Processed 800 frames...
+🎯 Frame 800: 1 detections (1 persons, 0 objects)
+🔄 Processed 800/2189 frames (28.7 fps)
+🎯 Frame 801: 1 detections (1 persons, 0 objects)
+🎯 Frame 802: 1 detections (1 persons, 0 objects)
+🎯 Frame 803: 1 detections (1 persons, 0 objects)
+🎯 Frame 804: 1 detections (1 persons, 0 objects)
+🎯 Frame 805: 1 detections (1 persons, 0 objects)
+🎯 Frame 806: 1 detections (1 persons, 0 objects)
+🎯 Frame 807: 1 detections (1 persons, 0 objects)
+🎯 Frame 808: 1 detections (1 persons, 0 objects)
+🎯 Frame 809: 1 detections (1 persons, 0 objects)
+🎯 Frame 810: 1 detections (1 persons, 0 objects)
+🎯 Frame 811: 1 detections (1 persons, 0 objects)
+🎯 Frame 812: 1 detections (1 persons, 0 objects)
+🎯 Frame 813: 1 detections (1 persons, 0 objects)
+🎯 Frame 814: 1 detections (1 persons, 0 objects)
+🎯 Frame 815: 1 detections (1 persons, 0 objects)
+🎯 Frame 816: 1 detections (1 persons, 0 objects)
+🎯 Frame 817: 1 detections (1 persons, 0 objects)
+🎯 Frame 818: 1 detections (1 persons, 0 objects)
+🎯 Frame 819: 1 detections (1 persons, 0 objects)
+🎯 Frame 820: 1 detections (1 persons, 0 objects)
+🎯 Frame 821: 1 detections (1 persons, 0 objects)
+🎯 Frame 822: 1 detections (1 persons, 0 objects)
+🎯 Frame 823: 1 detections (1 persons, 0 objects)
+🎯 Frame 824: 1 detections (1 persons, 0 objects)
+🎯 Frame 825: 1 detections (1 persons, 0 objects)
+🎯 Frame 826: 1 detections (1 persons, 0 objects)
+🎯 Frame 827: 1 detections (1 persons, 0 objects)
+🎯 Frame 828: 1 detections (1 persons, 0 objects)
+🎯 Frame 829: 1 detections (1 persons, 0 objects)
+🎯 Frame 830: 1 detections (1 persons, 0 objects)
+🎯 Frame 831: 1 detections (1 persons, 0 objects)
+🎯 Frame 832: 1 detections (1 persons, 0 objects)
+🎯 Frame 833: 2 detections (1 persons, 0 objects)
+🎯 Frame 834: 2 detections (1 persons, 0 objects)
+🎯 Frame 835: 2 detections (1 persons, 0 objects)
+🎯 Frame 836: 2 detections (1 persons, 0 objects)
+🎯 Frame 837: 2 detections (1 persons, 0 objects)
+🎯 Frame 838: 2 detections (1 persons, 0 objects)
+🎯 Frame 839: 2 detections (1 persons, 0 objects)
+🎯 Frame 840: 2 detections (1 persons, 0 objects)
+🎯 Frame 841: 2 detections (1 persons, 0 objects)
+🎯 Frame 842: 2 detections (1 persons, 0 objects)
+🎯 Frame 843: 2 detections (1 persons, 0 objects)
+🎯 Frame 844: 2 detections (1 persons, 0 objects)
+🎯 Frame 845: 2 detections (1 persons, 0 objects)
+🎯 Frame 846: 2 detections (1 persons, 0 objects)
+🎯 Frame 847: 1 detections (1 persons, 0 objects)
+🎯 Frame 848: 1 detections (1 persons, 0 objects)
+🎯 Frame 849: 1 detections (1 persons, 0 objects)
+🎯 Frame 850: 1 detections (1 persons, 0 objects)
+🎯 Frame 851: 1 detections (1 persons, 0 objects)
+🎯 Frame 852: 1 detections (1 persons, 0 objects)
+🎯 Frame 853: 2 detections (1 persons, 0 objects)
+🎯 Frame 854: 2 detections (1 persons, 0 objects)
+🎯 Frame 855: 2 detections (1 persons, 0 objects)
+🎯 Frame 856: 2 detections (1 persons, 0 objects)
+🎯 Frame 857: 2 detections (1 persons, 0 objects)
+🎯 Frame 858: 2 detections (1 persons, 0 objects)
+🎯 Frame 859: 2 detections (1 persons, 0 objects)
+🎯 Frame 860: 2 detections (1 persons, 0 objects)
+🎯 Frame 861: 2 detections (1 persons, 0 objects)
+🎯 Frame 862: 2 detections (1 persons, 0 objects)
+🎯 Frame 863: 2 detections (1 persons, 0 objects)
+🎯 Frame 864: 1 detections (1 persons, 0 objects)
+🎯 Frame 865: 1 detections (1 persons, 0 objects)
+🎯 Frame 866: 1 detections (1 persons, 0 objects)
+🎯 Frame 867: 1 detections (1 persons, 0 objects)
+🎯 Frame 868: 2 detections (1 persons, 0 objects)
+🎯 Frame 869: 2 detections (1 persons, 0 objects)
+🎯 Frame 870: 1 detections (1 persons, 0 objects)
+🎯 Frame 871: 1 detections (1 persons, 0 objects)
+🎯 Frame 872: 1 detections (1 persons, 0 objects)
+🎯 Frame 873: 1 detections (1 persons, 0 objects)
+🎯 Frame 874: 1 detections (1 persons, 0 objects)
+🎯 Frame 875: 1 detections (1 persons, 0 objects)
+🎯 Frame 876: 1 detections (1 persons, 0 objects)
+🎯 Frame 877: 1 detections (1 persons, 0 objects)
+🎯 Frame 878: 1 detections (1 persons, 0 objects)
+🎯 Frame 879: 1 detections (1 persons, 0 objects)
+🎯 Frame 880: 1 detections (1 persons, 0 objects)
+🎯 Frame 881: 1 detections (1 persons, 0 objects)
+🎯 Frame 882: 1 detections (1 persons, 0 objects)
+🎯 Frame 883: 1 detections (1 persons, 0 objects)
+🎯 Frame 884: 1 detections (1 persons, 0 objects)
+🎯 Frame 885: 1 detections (1 persons, 0 objects)
+🎯 Frame 886: 1 detections (1 persons, 0 objects)
+🎯 Frame 887: 1 detections (1 persons, 0 objects)
+🎯 Frame 888: 2 detections (1 persons, 0 objects)
+🎯 Frame 889: 1 detections (0 persons, 0 objects)
+🎯 Frame 890: 1 detections (0 persons, 0 objects)
+🎯 Frame 891: 1 detections (0 persons, 0 objects)
+🎯 Frame 892: 1 detections (0 persons, 0 objects)
+🎯 Frame 893: 1 detections (0 persons, 0 objects)
+🎯 Frame 894: 1 detections (0 persons, 0 objects)
+🎯 Frame 898: 1 detections (0 persons, 0 objects)
+🎯 Frame 899: 1 detections (0 persons, 0 objects)
+Processed 900 frames...
+🎯 Frame 900: 2 detections (0 persons, 0 objects)
+🔄 Processed 900/2189 frames (28.7 fps)
+🎯 Frame 901: 1 detections (0 persons, 0 objects)
+🎯 Frame 902: 1 detections (0 persons, 0 objects)
+🎯 Frame 903: 1 detections (0 persons, 0 objects)
+🎯 Frame 904: 1 detections (0 persons, 0 objects)
+🎯 Frame 905: 1 detections (0 persons, 0 objects)
+🎯 Frame 906: 1 detections (0 persons, 0 objects)
+🎯 Frame 907: 1 detections (0 persons, 0 objects)
+🎯 Frame 908: 1 detections (0 persons, 0 objects)
+🎯 Frame 912: 1 detections (0 persons, 0 objects)
+🎯 Frame 913: 1 detections (0 persons, 0 objects)
+🎯 Frame 914: 1 detections (0 persons, 0 objects)
+🎯 Frame 915: 1 detections (0 persons, 0 objects)
+🎯 Frame 916: 1 detections (0 persons, 0 objects)
+🎯 Frame 917: 1 detections (0 persons, 0 objects)
+🎯 Frame 918: 1 detections (0 persons, 0 objects)
+🎯 Frame 919: 1 detections (0 persons, 0 objects)
+🎯 Frame 920: 1 detections (0 persons, 0 objects)
+🎯 Frame 921: 1 detections (0 persons, 0 objects)
+🎯 Frame 922: 1 detections (0 persons, 0 objects)
+🎯 Frame 923: 1 detections (0 persons, 0 objects)
+🎯 Frame 924: 1 detections (0 persons, 0 objects)
+🎯 Frame 925: 1 detections (0 persons, 0 objects)
+🎯 Frame 926: 1 detections (0 persons, 0 objects)
+🎯 Frame 927: 1 detections (0 persons, 0 objects)
+🎯 Frame 928: 1 detections (0 persons, 0 objects)
+🎯 Frame 929: 1 detections (0 persons, 0 objects)
+🎯 Frame 934: 1 detections (0 persons, 0 objects)
+🎯 Frame 935: 1 detections (0 persons, 0 objects)
+🎯 Frame 936: 1 detections (0 persons, 0 objects)
+🎯 Frame 938: 1 detections (0 persons, 0 objects)
+🎯 Frame 942: 1 detections (0 persons, 0 objects)
+🎯 Frame 943: 1 detections (0 persons, 0 objects)
+🎯 Frame 944: 1 detections (0 persons, 0 objects)
+🎯 Frame 945: 1 detections (0 persons, 0 objects)
+🎯 Frame 992: 1 detections (0 persons, 0 objects)
+🎯 Frame 996: 1 detections (1 persons, 0 objects)
+🎯 Frame 997: 1 detections (1 persons, 0 objects)
+🎯 Frame 998: 1 detections (1 persons, 0 objects)
+🎯 Frame 999: 1 detections (1 persons, 0 objects)
+Processed 1000 frames...
+🎯 Frame 1000: 1 detections (1 persons, 0 objects)
+🔄 Processed 1000/2189 frames (28.7 fps)
+🎯 Frame 1001: 1 detections (1 persons, 0 objects)
+🎯 Frame 1002: 1 detections (1 persons, 0 objects)
+🎯 Frame 1003: 1 detections (1 persons, 0 objects)
+🎯 Frame 1004: 1 detections (1 persons, 0 objects)
+🎯 Frame 1005: 1 detections (1 persons, 0 objects)
+🎯 Frame 1006: 1 detections (1 persons, 0 objects)
+🎯 Frame 1007: 1 detections (1 persons, 0 objects)
+🎯 Frame 1008: 1 detections (1 persons, 0 objects)
+🎯 Frame 1009: 2 detections (1 persons, 1 objects)
+🎯 Frame 1010: 2 detections (1 persons, 1 objects)
+🎯 Frame 1011: 1 detections (1 persons, 0 objects)
+🎯 Frame 1012: 2 detections (1 persons, 1 objects)
+🎯 Frame 1013: 2 detections (1 persons, 1 objects)
+🎯 Frame 1014: 2 detections (1 persons, 1 objects)
+🎯 Frame 1015: 1 detections (1 persons, 0 objects)
+🎯 Frame 1016: 2 detections (2 persons, 0 objects)
+🎯 Frame 1017: 2 detections (2 persons, 0 objects)
+🎯 Frame 1018: 2 detections (2 persons, 0 objects)
+🎯 Frame 1019: 2 detections (2 persons, 0 objects)
+🎯 Frame 1020: 3 detections (2 persons, 0 objects)
+🎯 Frame 1021: 3 detections (2 persons, 0 objects)
+🎯 Frame 1022: 3 detections (2 persons, 0 objects)
+🎯 Frame 1023: 4 detections (2 persons, 1 objects)
+🎯 Frame 1024: 4 detections (2 persons, 1 objects)
+🎯 Frame 1025: 4 detections (2 persons, 1 objects)
+🎯 Frame 1026: 5 detections (2 persons, 2 objects)
+🎯 Frame 1027: 3 detections (2 persons, 0 objects)
+🎯 Frame 1028: 3 detections (2 persons, 1 objects)
+🎯 Frame 1029: 2 detections (2 persons, 0 objects)
+🎯 Frame 1030: 2 detections (2 persons, 0 objects)
+🎯 Frame 1031: 2 detections (2 persons, 0 objects)
+🎯 Frame 1032: 2 detections (2 persons, 0 objects)
+🎯 Frame 1033: 2 detections (2 persons, 0 objects)
+🎯 Frame 1034: 3 detections (2 persons, 1 objects)
+🎯 Frame 1035: 3 detections (2 persons, 1 objects)
+🎯 Frame 1036: 2 detections (2 persons, 0 objects)
+🎯 Frame 1037: 3 detections (2 persons, 1 objects)
+🎯 Frame 1038: 2 detections (2 persons, 0 objects)
+🎯 Frame 1039: 3 detections (2 persons, 0 objects)
+🎯 Frame 1040: 3 detections (2 persons, 0 objects)
+🎯 Frame 1041: 3 detections (2 persons, 0 objects)
+🎯 Frame 1042: 3 detections (2 persons, 0 objects)
+🎯 Frame 1043: 3 detections (2 persons, 0 objects)
+🎯 Frame 1044: 4 detections (2 persons, 1 objects)
+🎯 Frame 1045: 3 detections (2 persons, 0 objects)
+🎯 Frame 1046: 3 detections (2 persons, 0 objects)
+🎯 Frame 1047: 2 detections (2 persons, 0 objects)
+🎯 Frame 1048: 3 detections (2 persons, 1 objects)
+🎯 Frame 1049: 4 detections (2 persons, 1 objects)
+🎯 Frame 1050: 4 detections (2 persons, 1 objects)
+🎯 Frame 1051: 3 detections (2 persons, 0 objects)
+🎯 Frame 1052: 3 detections (2 persons, 0 objects)
+🎯 Frame 1053: 3 detections (2 persons, 0 objects)
+🎯 Frame 1054: 3 detections (2 persons, 1 objects)
+🎯 Frame 1055: 3 detections (2 persons, 1 objects)
+🎯 Frame 1056: 2 detections (2 persons, 0 objects)
+🎯 Frame 1057: 2 detections (2 persons, 0 objects)
+🎯 Frame 1058: 2 detections (2 persons, 0 objects)
+🎯 Frame 1059: 2 detections (2 persons, 0 objects)
+🎯 Frame 1060: 2 detections (2 persons, 0 objects)
+🎯 Frame 1061: 2 detections (2 persons, 0 objects)
+🎯 Frame 1062: 3 detections (2 persons, 1 objects)
+🎯 Frame 1063: 2 detections (2 persons, 0 objects)
+🎯 Frame 1064: 2 detections (2 persons, 0 objects)
+🎯 Frame 1065: 3 detections (2 persons, 0 objects)
+🎯 Frame 1066: 3 detections (2 persons, 1 objects)
+🎯 Frame 1067: 3 detections (2 persons, 1 objects)
+🎯 Frame 1068: 3 detections (2 persons, 0 objects)
+🎯 Frame 1069: 2 detections (2 persons, 0 objects)
+🎯 Frame 1070: 3 detections (2 persons, 1 objects)
+🎯 Frame 1071: 2 detections (2 persons, 0 objects)
+🎯 Frame 1072: 2 detections (2 persons, 0 objects)
+🎯 Frame 1073: 3 detections (2 persons, 1 objects)
+🎯 Frame 1074: 2 detections (2 persons, 0 objects)
+🎯 Frame 1075: 2 detections (2 persons, 0 objects)
+🎯 Frame 1076: 3 detections (2 persons, 1 objects)
+🎯 Frame 1077: 2 detections (2 persons, 0 objects)
+🎯 Frame 1078: 2 detections (2 persons, 0 objects)
+🎯 Frame 1079: 2 detections (2 persons, 0 objects)
+🎯 Frame 1080: 2 detections (2 persons, 0 objects)
+🎯 Frame 1081: 2 detections (2 persons, 0 objects)
+🎯 Frame 1082: 3 detections (2 persons, 1 objects)
+🎯 Frame 1083: 4 detections (2 persons, 1 objects)
+🎯 Frame 1084: 2 detections (2 persons, 0 objects)
+🎯 Frame 1085: 2 detections (2 persons, 0 objects)
+🎯 Frame 1086: 2 detections (2 persons, 0 objects)
+🎯 Frame 1087: 2 detections (2 persons, 0 objects)
+🎯 Frame 1088: 2 detections (2 persons, 0 objects)
+🎯 Frame 1089: 3 detections (2 persons, 1 objects)
+🎯 Frame 1090: 3 detections (2 persons, 1 objects)
+🎯 Frame 1091: 3 detections (2 persons, 1 objects)
+🎯 Frame 1092: 2 detections (2 persons, 0 objects)
+🎯 Frame 1093: 2 detections (2 persons, 0 objects)
+🎯 Frame 1094: 2 detections (2 persons, 0 objects)
+🎯 Frame 1095: 3 detections (2 persons, 1 objects)
+🎯 Frame 1096: 3 detections (2 persons, 1 objects)
+🎯 Frame 1097: 3 detections (2 persons, 1 objects)
+🎯 Frame 1098: 3 detections (2 persons, 0 objects)
+🎯 Frame 1099: 3 detections (2 persons, 0 objects)
+Processed 1100 frames...
+🎯 Frame 1100: 3 detections (2 persons, 0 objects)
+🔄 Processed 1100/2189 frames (28.7 fps)
+🎯 Frame 1101: 3 detections (2 persons, 0 objects)
+🎯 Frame 1102: 2 detections (2 persons, 0 objects)
+🎯 Frame 1103: 2 detections (2 persons, 0 objects)
+🎯 Frame 1104: 3 detections (2 persons, 0 objects)
+🎯 Frame 1105: 2 detections (2 persons, 0 objects)
+🎯 Frame 1106: 2 detections (2 persons, 0 objects)
+🎯 Frame 1107: 2 detections (2 persons, 0 objects)
+🎯 Frame 1108: 2 detections (2 persons, 0 objects)
+🎯 Frame 1109: 2 detections (2 persons, 0 objects)
+🎯 Frame 1110: 2 detections (2 persons, 0 objects)
+🎯 Frame 1111: 2 detections (2 persons, 0 objects)
+🎯 Frame 1112: 2 detections (2 persons, 0 objects)
+🎯 Frame 1113: 2 detections (2 persons, 0 objects)
+🎯 Frame 1114: 2 detections (2 persons, 0 objects)
+🎯 Frame 1115: 2 detections (2 persons, 0 objects)
+🎯 Frame 1116: 3 detections (2 persons, 0 objects)
+🎯 Frame 1117: 3 detections (2 persons, 1 objects)
+🎯 Frame 1118: 2 detections (2 persons, 0 objects)
+🎯 Frame 1119: 3 detections (2 persons, 1 objects)
+🎯 Frame 1120: 3 detections (2 persons, 1 objects)
+🎯 Frame 1121: 3 detections (2 persons, 1 objects)
+🎯 Frame 1122: 3 detections (2 persons, 1 objects)
+🎯 Frame 1123: 3 detections (2 persons, 1 objects)
+🎯 Frame 1124: 3 detections (2 persons, 1 objects)
+🎯 Frame 1125: 3 detections (2 persons, 1 objects)
+🎯 Frame 1126: 2 detections (2 persons, 0 objects)
+🎯 Frame 1127: 2 detections (2 persons, 0 objects)
+🎯 Frame 1128: 3 detections (2 persons, 0 objects)
+🎯 Frame 1129: 3 detections (2 persons, 0 objects)
+🎯 Frame 1130: 3 detections (2 persons, 1 objects)
+🎯 Frame 1131: 3 detections (2 persons, 1 objects)
+🎯 Frame 1132: 3 detections (2 persons, 1 objects)
+🎯 Frame 1133: 3 detections (2 persons, 1 objects)
+🎯 Frame 1134: 3 detections (2 persons, 1 objects)
+🎯 Frame 1135: 3 detections (2 persons, 1 objects)
+🎯 Frame 1136: 3 detections (2 persons, 1 objects)
+🎯 Frame 1137: 3 detections (2 persons, 1 objects)
+🎯 Frame 1138: 3 detections (2 persons, 1 objects)
+🎯 Frame 1139: 3 detections (2 persons, 1 objects)
+🎯 Frame 1140: 2 detections (2 persons, 0 objects)
+🎯 Frame 1141: 2 detections (2 persons, 0 objects)
+🎯 Frame 1142: 2 detections (2 persons, 0 objects)
+🎯 Frame 1143: 3 detections (2 persons, 1 objects)
+🎯 Frame 1144: 3 detections (2 persons, 1 objects)
+🎯 Frame 1145: 3 detections (2 persons, 1 objects)
+🎯 Frame 1146: 2 detections (2 persons, 0 objects)
+🎯 Frame 1147: 3 detections (2 persons, 1 objects)
+🎯 Frame 1148: 3 detections (2 persons, 1 objects)
+🎯 Frame 1149: 3 detections (2 persons, 1 objects)
+🎯 Frame 1150: 3 detections (2 persons, 1 objects)
+🎯 Frame 1151: 3 detections (2 persons, 1 objects)
+🎯 Frame 1152: 3 detections (2 persons, 1 objects)
+🎯 Frame 1153: 3 detections (2 persons, 1 objects)
+🎯 Frame 1154: 3 detections (2 persons, 1 objects)
+🎯 Frame 1155: 3 detections (2 persons, 1 objects)
+🎯 Frame 1156: 3 detections (2 persons, 1 objects)
+🎯 Frame 1157: 3 detections (2 persons, 1 objects)
+🎯 Frame 1158: 3 detections (2 persons, 1 objects)
+🎯 Frame 1159: 3 detections (2 persons, 1 objects)
+🎯 Frame 1160: 3 detections (2 persons, 1 objects)
+🎯 Frame 1161: 3 detections (2 persons, 1 objects)
+🎯 Frame 1162: 2 detections (2 persons, 0 objects)
+🎯 Frame 1163: 2 detections (2 persons, 0 objects)
+🎯 Frame 1164: 3 detections (2 persons, 1 objects)
+🎯 Frame 1165: 3 detections (2 persons, 1 objects)
+🎯 Frame 1166: 3 detections (2 persons, 1 objects)
+🎯 Frame 1167: 2 detections (2 persons, 0 objects)
+🎯 Frame 1168: 2 detections (2 persons, 0 objects)
+🎯 Frame 1169: 2 detections (2 persons, 0 objects)
+🎯 Frame 1170: 2 detections (2 persons, 0 objects)
+🎯 Frame 1171: 2 detections (2 persons, 0 objects)
+🎯 Frame 1172: 3 detections (2 persons, 1 objects)
+🎯 Frame 1173: 3 detections (2 persons, 1 objects)
+🎯 Frame 1174: 3 detections (2 persons, 1 objects)
+🎯 Frame 1175: 3 detections (2 persons, 1 objects)
+🎯 Frame 1176: 3 detections (2 persons, 1 objects)
+🎯 Frame 1177: 3 detections (2 persons, 1 objects)
+🎯 Frame 1178: 3 detections (2 persons, 1 objects)
+🎯 Frame 1179: 3 detections (2 persons, 1 objects)
+🎯 Frame 1180: 3 detections (2 persons, 1 objects)
+🎯 Frame 1181: 3 detections (2 persons, 1 objects)
+🎯 Frame 1182: 3 detections (2 persons, 1 objects)
+🎯 Frame 1183: 3 detections (2 persons, 1 objects)
+🎯 Frame 1184: 3 detections (2 persons, 1 objects)
+🎯 Frame 1185: 3 detections (2 persons, 1 objects)
+🎯 Frame 1186: 3 detections (2 persons, 1 objects)
+🎯 Frame 1187: 3 detections (2 persons, 1 objects)
+🎯 Frame 1188: 3 detections (2 persons, 1 objects)
+🎯 Frame 1189: 3 detections (2 persons, 1 objects)
+🎯 Frame 1190: 3 detections (2 persons, 1 objects)
+🎯 Frame 1191: 2 detections (2 persons, 0 objects)
+🎯 Frame 1192: 2 detections (2 persons, 0 objects)
+🎯 Frame 1193: 2 detections (2 persons, 0 objects)
+🎯 Frame 1194: 2 detections (2 persons, 0 objects)
+🎯 Frame 1195: 2 detections (2 persons, 0 objects)
+🎯 Frame 1196: 3 detections (2 persons, 1 objects)
+🎯 Frame 1197: 2 detections (2 persons, 0 objects)
+🎯 Frame 1198: 2 detections (2 persons, 0 objects)
+🎯 Frame 1199: 3 detections (2 persons, 1 objects)
+Processed 1200 frames...
+🎯 Frame 1200: 3 detections (2 persons, 1 objects)
+🔄 Processed 1200/2189 frames (28.6 fps)
+🎯 Frame 1201: 3 detections (2 persons, 1 objects)
+🎯 Frame 1202: 3 detections (2 persons, 1 objects)
+🎯 Frame 1203: 2 detections (2 persons, 0 objects)
+🎯 Frame 1204: 3 detections (2 persons, 1 objects)
+🎯 Frame 1205: 3 detections (2 persons, 1 objects)
+🎯 Frame 1206: 3 detections (2 persons, 1 objects)
+🎯 Frame 1207: 2 detections (2 persons, 0 objects)
+🎯 Frame 1208: 3 detections (2 persons, 1 objects)
+🎯 Frame 1209: 2 detections (2 persons, 0 objects)
+🎯 Frame 1210: 3 detections (2 persons, 1 objects)
+🎯 Frame 1211: 2 detections (2 persons, 0 objects)
+🎯 Frame 1212: 2 detections (2 persons, 0 objects)
+🎯 Frame 1213: 2 detections (2 persons, 0 objects)
+🎯 Frame 1214: 2 detections (2 persons, 0 objects)
+🎯 Frame 1215: 3 detections (2 persons, 1 objects)
+🎯 Frame 1216: 3 detections (2 persons, 1 objects)
+🎯 Frame 1217: 3 detections (2 persons, 1 objects)
+🎯 Frame 1218: 3 detections (2 persons, 1 objects)
+🎯 Frame 1219: 3 detections (2 persons, 1 objects)
+🎯 Frame 1220: 3 detections (2 persons, 1 objects)
+🎯 Frame 1221: 3 detections (2 persons, 1 objects)
+🎯 Frame 1222: 3 detections (2 persons, 1 objects)
+🎯 Frame 1223: 2 detections (2 persons, 0 objects)
+🎯 Frame 1224: 2 detections (2 persons, 0 objects)
+🎯 Frame 1225: 3 detections (2 persons, 1 objects)
+🎯 Frame 1226: 3 detections (2 persons, 1 objects)
+🎯 Frame 1227: 2 detections (2 persons, 0 objects)
+🎯 Frame 1228: 3 detections (2 persons, 1 objects)
+🎯 Frame 1229: 3 detections (2 persons, 1 objects)
+🎯 Frame 1230: 3 detections (2 persons, 1 objects)
+🎯 Frame 1231: 3 detections (2 persons, 1 objects)
+🎯 Frame 1232: 3 detections (2 persons, 1 objects)
+🎯 Frame 1233: 3 detections (2 persons, 1 objects)
+🎯 Frame 1234: 3 detections (2 persons, 1 objects)
+🎯 Frame 1235: 3 detections (2 persons, 1 objects)
+🎯 Frame 1236: 3 detections (2 persons, 1 objects)
+🎯 Frame 1237: 2 detections (2 persons, 0 objects)
+🎯 Frame 1238: 2 detections (2 persons, 0 objects)
+🎯 Frame 1239: 3 detections (2 persons, 1 objects)
+🎯 Frame 1240: 3 detections (2 persons, 1 objects)
+🎯 Frame 1241: 3 detections (2 persons, 1 objects)
+🎯 Frame 1242: 3 detections (2 persons, 1 objects)
+🎯 Frame 1243: 2 detections (2 persons, 0 objects)
+🎯 Frame 1244: 3 detections (2 persons, 1 objects)
+🎯 Frame 1245: 3 detections (2 persons, 1 objects)
+🎯 Frame 1246: 3 detections (2 persons, 1 objects)
+🎯 Frame 1247: 3 detections (2 persons, 1 objects)
+🎯 Frame 1248: 3 detections (2 persons, 1 objects)
+🎯 Frame 1249: 3 detections (2 persons, 1 objects)
+🎯 Frame 1250: 4 detections (2 persons, 1 objects)
+🎯 Frame 1251: 3 detections (2 persons, 1 objects)
+🎯 Frame 1252: 3 detections (2 persons, 1 objects)
+🎯 Frame 1253: 3 detections (2 persons, 1 objects)
+🎯 Frame 1254: 3 detections (2 persons, 1 objects)
+🎯 Frame 1255: 3 detections (2 persons, 1 objects)
+🎯 Frame 1256: 3 detections (2 persons, 1 objects)
+🎯 Frame 1257: 3 detections (2 persons, 1 objects)
+🎯 Frame 1258: 3 detections (2 persons, 1 objects)
+🎯 Frame 1259: 3 detections (2 persons, 1 objects)
+🎯 Frame 1260: 3 detections (2 persons, 1 objects)
+🎯 Frame 1261: 3 detections (2 persons, 1 objects)
+🎯 Frame 1262: 3 detections (2 persons, 1 objects)
+🎯 Frame 1263: 3 detections (2 persons, 1 objects)
+🎯 Frame 1264: 3 detections (2 persons, 1 objects)
+🎯 Frame 1265: 3 detections (2 persons, 1 objects)
+🎯 Frame 1266: 3 detections (2 persons, 1 objects)
+🎯 Frame 1267: 3 detections (2 persons, 1 objects)
+🎯 Frame 1268: 2 detections (2 persons, 0 objects)
+🎯 Frame 1269: 3 detections (2 persons, 1 objects)
+🎯 Frame 1270: 3 detections (2 persons, 1 objects)
+🎯 Frame 1271: 3 detections (2 persons, 1 objects)
+🚨 ALERT: backpack unattended for 44.9s
+🎯 Frame 1272: 3 detections (2 persons, 1 objects)
+⚠️ Frame 1272: 1 alert(s) - ['backpack']
+🎯 Frame 1273: 3 detections (2 persons, 1 objects)
+🎯 Frame 1274: 3 detections (2 persons, 1 objects)
+🎯 Frame 1275: 3 detections (2 persons, 1 objects)
+🎯 Frame 1276: 3 detections (2 persons, 1 objects)
+🎯 Frame 1277: 3 detections (2 persons, 1 objects)
+🎯 Frame 1278: 3 detections (2 persons, 1 objects)
+🎯 Frame 1279: 3 detections (2 persons, 1 objects)
+🎯 Frame 1280: 3 detections (2 persons, 1 objects)
+🎯 Frame 1281: 3 detections (2 persons, 1 objects)
+🎯 Frame 1282: 3 detections (2 persons, 1 objects)
+🎯 Frame 1283: 3 detections (2 persons, 1 objects)
+🎯 Frame 1284: 3 detections (2 persons, 1 objects)
+🎯 Frame 1285: 3 detections (2 persons, 1 objects)
+🎯 Frame 1286: 3 detections (2 persons, 1 objects)
+🎯 Frame 1287: 3 detections (2 persons, 1 objects)
+🎯 Frame 1288: 3 detections (2 persons, 1 objects)
+🎯 Frame 1289: 3 detections (2 persons, 1 objects)
+🎯 Frame 1290: 3 detections (2 persons, 1 objects)
+🎯 Frame 1291: 3 detections (2 persons, 1 objects)
+🎯 Frame 1292: 3 detections (2 persons, 1 objects)
+🎯 Frame 1293: 3 detections (2 persons, 1 objects)
+🎯 Frame 1294: 3 detections (2 persons, 1 objects)
+🎯 Frame 1295: 3 detections (2 persons, 1 objects)
+🎯 Frame 1296: 3 detections (2 persons, 1 objects)
+🎯 Frame 1297: 3 detections (2 persons, 1 objects)
+🎯 Frame 1298: 3 detections (2 persons, 1 objects)
+🎯 Frame 1299: 3 detections (2 persons, 1 objects)
+Processed 1300 frames...
+🎯 Frame 1300: 3 detections (2 persons, 1 objects)
+🔄 Processed 1300/2189 frames (28.6 fps)
+🎯 Frame 1301: 3 detections (2 persons, 1 objects)
+🎯 Frame 1302: 3 detections (2 persons, 1 objects)
+🎯 Frame 1303: 3 detections (2 persons, 1 objects)
+🎯 Frame 1304: 3 detections (2 persons, 1 objects)
+🎯 Frame 1305: 3 detections (2 persons, 1 objects)
+🎯 Frame 1306: 3 detections (2 persons, 1 objects)
+🎯 Frame 1307: 3 detections (2 persons, 1 objects)
+🎯 Frame 1308: 3 detections (2 persons, 1 objects)
+🎯 Frame 1309: 3 detections (2 persons, 1 objects)
+🎯 Frame 1310: 3 detections (2 persons, 1 objects)
+🎯 Frame 1311: 3 detections (2 persons, 1 objects)
+🎯 Frame 1312: 3 detections (2 persons, 1 objects)
+🎯 Frame 1313: 3 detections (2 persons, 1 objects)
+🎯 Frame 1314: 3 detections (2 persons, 1 objects)
+🎯 Frame 1315: 3 detections (2 persons, 1 objects)
+🎯 Frame 1316: 3 detections (2 persons, 1 objects)
+🎯 Frame 1317: 3 detections (2 persons, 1 objects)
+🎯 Frame 1318: 3 detections (2 persons, 1 objects)
+🎯 Frame 1319: 3 detections (2 persons, 1 objects)
+🎯 Frame 1320: 3 detections (2 persons, 1 objects)
+🎯 Frame 1321: 3 detections (2 persons, 1 objects)
+🎯 Frame 1322: 3 detections (2 persons, 1 objects)
+🎯 Frame 1323: 3 detections (2 persons, 1 objects)
+🎯 Frame 1324: 3 detections (2 persons, 1 objects)
+🎯 Frame 1325: 3 detections (2 persons, 1 objects)
+🎯 Frame 1326: 3 detections (2 persons, 1 objects)
+🎯 Frame 1327: 3 detections (2 persons, 1 objects)
+🎯 Frame 1328: 3 detections (2 persons, 1 objects)
+🎯 Frame 1329: 3 detections (2 persons, 1 objects)
+🎯 Frame 1330: 3 detections (2 persons, 1 objects)
+🎯 Frame 1331: 3 detections (2 persons, 1 objects)
+🎯 Frame 1332: 3 detections (2 persons, 1 objects)
+🎯 Frame 1333: 3 detections (2 persons, 1 objects)
+🎯 Frame 1334: 3 detections (2 persons, 1 objects)
+🎯 Frame 1335: 3 detections (2 persons, 1 objects)
+🎯 Frame 1336: 3 detections (2 persons, 1 objects)
+🎯 Frame 1337: 3 detections (2 persons, 1 objects)
+🎯 Frame 1338: 3 detections (2 persons, 1 objects)
+🎯 Frame 1339: 3 detections (2 persons, 1 objects)
+🎯 Frame 1340: 3 detections (2 persons, 1 objects)
+🎯 Frame 1341: 4 detections (2 persons, 1 objects)
+🚨 ALERT: backpack unattended for 47.3s
+🎯 Frame 1342: 3 detections (2 persons, 1 objects)
+⚠️ Frame 1342: 1 alert(s) - ['backpack']
+🎯 Frame 1343: 4 detections (2 persons, 1 objects)
+🎯 Frame 1344: 4 detections (2 persons, 1 objects)
+🎯 Frame 1345: 3 detections (2 persons, 1 objects)
+🎯 Frame 1346: 3 detections (2 persons, 1 objects)
+🎯 Frame 1347: 3 detections (2 persons, 1 objects)
+🎯 Frame 1348: 3 detections (2 persons, 1 objects)
+🎯 Frame 1349: 4 detections (2 persons, 2 objects)
+🎯 Frame 1350: 3 detections (2 persons, 1 objects)
+🎯 Frame 1351: 4 detections (2 persons, 1 objects)
+🎯 Frame 1352: 4 detections (2 persons, 1 objects)
+🎯 Frame 1353: 3 detections (2 persons, 1 objects)
+🎯 Frame 1354: 4 detections (2 persons, 2 objects)
+🎯 Frame 1355: 3 detections (2 persons, 1 objects)
+🎯 Frame 1356: 3 detections (2 persons, 1 objects)
+🎯 Frame 1357: 2 detections (2 persons, 0 objects)
+🎯 Frame 1358: 2 detections (2 persons, 0 objects)
+🎯 Frame 1359: 2 detections (2 persons, 0 objects)
+🎯 Frame 1360: 2 detections (2 persons, 0 objects)
+🎯 Frame 1361: 3 detections (2 persons, 1 objects)
+🚨 ALERT: handbag unattended for 48.0s
+🎯 Frame 1362: 3 detections (2 persons, 1 objects)
+⚠️ Frame 1362: 1 alert(s) - ['handbag']
+🎯 Frame 1363: 2 detections (2 persons, 0 objects)
+🎯 Frame 1364: 2 detections (2 persons, 0 objects)
+🎯 Frame 1365: 2 detections (2 persons, 0 objects)
+🎯 Frame 1366: 2 detections (2 persons, 0 objects)
+🎯 Frame 1367: 2 detections (2 persons, 0 objects)
+🎯 Frame 1368: 2 detections (2 persons, 0 objects)
+🎯 Frame 1369: 2 detections (2 persons, 0 objects)
+🎯 Frame 1370: 2 detections (2 persons, 0 objects)
+🎯 Frame 1371: 2 detections (2 persons, 0 objects)
+🎯 Frame 1372: 2 detections (2 persons, 0 objects)
+🎯 Frame 1373: 2 detections (2 persons, 0 objects)
+🎯 Frame 1374: 2 detections (2 persons, 0 objects)
+🎯 Frame 1375: 2 detections (2 persons, 0 objects)
+🎯 Frame 1376: 2 detections (2 persons, 0 objects)
+🎯 Frame 1377: 2 detections (2 persons, 0 objects)
+🎯 Frame 1378: 2 detections (2 persons, 0 objects)
+🎯 Frame 1379: 2 detections (2 persons, 0 objects)
+🎯 Frame 1380: 2 detections (2 persons, 0 objects)
+🎯 Frame 1381: 3 detections (2 persons, 1 objects)
+🎯 Frame 1382: 2 detections (2 persons, 0 objects)
+🎯 Frame 1383: 2 detections (2 persons, 0 objects)
+🎯 Frame 1384: 2 detections (2 persons, 0 objects)
+🎯 Frame 1385: 2 detections (2 persons, 0 objects)
+🎯 Frame 1386: 2 detections (2 persons, 0 objects)
+🎯 Frame 1387: 3 detections (2 persons, 1 objects)
+🎯 Frame 1388: 3 detections (2 persons, 1 objects)
+🎯 Frame 1389: 3 detections (2 persons, 1 objects)
+🎯 Frame 1390: 3 detections (2 persons, 1 objects)
+🎯 Frame 1391: 3 detections (2 persons, 1 objects)
+🎯 Frame 1392: 3 detections (2 persons, 1 objects)
+🎯 Frame 1393: 3 detections (2 persons, 1 objects)
+🎯 Frame 1394: 3 detections (2 persons, 1 objects)
+🎯 Frame 1395: 3 detections (2 persons, 1 objects)
+🎯 Frame 1396: 2 detections (2 persons, 0 objects)
+🎯 Frame 1397: 2 detections (2 persons, 0 objects)
+🎯 Frame 1398: 2 detections (2 persons, 0 objects)
+🎯 Frame 1399: 2 detections (2 persons, 0 objects)
+Processed 1400 frames...
+🎯 Frame 1400: 2 detections (2 persons, 0 objects)
+🔄 Processed 1400/2189 frames (28.6 fps)
+🎯 Frame 1401: 2 detections (2 persons, 0 objects)
+🎯 Frame 1402: 2 detections (2 persons, 0 objects)
+🎯 Frame 1403: 2 detections (2 persons, 0 objects)
+🎯 Frame 1404: 2 detections (2 persons, 0 objects)
+🎯 Frame 1405: 2 detections (2 persons, 0 objects)
+🎯 Frame 1406: 2 detections (2 persons, 0 objects)
+🎯 Frame 1407: 2 detections (2 persons, 0 objects)
+🎯 Frame 1408: 2 detections (2 persons, 0 objects)
+🎯 Frame 1409: 2 detections (2 persons, 0 objects)
+🎯 Frame 1410: 2 detections (2 persons, 0 objects)
+🎯 Frame 1411: 2 detections (2 persons, 0 objects)
+🎯 Frame 1412: 2 detections (2 persons, 0 objects)
+🎯 Frame 1413: 2 detections (2 persons, 0 objects)
+🎯 Frame 1414: 2 detections (2 persons, 0 objects)
+🎯 Frame 1415: 2 detections (2 persons, 0 objects)
+🎯 Frame 1416: 2 detections (2 persons, 0 objects)
+🎯 Frame 1417: 2 detections (2 persons, 0 objects)
+🎯 Frame 1418: 2 detections (2 persons, 0 objects)
+🎯 Frame 1419: 3 detections (2 persons, 1 objects)
+🎯 Frame 1420: 3 detections (2 persons, 1 objects)
+🎯 Frame 1421: 4 detections (2 persons, 0 objects)
+🎯 Frame 1422: 4 detections (2 persons, 0 objects)
+🎯 Frame 1423: 4 detections (2 persons, 0 objects)
+🎯 Frame 1424: 2 detections (2 persons, 0 objects)
+🎯 Frame 1425: 4 detections (2 persons, 1 objects)
+🎯 Frame 1426: 4 detections (2 persons, 1 objects)
+🎯 Frame 1427: 4 detections (2 persons, 1 objects)
+🎯 Frame 1428: 4 detections (2 persons, 1 objects)
+🎯 Frame 1429: 4 detections (2 persons, 1 objects)
+🎯 Frame 1430: 3 detections (2 persons, 1 objects)
+🎯 Frame 1431: 3 detections (2 persons, 1 objects)
+🎯 Frame 1432: 3 detections (2 persons, 1 objects)
+🎯 Frame 1433: 3 detections (2 persons, 1 objects)
+🎯 Frame 1434: 3 detections (2 persons, 1 objects)
+🎯 Frame 1435: 3 detections (2 persons, 1 objects)
+🎯 Frame 1436: 5 detections (3 persons, 1 objects)
+🎯 Frame 1437: 5 detections (3 persons, 1 objects)
+🎯 Frame 1438: 5 detections (3 persons, 1 objects)
+🎯 Frame 1439: 4 detections (2 persons, 1 objects)
+🎯 Frame 1440: 5 detections (3 persons, 1 objects)
+🎯 Frame 1441: 5 detections (3 persons, 1 objects)
+🎯 Frame 1442: 5 detections (3 persons, 1 objects)
+🎯 Frame 1443: 5 detections (3 persons, 1 objects)
+🎯 Frame 1444: 5 detections (3 persons, 1 objects)
+🎯 Frame 1445: 5 detections (3 persons, 1 objects)
+🎯 Frame 1446: 5 detections (3 persons, 1 objects)
+🎯 Frame 1447: 5 detections (3 persons, 1 objects)
+🎯 Frame 1448: 5 detections (3 persons, 1 objects)
+🎯 Frame 1449: 5 detections (3 persons, 1 objects)
+🎯 Frame 1450: 5 detections (3 persons, 1 objects)
+🎯 Frame 1451: 5 detections (3 persons, 1 objects)
+🎯 Frame 1452: 4 detections (2 persons, 1 objects)
+🎯 Frame 1453: 4 detections (2 persons, 1 objects)
+🎯 Frame 1454: 4 detections (2 persons, 1 objects)
+🎯 Frame 1455: 4 detections (2 persons, 1 objects)
+🎯 Frame 1456: 3 detections (2 persons, 1 objects)
+🎯 Frame 1457: 3 detections (2 persons, 1 objects)
+🎯 Frame 1458: 4 detections (2 persons, 1 objects)
+🎯 Frame 1459: 3 detections (1 persons, 1 objects)
+🎯 Frame 1460: 2 detections (1 persons, 1 objects)
+🎯 Frame 1461: 3 detections (1 persons, 2 objects)
+🎯 Frame 1462: 3 detections (1 persons, 2 objects)
+🎯 Frame 1463: 3 detections (1 persons, 2 objects)
+🎯 Frame 1464: 2 detections (1 persons, 1 objects)
+🎯 Frame 1465: 2 detections (1 persons, 1 objects)
+🎯 Frame 1466: 2 detections (1 persons, 1 objects)
+🎯 Frame 1467: 2 detections (1 persons, 1 objects)
+🎯 Frame 1468: 2 detections (1 persons, 1 objects)
+🎯 Frame 1469: 3 detections (1 persons, 1 objects)
+🎯 Frame 1470: 4 detections (1 persons, 1 objects)
+🎯 Frame 1471: 4 detections (1 persons, 1 objects)
+🎯 Frame 1472: 4 detections (1 persons, 1 objects)
+🎯 Frame 1473: 3 detections (1 persons, 1 objects)
+🎯 Frame 1474: 3 detections (1 persons, 1 objects)
+🎯 Frame 1475: 3 detections (1 persons, 1 objects)
+🎯 Frame 1476: 3 detections (1 persons, 1 objects)
+🎯 Frame 1477: 3 detections (1 persons, 1 objects)
+🎯 Frame 1478: 3 detections (1 persons, 1 objects)
+🎯 Frame 1479: 3 detections (1 persons, 1 objects)
+🎯 Frame 1480: 3 detections (1 persons, 1 objects)
+🎯 Frame 1481: 3 detections (1 persons, 1 objects)
+🎯 Frame 1482: 3 detections (1 persons, 1 objects)
+🎯 Frame 1483: 3 detections (1 persons, 1 objects)
+🎯 Frame 1484: 3 detections (1 persons, 1 objects)
+🎯 Frame 1485: 3 detections (1 persons, 1 objects)
+🎯 Frame 1486: 3 detections (1 persons, 1 objects)
+🎯 Frame 1487: 3 detections (1 persons, 1 objects)
+🎯 Frame 1488: 3 detections (1 persons, 1 objects)
+🎯 Frame 1489: 3 detections (1 persons, 1 objects)
+🎯 Frame 1490: 3 detections (1 persons, 1 objects)
+🎯 Frame 1491: 3 detections (1 persons, 1 objects)
+🎯 Frame 1492: 3 detections (1 persons, 1 objects)
+🎯 Frame 1493: 3 detections (1 persons, 1 objects)
+🎯 Frame 1494: 3 detections (1 persons, 1 objects)
+🎯 Frame 1495: 3 detections (1 persons, 1 objects)
+🎯 Frame 1496: 3 detections (1 persons, 1 objects)
+🎯 Frame 1497: 3 detections (1 persons, 1 objects)
+🎯 Frame 1498: 3 detections (1 persons, 1 objects)
+🎯 Frame 1499: 3 detections (1 persons, 1 objects)
+Processed 1500 frames...
+🎯 Frame 1500: 3 detections (1 persons, 1 objects)
+🔄 Processed 1500/2189 frames (28.6 fps)
+🎯 Frame 1501: 3 detections (1 persons, 1 objects)
+🎯 Frame 1502: 3 detections (1 persons, 1 objects)
+🎯 Frame 1503: 3 detections (1 persons, 1 objects)
+🎯 Frame 1504: 3 detections (1 persons, 1 objects)
+🎯 Frame 1505: 3 detections (1 persons, 1 objects)
+🎯 Frame 1506: 3 detections (1 persons, 1 objects)
+🎯 Frame 1507: 3 detections (1 persons, 1 objects)
+🎯 Frame 1508: 3 detections (1 persons, 1 objects)
+🎯 Frame 1509: 3 detections (1 persons, 1 objects)
+🎯 Frame 1510: 3 detections (1 persons, 1 objects)
+🎯 Frame 1511: 3 detections (1 persons, 1 objects)
+🎯 Frame 1512: 3 detections (1 persons, 1 objects)
+🎯 Frame 1513: 3 detections (1 persons, 1 objects)
+🎯 Frame 1514: 3 detections (1 persons, 1 objects)
+🎯 Frame 1515: 4 detections (1 persons, 2 objects)
+🎯 Frame 1516: 3 detections (1 persons, 1 objects)
+🎯 Frame 1517: 3 detections (1 persons, 1 objects)
+🎯 Frame 1518: 3 detections (1 persons, 1 objects)
+🎯 Frame 1519: 4 detections (1 persons, 2 objects)
+🎯 Frame 1520: 3 detections (1 persons, 1 objects)
+🎯 Frame 1521: 3 detections (1 persons, 1 objects)
+🎯 Frame 1522: 3 detections (1 persons, 1 objects)
+🎯 Frame 1523: 3 detections (1 persons, 1 objects)
+🎯 Frame 1524: 3 detections (1 persons, 1 objects)
+🎯 Frame 1525: 3 detections (1 persons, 1 objects)
+🎯 Frame 1526: 3 detections (1 persons, 1 objects)
+🎯 Frame 1527: 3 detections (1 persons, 1 objects)
+🎯 Frame 1528: 3 detections (1 persons, 1 objects)
+🎯 Frame 1529: 2 detections (1 persons, 1 objects)
+🎯 Frame 1530: 2 detections (1 persons, 1 objects)
+🎯 Frame 1531: 3 detections (1 persons, 1 objects)
+🎯 Frame 1532: 3 detections (1 persons, 1 objects)
+🎯 Frame 1533: 3 detections (1 persons, 1 objects)
+🎯 Frame 1534: 3 detections (1 persons, 1 objects)
+🎯 Frame 1535: 3 detections (1 persons, 1 objects)
+🎯 Frame 1536: 3 detections (1 persons, 1 objects)
+🚨 ALERT: handbag unattended for 54.0s
+🎯 Frame 1537: 2 detections (1 persons, 1 objects)
+⚠️ Frame 1537: 1 alert(s) - ['handbag']
+🎯 Frame 1538: 2 detections (1 persons, 1 objects)
+🎯 Frame 1539: 3 detections (1 persons, 1 objects)
+🎯 Frame 1540: 2 detections (1 persons, 1 objects)
+🚨 ALERT: backpack unattended for 5.0s
+🎯 Frame 1541: 3 detections (1 persons, 1 objects)
+⚠️ Frame 1541: 1 alert(s) - ['backpack']
+🎯 Frame 1542: 3 detections (1 persons, 1 objects)
+🎯 Frame 1543: 3 detections (1 persons, 1 objects)
+🎯 Frame 1544: 2 detections (1 persons, 1 objects)
+🎯 Frame 1545: 3 detections (1 persons, 1 objects)
+🎯 Frame 1546: 2 detections (1 persons, 1 objects)
+🎯 Frame 1547: 2 detections (1 persons, 1 objects)
+🎯 Frame 1548: 2 detections (1 persons, 1 objects)
+🎯 Frame 1549: 2 detections (1 persons, 1 objects)
+🎯 Frame 1550: 3 detections (1 persons, 2 objects)
+🚨 ALERT: suitcase unattended for 54.5s
+🎯 Frame 1551: 3 detections (1 persons, 1 objects)
+⚠️ Frame 1551: 1 alert(s) - ['suitcase']
+🎯 Frame 1552: 2 detections (1 persons, 1 objects)
+🎯 Frame 1553: 2 detections (1 persons, 1 objects)
+🎯 Frame 1554: 2 detections (1 persons, 1 objects)
+🎯 Frame 1555: 2 detections (1 persons, 1 objects)
+🎯 Frame 1556: 1 detections (1 persons, 0 objects)
+🎯 Frame 1557: 1 detections (1 persons, 0 objects)
+🎯 Frame 1558: 1 detections (1 persons, 0 objects)
+🎯 Frame 1559: 1 detections (1 persons, 0 objects)
+🎯 Frame 1560: 1 detections (1 persons, 0 objects)
+🎯 Frame 1561: 1 detections (1 persons, 0 objects)
+🎯 Frame 1562: 1 detections (1 persons, 0 objects)
+🎯 Frame 1563: 1 detections (1 persons, 0 objects)
+🎯 Frame 1564: 1 detections (1 persons, 0 objects)
+🎯 Frame 1565: 1 detections (1 persons, 0 objects)
+🎯 Frame 1568: 1 detections (1 persons, 0 objects)
+🎯 Frame 1570: 1 detections (0 persons, 1 objects)
+🎯 Frame 1571: 1 detections (0 persons, 1 objects)
+🎯 Frame 1572: 1 detections (0 persons, 1 objects)
+🎯 Frame 1573: 1 detections (0 persons, 1 objects)
+🎯 Frame 1574: 1 detections (0 persons, 1 objects)
+🎯 Frame 1575: 1 detections (0 persons, 1 objects)
+🎯 Frame 1576: 1 detections (0 persons, 1 objects)
+🎯 Frame 1577: 1 detections (0 persons, 1 objects)
+🎯 Frame 1578: 1 detections (0 persons, 1 objects)
+🎯 Frame 1579: 1 detections (0 persons, 1 objects)
+🎯 Frame 1580: 1 detections (0 persons, 1 objects)
+🎯 Frame 1581: 1 detections (0 persons, 1 objects)
+🎯 Frame 1582: 2 detections (0 persons, 1 objects)
+🎯 Frame 1583: 1 detections (0 persons, 1 objects)
+🎯 Frame 1587: 1 detections (0 persons, 1 objects)
+🎯 Frame 1590: 1 detections (0 persons, 1 objects)
+🎯 Frame 1591: 1 detections (0 persons, 1 objects)
+🎯 Frame 1592: 1 detections (0 persons, 1 objects)
+🎯 Frame 1593: 1 detections (0 persons, 1 objects)
+🎯 Frame 1595: 1 detections (0 persons, 1 objects)
+🎯 Frame 1596: 1 detections (0 persons, 1 objects)
+🎯 Frame 1597: 1 detections (0 persons, 1 objects)
+🎯 Frame 1598: 1 detections (0 persons, 1 objects)
+🎯 Frame 1599: 1 detections (0 persons, 1 objects)
+Processed 1600 frames...
+🎯 Frame 1600: 1 detections (0 persons, 1 objects)
+🔄 Processed 1600/2189 frames (28.6 fps)
+🎯 Frame 1601: 1 detections (0 persons, 1 objects)
+🎯 Frame 1602: 1 detections (0 persons, 1 objects)
+🎯 Frame 1603: 1 detections (0 persons, 1 objects)
+🎯 Frame 1604: 1 detections (0 persons, 1 objects)
+🎯 Frame 1605: 1 detections (0 persons, 1 objects)
+🎯 Frame 1606: 1 detections (0 persons, 1 objects)
+🎯 Frame 1607: 1 detections (0 persons, 1 objects)
+🎯 Frame 1608: 1 detections (0 persons, 1 objects)
+🎯 Frame 1609: 1 detections (0 persons, 1 objects)
+🎯 Frame 1610: 1 detections (0 persons, 1 objects)
+🎯 Frame 1611: 1 detections (0 persons, 1 objects)
+🎯 Frame 1612: 1 detections (0 persons, 1 objects)
+🎯 Frame 1613: 1 detections (0 persons, 1 objects)
+🎯 Frame 1614: 2 detections (0 persons, 1 objects)
+🎯 Frame 1615: 1 detections (0 persons, 0 objects)
+🎯 Frame 1616: 1 detections (0 persons, 0 objects)
+🎯 Frame 1617: 1 detections (0 persons, 0 objects)
+🎯 Frame 1618: 1 detections (0 persons, 0 objects)
+🎯 Frame 1619: 1 detections (0 persons, 1 objects)
+🎯 Frame 1620: 1 detections (0 persons, 1 objects)
+🎯 Frame 1621: 1 detections (0 persons, 1 objects)
+🎯 Frame 1622: 1 detections (0 persons, 1 objects)
+🎯 Frame 1623: 1 detections (0 persons, 1 objects)
+🎯 Frame 1624: 1 detections (0 persons, 1 objects)
+🎯 Frame 1625: 1 detections (0 persons, 1 objects)
+🎯 Frame 1626: 2 detections (0 persons, 1 objects)
+🎯 Frame 1627: 1 detections (0 persons, 1 objects)
+🎯 Frame 1628: 1 detections (0 persons, 1 objects)
+🎯 Frame 1629: 1 detections (0 persons, 1 objects)
+🎯 Frame 1630: 2 detections (0 persons, 1 objects)
+🎯 Frame 1631: 2 detections (0 persons, 1 objects)
+🎯 Frame 1632: 2 detections (0 persons, 1 objects)
+🎯 Frame 1633: 1 detections (0 persons, 1 objects)
+🎯 Frame 1634: 1 detections (0 persons, 1 objects)
+🎯 Frame 1635: 1 detections (0 persons, 1 objects)
+🎯 Frame 1636: 1 detections (0 persons, 1 objects)
+🎯 Frame 1637: 1 detections (0 persons, 0 objects)
+🎯 Frame 1639: 1 detections (0 persons, 0 objects)
+🎯 Frame 1640: 1 detections (0 persons, 0 objects)
+🎯 Frame 1650: 1 detections (0 persons, 1 objects)
+🎯 Frame 1651: 1 detections (0 persons, 1 objects)
+🎯 Frame 1652: 1 detections (0 persons, 1 objects)
+🎯 Frame 1653: 1 detections (0 persons, 1 objects)
+🎯 Frame 1654: 1 detections (0 persons, 1 objects)
+🎯 Frame 1655: 1 detections (0 persons, 1 objects)
+🎯 Frame 1656: 1 detections (0 persons, 1 objects)
+🎯 Frame 1657: 1 detections (0 persons, 1 objects)
+🎯 Frame 1658: 1 detections (0 persons, 1 objects)
+🎯 Frame 1659: 1 detections (0 persons, 1 objects)
+🎯 Frame 1660: 1 detections (0 persons, 1 objects)
+🎯 Frame 1661: 1 detections (0 persons, 1 objects)
+🎯 Frame 1662: 1 detections (0 persons, 1 objects)
+🎯 Frame 1663: 1 detections (0 persons, 1 objects)
+🎯 Frame 1664: 1 detections (0 persons, 1 objects)
+🎯 Frame 1666: 1 detections (0 persons, 0 objects)
+🎯 Frame 1668: 1 detections (0 persons, 0 objects)
+🎯 Frame 1669: 1 detections (0 persons, 0 objects)
+🎯 Frame 1670: 1 detections (0 persons, 0 objects)
+🎯 Frame 1683: 1 detections (0 persons, 0 objects)
+🎯 Frame 1684: 1 detections (0 persons, 0 objects)
+🎯 Frame 1685: 1 detections (0 persons, 0 objects)
+🎯 Frame 1686: 1 detections (0 persons, 0 objects)
+🎯 Frame 1687: 1 detections (0 persons, 0 objects)
+🎯 Frame 1688: 1 detections (0 persons, 0 objects)
+🎯 Frame 1689: 1 detections (0 persons, 0 objects)
+🎯 Frame 1690: 1 detections (0 persons, 0 objects)
+🎯 Frame 1691: 1 detections (0 persons, 0 objects)
+🎯 Frame 1692: 1 detections (0 persons, 0 objects)
+🎯 Frame 1693: 1 detections (0 persons, 0 objects)
+🎯 Frame 1694: 1 detections (0 persons, 0 objects)
+🎯 Frame 1695: 1 detections (0 persons, 0 objects)
+🎯 Frame 1696: 1 detections (0 persons, 0 objects)
+🎯 Frame 1697: 1 detections (0 persons, 0 objects)
+🎯 Frame 1698: 1 detections (0 persons, 0 objects)
+🎯 Frame 1699: 1 detections (0 persons, 0 objects)
+Processed 1700 frames...
+🎯 Frame 1700: 1 detections (0 persons, 0 objects)
+🔄 Processed 1700/2189 frames (28.6 fps)
+🎯 Frame 1701: 1 detections (0 persons, 0 objects)
+🎯 Frame 1702: 1 detections (0 persons, 0 objects)
+🎯 Frame 1703: 1 detections (0 persons, 0 objects)
+🎯 Frame 1704: 1 detections (0 persons, 0 objects)
+🎯 Frame 1705: 1 detections (0 persons, 0 objects)
+🎯 Frame 1706: 1 detections (0 persons, 0 objects)
+🎯 Frame 1707: 1 detections (0 persons, 0 objects)
+🎯 Frame 1708: 1 detections (0 persons, 0 objects)
+🎯 Frame 1709: 1 detections (0 persons, 0 objects)
+🎯 Frame 1710: 1 detections (0 persons, 0 objects)
+🎯 Frame 1711: 1 detections (0 persons, 0 objects)
+🎯 Frame 1712: 1 detections (0 persons, 0 objects)
+🎯 Frame 1728: 1 detections (1 persons, 0 objects)
+🎯 Frame 1732: 2 detections (1 persons, 0 objects)
+🎯 Frame 1733: 2 detections (1 persons, 0 objects)
+🎯 Frame 1734: 1 detections (1 persons, 0 objects)
+🎯 Frame 1735: 1 detections (1 persons, 0 objects)
+🎯 Frame 1736: 1 detections (1 persons, 0 objects)
+🎯 Frame 1737: 1 detections (1 persons, 0 objects)
+🎯 Frame 1738: 2 detections (1 persons, 1 objects)
+🎯 Frame 1739: 2 detections (1 persons, 1 objects)
+🎯 Frame 1740: 2 detections (1 persons, 1 objects)
+🎯 Frame 1741: 1 detections (1 persons, 0 objects)
+🎯 Frame 1742: 1 detections (1 persons, 0 objects)
+🎯 Frame 1743: 2 detections (1 persons, 1 objects)
+🎯 Frame 1744: 2 detections (1 persons, 0 objects)
+🎯 Frame 1745: 1 detections (1 persons, 0 objects)
+🎯 Frame 1746: 1 detections (1 persons, 0 objects)
+🎯 Frame 1747: 2 detections (1 persons, 0 objects)
+🎯 Frame 1748: 2 detections (1 persons, 0 objects)
+🎯 Frame 1749: 2 detections (1 persons, 1 objects)
+🎯 Frame 1750: 2 detections (1 persons, 1 objects)
+🎯 Frame 1751: 2 detections (1 persons, 1 objects)
+🎯 Frame 1752: 3 detections (1 persons, 1 objects)
+🎯 Frame 1753: 2 detections (1 persons, 1 objects)
+🎯 Frame 1754: 2 detections (1 persons, 1 objects)
+🎯 Frame 1755: 2 detections (1 persons, 1 objects)
+🎯 Frame 1756: 3 detections (1 persons, 1 objects)
+🎯 Frame 1757: 2 detections (1 persons, 1 objects)
+🎯 Frame 1758: 2 detections (1 persons, 1 objects)
+🎯 Frame 1759: 2 detections (1 persons, 1 objects)
+🎯 Frame 1760: 2 detections (1 persons, 1 objects)
+🎯 Frame 1761: 2 detections (1 persons, 1 objects)
+🎯 Frame 1762: 2 detections (1 persons, 1 objects)
+🎯 Frame 1763: 2 detections (1 persons, 1 objects)
+🎯 Frame 1764: 2 detections (1 persons, 1 objects)
+🎯 Frame 1765: 3 detections (1 persons, 1 objects)
+🎯 Frame 1766: 3 detections (1 persons, 1 objects)
+🎯 Frame 1767: 2 detections (1 persons, 1 objects)
+🎯 Frame 1768: 2 detections (1 persons, 1 objects)
+🎯 Frame 1769: 2 detections (1 persons, 1 objects)
+🎯 Frame 1770: 2 detections (1 persons, 1 objects)
+🎯 Frame 1771: 2 detections (1 persons, 1 objects)
+🎯 Frame 1772: 2 detections (1 persons, 1 objects)
+🎯 Frame 1773: 2 detections (1 persons, 1 objects)
+🎯 Frame 1774: 2 detections (1 persons, 1 objects)
+🎯 Frame 1775: 2 detections (1 persons, 1 objects)
+🎯 Frame 1776: 2 detections (1 persons, 1 objects)
+🎯 Frame 1777: 2 detections (1 persons, 1 objects)
+🎯 Frame 1778: 2 detections (1 persons, 1 objects)
+🎯 Frame 1779: 2 detections (1 persons, 1 objects)
+🎯 Frame 1780: 2 detections (1 persons, 1 objects)
+🎯 Frame 1781: 2 detections (1 persons, 1 objects)
+🎯 Frame 1782: 2 detections (1 persons, 1 objects)
+🎯 Frame 1783: 2 detections (1 persons, 1 objects)
+🎯 Frame 1784: 2 detections (1 persons, 1 objects)
+🎯 Frame 1785: 2 detections (1 persons, 1 objects)
+🎯 Frame 1786: 2 detections (1 persons, 1 objects)
+🎯 Frame 1787: 2 detections (1 persons, 1 objects)
+🎯 Frame 1788: 2 detections (1 persons, 1 objects)
+🎯 Frame 1789: 2 detections (1 persons, 1 objects)
+🎯 Frame 1790: 2 detections (1 persons, 1 objects)
+🎯 Frame 1791: 2 detections (1 persons, 1 objects)
+🎯 Frame 1792: 2 detections (1 persons, 1 objects)
+🎯 Frame 1793: 2 detections (1 persons, 1 objects)
+🎯 Frame 1794: 2 detections (1 persons, 1 objects)
+🎯 Frame 1795: 2 detections (1 persons, 1 objects)
+🎯 Frame 1796: 2 detections (1 persons, 1 objects)
+🎯 Frame 1797: 2 detections (1 persons, 1 objects)
+🎯 Frame 1798: 2 detections (1 persons, 1 objects)
+🎯 Frame 1799: 2 detections (1 persons, 1 objects)
+Processed 1800 frames...
+🎯 Frame 1800: 2 detections (1 persons, 1 objects)
+🔄 Processed 1800/2189 frames (28.6 fps)
+🎯 Frame 1801: 2 detections (1 persons, 1 objects)
+🎯 Frame 1802: 2 detections (1 persons, 0 objects)
+🎯 Frame 1803: 2 detections (1 persons, 0 objects)
+🎯 Frame 1804: 2 detections (1 persons, 0 objects)
+🎯 Frame 1805: 3 detections (1 persons, 1 objects)
+🎯 Frame 1806: 3 detections (1 persons, 1 objects)
+🎯 Frame 1807: 2 detections (1 persons, 0 objects)
+🎯 Frame 1808: 3 detections (1 persons, 1 objects)
+🎯 Frame 1809: 3 detections (1 persons, 1 objects)
+🎯 Frame 1810: 2 detections (1 persons, 1 objects)
+🎯 Frame 1811: 3 detections (1 persons, 1 objects)
+🎯 Frame 1812: 3 detections (1 persons, 1 objects)
+🎯 Frame 1813: 3 detections (1 persons, 1 objects)
+🎯 Frame 1814: 3 detections (1 persons, 1 objects)
+🎯 Frame 1815: 3 detections (1 persons, 1 objects)
+🎯 Frame 1816: 3 detections (1 persons, 1 objects)
+🎯 Frame 1817: 3 detections (1 persons, 1 objects)
+🎯 Frame 1818: 3 detections (1 persons, 1 objects)
+🎯 Frame 1819: 3 detections (1 persons, 1 objects)
+🎯 Frame 1820: 3 detections (1 persons, 1 objects)
+🎯 Frame 1821: 3 detections (1 persons, 1 objects)
+🎯 Frame 1822: 3 detections (1 persons, 1 objects)
+🎯 Frame 1823: 3 detections (1 persons, 1 objects)
+🎯 Frame 1824: 3 detections (1 persons, 1 objects)
+🎯 Frame 1825: 3 detections (1 persons, 1 objects)
+🎯 Frame 1826: 3 detections (1 persons, 1 objects)
+🎯 Frame 1827: 3 detections (1 persons, 1 objects)
+🎯 Frame 1828: 3 detections (1 persons, 1 objects)
+🎯 Frame 1829: 3 detections (1 persons, 1 objects)
+🎯 Frame 1830: 3 detections (1 persons, 1 objects)
+🎯 Frame 1831: 3 detections (1 persons, 1 objects)
+🎯 Frame 1832: 3 detections (1 persons, 1 objects)
+🎯 Frame 1833: 3 detections (1 persons, 1 objects)
+🎯 Frame 1834: 3 detections (1 persons, 1 objects)
+🎯 Frame 1835: 3 detections (1 persons, 1 objects)
+🎯 Frame 1836: 2 detections (1 persons, 1 objects)
+🎯 Frame 1837: 3 detections (1 persons, 1 objects)
+🎯 Frame 1838: 2 detections (1 persons, 1 objects)
+🎯 Frame 1839: 2 detections (1 persons, 1 objects)
+🎯 Frame 1840: 2 detections (1 persons, 1 objects)
+🎯 Frame 1841: 3 detections (1 persons, 1 objects)
+🎯 Frame 1842: 2 detections (1 persons, 1 objects)
+🎯 Frame 1843: 3 detections (1 persons, 1 objects)
+🎯 Frame 1844: 2 detections (1 persons, 1 objects)
+🎯 Frame 1845: 2 detections (1 persons, 1 objects)
+🎯 Frame 1846: 2 detections (1 persons, 1 objects)
+🎯 Frame 1847: 2 detections (1 persons, 1 objects)
+🎯 Frame 1848: 2 detections (1 persons, 1 objects)
+🎯 Frame 1849: 2 detections (1 persons, 1 objects)
+🎯 Frame 1850: 2 detections (1 persons, 1 objects)
+🎯 Frame 1851: 2 detections (1 persons, 1 objects)
+🎯 Frame 1852: 3 detections (1 persons, 1 objects)
+🎯 Frame 1853: 2 detections (1 persons, 0 objects)
+🎯 Frame 1854: 3 detections (1 persons, 1 objects)
+🎯 Frame 1855: 2 detections (1 persons, 1 objects)
+🎯 Frame 1856: 2 detections (1 persons, 1 objects)
+🎯 Frame 1857: 2 detections (1 persons, 1 objects)
+🎯 Frame 1858: 2 detections (1 persons, 0 objects)
+🎯 Frame 1859: 3 detections (1 persons, 1 objects)
+🎯 Frame 1860: 3 detections (1 persons, 1 objects)
+🎯 Frame 1861: 1 detections (1 persons, 0 objects)
+🎯 Frame 1862: 1 detections (1 persons, 0 objects)
+🎯 Frame 1863: 1 detections (1 persons, 0 objects)
+🎯 Frame 1872: 1 detections (0 persons, 1 objects)
+🎯 Frame 1880: 1 detections (0 persons, 1 objects)
+🎯 Frame 1881: 1 detections (0 persons, 1 objects)
+🎯 Frame 1882: 1 detections (0 persons, 1 objects)
+🎯 Frame 1883: 1 detections (0 persons, 1 objects)
+🎯 Frame 1884: 1 detections (0 persons, 1 objects)
+🎯 Frame 1886: 1 detections (0 persons, 1 objects)
+🎯 Frame 1887: 1 detections (0 persons, 1 objects)
+🎯 Frame 1888: 1 detections (0 persons, 1 objects)
+🎯 Frame 1889: 1 detections (0 persons, 1 objects)
+🎯 Frame 1890: 1 detections (0 persons, 1 objects)
+🎯 Frame 1891: 1 detections (0 persons, 1 objects)
+🎯 Frame 1894: 1 detections (0 persons, 1 objects)
+🎯 Frame 1895: 1 detections (0 persons, 1 objects)
+🎯 Frame 1896: 1 detections (0 persons, 1 objects)
+🎯 Frame 1897: 1 detections (0 persons, 1 objects)
+🎯 Frame 1898: 1 detections (0 persons, 1 objects)
+🎯 Frame 1899: 1 detections (0 persons, 1 objects)
+Processed 1900 frames...
+🎯 Frame 1900: 1 detections (0 persons, 1 objects)
+🔄 Processed 1900/2189 frames (28.6 fps)
+🎯 Frame 1901: 1 detections (0 persons, 1 objects)
+🎯 Frame 1902: 1 detections (0 persons, 1 objects)
+🎯 Frame 1908: 1 detections (0 persons, 1 objects)
+🎯 Frame 1909: 1 detections (0 persons, 1 objects)
+🎯 Frame 1910: 1 detections (0 persons, 1 objects)
+🎯 Frame 1911: 1 detections (0 persons, 1 objects)
+🎯 Frame 1912: 1 detections (0 persons, 1 objects)
+🎯 Frame 1913: 1 detections (0 persons, 1 objects)
+🎯 Frame 1914: 1 detections (0 persons, 1 objects)
+🎯 Frame 1915: 1 detections (0 persons, 1 objects)
+🎯 Frame 1916: 1 detections (0 persons, 1 objects)
+🎯 Frame 1917: 1 detections (0 persons, 1 objects)
+🎯 Frame 1918: 1 detections (0 persons, 1 objects)
+🎯 Frame 1920: 1 detections (0 persons, 1 objects)
+🎯 Frame 1922: 1 detections (0 persons, 1 objects)
+🎯 Frame 1923: 1 detections (0 persons, 1 objects)
+🎯 Frame 1924: 1 detections (0 persons, 1 objects)
+🎯 Frame 1946: 1 detections (0 persons, 1 objects)
+🎯 Frame 1947: 1 detections (0 persons, 1 objects)
+🎯 Frame 1948: 1 detections (0 persons, 1 objects)
+🎯 Frame 1949: 1 detections (0 persons, 1 objects)
+🎯 Frame 1950: 1 detections (0 persons, 1 objects)
+🎯 Frame 1951: 1 detections (0 persons, 1 objects)
+🎯 Frame 1952: 1 detections (0 persons, 1 objects)
+🎯 Frame 1953: 1 detections (0 persons, 1 objects)
+🎯 Frame 1954: 1 detections (0 persons, 1 objects)
+🎯 Frame 1955: 1 detections (0 persons, 1 objects)
+🎯 Frame 1956: 1 detections (0 persons, 1 objects)
+🎯 Frame 1961: 1 detections (0 persons, 1 objects)
+🎯 Frame 1962: 1 detections (0 persons, 1 objects)
+🎯 Frame 1963: 1 detections (0 persons, 1 objects)
+🎯 Frame 1964: 1 detections (0 persons, 1 objects)
+🎯 Frame 1965: 1 detections (0 persons, 1 objects)
+🎯 Frame 1966: 1 detections (0 persons, 1 objects)
+🎯 Frame 1967: 1 detections (0 persons, 1 objects)
+🎯 Frame 1968: 1 detections (0 persons, 1 objects)
+🎯 Frame 1969: 1 detections (0 persons, 1 objects)
+🎯 Frame 1970: 1 detections (0 persons, 1 objects)
+🎯 Frame 1971: 1 detections (0 persons, 1 objects)
+🎯 Frame 1972: 1 detections (0 persons, 1 objects)
+🎯 Frame 1973: 1 detections (0 persons, 1 objects)
+🎯 Frame 1974: 1 detections (0 persons, 1 objects)
+🎯 Frame 1975: 1 detections (0 persons, 1 objects)
+🎯 Frame 1976: 1 detections (0 persons, 1 objects)
+🎯 Frame 1977: 1 detections (0 persons, 1 objects)
+🎯 Frame 1978: 1 detections (0 persons, 1 objects)
+🎯 Frame 1979: 1 detections (0 persons, 1 objects)
+🎯 Frame 1980: 1 detections (0 persons, 1 objects)
+🎯 Frame 1981: 1 detections (0 persons, 1 objects)
+🎯 Frame 1982: 1 detections (0 persons, 1 objects)
+🎯 Frame 1983: 1 detections (0 persons, 1 objects)
+🎯 Frame 1984: 1 detections (0 persons, 1 objects)
+🎯 Frame 1985: 1 detections (0 persons, 1 objects)
+🎯 Frame 1986: 1 detections (0 persons, 1 objects)
+🎯 Frame 1987: 1 detections (0 persons, 1 objects)
+🎯 Frame 1988: 2 detections (0 persons, 1 objects)
+🎯 Frame 1989: 2 detections (0 persons, 1 objects)
+🎯 Frame 1990: 2 detections (0 persons, 1 objects)
+🎯 Frame 1991: 2 detections (0 persons, 1 objects)
+🎯 Frame 1992: 1 detections (0 persons, 1 objects)
+🎯 Frame 1993: 1 detections (0 persons, 1 objects)
+🎯 Frame 1994: 2 detections (0 persons, 1 objects)
+🎯 Frame 1995: 2 detections (0 persons, 1 objects)
+🎯 Frame 1996: 2 detections (0 persons, 1 objects)
+🎯 Frame 1997: 1 detections (0 persons, 1 objects)
+🎯 Frame 1998: 1 detections (0 persons, 1 objects)
+🎯 Frame 1999: 1 detections (0 persons, 1 objects)
+Processed 2000 frames...
+🎯 Frame 2000: 2 detections (0 persons, 1 objects)
+🔄 Processed 2000/2189 frames (28.6 fps)
+🎯 Frame 2001: 2 detections (0 persons, 1 objects)
+🎯 Frame 2002: 2 detections (0 persons, 1 objects)
+🎯 Frame 2003: 3 detections (1 persons, 1 objects)
+🎯 Frame 2004: 3 detections (1 persons, 1 objects)
+🎯 Frame 2005: 3 detections (1 persons, 1 objects)
+🎯 Frame 2006: 3 detections (1 persons, 1 objects)
+🎯 Frame 2007: 3 detections (1 persons, 1 objects)
+🎯 Frame 2008: 3 detections (1 persons, 1 objects)
+🎯 Frame 2009: 2 detections (1 persons, 1 objects)
+🎯 Frame 2010: 4 detections (2 persons, 1 objects)
+🎯 Frame 2011: 3 detections (2 persons, 1 objects)
+🎯 Frame 2012: 4 detections (2 persons, 0 objects)
+🎯 Frame 2013: 4 detections (2 persons, 0 objects)
+🎯 Frame 2014: 4 detections (2 persons, 0 objects)
+🎯 Frame 2015: 4 detections (2 persons, 1 objects)
+🎯 Frame 2016: 4 detections (2 persons, 0 objects)
+🎯 Frame 2017: 3 detections (2 persons, 0 objects)
+🎯 Frame 2018: 2 detections (2 persons, 0 objects)
+🎯 Frame 2019: 3 detections (2 persons, 0 objects)
+🎯 Frame 2020: 3 detections (2 persons, 0 objects)
+🎯 Frame 2021: 3 detections (2 persons, 0 objects)
+🎯 Frame 2022: 2 detections (2 persons, 0 objects)
+🎯 Frame 2023: 3 detections (2 persons, 1 objects)
+🎯 Frame 2024: 3 detections (2 persons, 1 objects)
+🎯 Frame 2025: 3 detections (2 persons, 1 objects)
+🎯 Frame 2026: 3 detections (2 persons, 1 objects)
+🎯 Frame 2027: 3 detections (2 persons, 1 objects)
+🎯 Frame 2028: 3 detections (2 persons, 1 objects)
+🎯 Frame 2029: 3 detections (2 persons, 1 objects)
+🎯 Frame 2030: 3 detections (2 persons, 1 objects)
+🎯 Frame 2031: 3 detections (2 persons, 1 objects)
+🎯 Frame 2032: 3 detections (2 persons, 1 objects)
+🎯 Frame 2033: 3 detections (2 persons, 1 objects)
+🎯 Frame 2034: 3 detections (2 persons, 1 objects)
+🎯 Frame 2035: 3 detections (2 persons, 1 objects)
+🎯 Frame 2036: 2 detections (2 persons, 0 objects)
+🎯 Frame 2037: 2 detections (2 persons, 0 objects)
+🎯 Frame 2038: 2 detections (2 persons, 0 objects)
+🎯 Frame 2039: 3 detections (2 persons, 0 objects)
+🎯 Frame 2040: 4 detections (2 persons, 0 objects)
+🎯 Frame 2041: 4 detections (2 persons, 0 objects)
+🎯 Frame 2042: 3 detections (2 persons, 0 objects)
+🎯 Frame 2043: 3 detections (2 persons, 0 objects)
+🎯 Frame 2044: 3 detections (2 persons, 0 objects)
+🎯 Frame 2045: 3 detections (2 persons, 1 objects)
+🎯 Frame 2046: 4 detections (2 persons, 1 objects)
+🎯 Frame 2047: 4 detections (2 persons, 1 objects)
+🎯 Frame 2048: 4 detections (2 persons, 0 objects)
+🎯 Frame 2049: 4 detections (2 persons, 0 objects)
+🎯 Frame 2050: 4 detections (2 persons, 0 objects)
+🎯 Frame 2051: 4 detections (2 persons, 1 objects)
+🎯 Frame 2052: 4 detections (2 persons, 1 objects)
+🎯 Frame 2053: 4 detections (2 persons, 1 objects)
+🎯 Frame 2054: 4 detections (2 persons, 1 objects)
+🎯 Frame 2055: 5 detections (2 persons, 1 objects)
+🎯 Frame 2056: 5 detections (2 persons, 1 objects)
+🎯 Frame 2057: 5 detections (2 persons, 1 objects)
+🎯 Frame 2058: 5 detections (2 persons, 1 objects)
+🎯 Frame 2059: 3 detections (2 persons, 0 objects)
+🎯 Frame 2060: 4 detections (2 persons, 1 objects)
+🎯 Frame 2061: 3 detections (2 persons, 0 objects)
+🎯 Frame 2062: 3 detections (2 persons, 0 objects)
+🎯 Frame 2063: 4 detections (2 persons, 1 objects)
+🎯 Frame 2064: 3 detections (2 persons, 0 objects)
+🎯 Frame 2065: 3 detections (2 persons, 0 objects)
+🎯 Frame 2066: 3 detections (2 persons, 0 objects)
+🎯 Frame 2067: 3 detections (2 persons, 0 objects)
+🎯 Frame 2068: 3 detections (2 persons, 0 objects)
+🎯 Frame 2069: 4 detections (2 persons, 0 objects)
+🎯 Frame 2070: 3 detections (2 persons, 1 objects)
+🎯 Frame 2071: 4 detections (2 persons, 1 objects)
+🎯 Frame 2072: 3 detections (2 persons, 1 objects)
+🎯 Frame 2073: 4 detections (2 persons, 0 objects)
+🎯 Frame 2074: 4 detections (2 persons, 0 objects)
+🎯 Frame 2075: 5 detections (2 persons, 1 objects)
+🎯 Frame 2076: 3 detections (2 persons, 1 objects)
+🎯 Frame 2077: 3 detections (2 persons, 1 objects)
+🎯 Frame 2078: 3 detections (2 persons, 1 objects)
+🎯 Frame 2079: 3 detections (2 persons, 1 objects)
+🎯 Frame 2080: 3 detections (2 persons, 1 objects)
+🎯 Frame 2081: 3 detections (2 persons, 1 objects)
+🎯 Frame 2082: 3 detections (2 persons, 1 objects)
+🎯 Frame 2083: 5 detections (2 persons, 1 objects)
+🎯 Frame 2084: 4 detections (2 persons, 1 objects)
+🎯 Frame 2085: 4 detections (2 persons, 1 objects)
+🎯 Frame 2086: 4 detections (2 persons, 1 objects)
+🎯 Frame 2087: 3 detections (2 persons, 1 objects)
+🎯 Frame 2088: 3 detections (2 persons, 1 objects)
+🎯 Frame 2089: 3 detections (2 persons, 1 objects)
+🎯 Frame 2090: 3 detections (2 persons, 1 objects)
+🎯 Frame 2091: 3 detections (2 persons, 1 objects)
+🎯 Frame 2092: 3 detections (2 persons, 1 objects)
+🎯 Frame 2093: 3 detections (2 persons, 1 objects)
+🎯 Frame 2094: 3 detections (2 persons, 1 objects)
+🎯 Frame 2095: 3 detections (2 persons, 1 objects)
+🎯 Frame 2096: 3 detections (2 persons, 1 objects)
+🎯 Frame 2097: 3 detections (2 persons, 1 objects)
+🎯 Frame 2098: 3 detections (2 persons, 1 objects)
+🎯 Frame 2099: 3 detections (2 persons, 0 objects)
+Processed 2100 frames...
+🎯 Frame 2100: 4 detections (2 persons, 1 objects)
+🔄 Processed 2100/2189 frames (28.6 fps)
+🎯 Frame 2101: 4 detections (2 persons, 1 objects)
+🎯 Frame 2102: 3 detections (2 persons, 0 objects)
+🎯 Frame 2103: 3 detections (2 persons, 1 objects)
+🎯 Frame 2104: 3 detections (2 persons, 1 objects)
+🎯 Frame 2105: 4 detections (2 persons, 0 objects)
+🎯 Frame 2106: 3 detections (2 persons, 0 objects)
+🎯 Frame 2107: 4 detections (2 persons, 1 objects)
+🎯 Frame 2108: 4 detections (2 persons, 0 objects)
+🎯 Frame 2109: 4 detections (2 persons, 1 objects)
+🎯 Frame 2110: 4 detections (2 persons, 1 objects)
+🎯 Frame 2111: 4 detections (2 persons, 1 objects)
+🎯 Frame 2112: 4 detections (2 persons, 1 objects)
+🎯 Frame 2113: 4 detections (2 persons, 1 objects)
+🎯 Frame 2114: 3 detections (2 persons, 1 objects)
+🎯 Frame 2115: 3 detections (2 persons, 1 objects)
+🎯 Frame 2116: 3 detections (2 persons, 1 objects)
+🎯 Frame 2117: 3 detections (2 persons, 1 objects)
+🎯 Frame 2118: 3 detections (2 persons, 1 objects)
+🎯 Frame 2119: 3 detections (2 persons, 1 objects)
+🎯 Frame 2120: 4 detections (2 persons, 1 objects)
+🎯 Frame 2121: 4 detections (2 persons, 1 objects)
+🎯 Frame 2122: 4 detections (2 persons, 1 objects)
+🎯 Frame 2123: 4 detections (2 persons, 1 objects)
+🎯 Frame 2124: 4 detections (2 persons, 1 objects)
+🎯 Frame 2125: 3 detections (2 persons, 1 objects)
+🎯 Frame 2126: 3 detections (2 persons, 1 objects)
+🎯 Frame 2127: 3 detections (2 persons, 1 objects)
+🎯 Frame 2128: 3 detections (2 persons, 1 objects)
+🎯 Frame 2129: 3 detections (2 persons, 1 objects)
+🎯 Frame 2130: 3 detections (2 persons, 1 objects)
+🎯 Frame 2131: 3 detections (2 persons, 1 objects)
+🎯 Frame 2132: 3 detections (2 persons, 1 objects)
+🎯 Frame 2133: 3 detections (2 persons, 1 objects)
+🎯 Frame 2134: 3 detections (2 persons, 1 objects)
+🎯 Frame 2135: 3 detections (2 persons, 1 objects)
+🎯 Frame 2136: 4 detections (2 persons, 1 objects)
+🎯 Frame 2137: 2 detections (1 persons, 0 objects)
+🎯 Frame 2138: 3 detections (1 persons, 1 objects)
+🎯 Frame 2139: 2 detections (1 persons, 1 objects)
+🎯 Frame 2140: 2 detections (1 persons, 1 objects)
+🎯 Frame 2141: 2 detections (1 persons, 1 objects)
+🎯 Frame 2142: 2 detections (1 persons, 1 objects)
+🎯 Frame 2143: 2 detections (1 persons, 1 objects)
+🎯 Frame 2144: 2 detections (1 persons, 1 objects)
+🎯 Frame 2145: 2 detections (1 persons, 1 objects)
+🎯 Frame 2146: 2 detections (1 persons, 1 objects)
+🎯 Frame 2147: 2 detections (1 persons, 1 objects)
+🎯 Frame 2148: 2 detections (1 persons, 1 objects)
+🎯 Frame 2149: 2 detections (1 persons, 1 objects)
+🎯 Frame 2150: 2 detections (1 persons, 1 objects)
+🎯 Frame 2151: 1 detections (1 persons, 0 objects)
+🎯 Frame 2152: 1 detections (1 persons, 0 objects)
+🎯 Frame 2153: 1 detections (1 persons, 0 objects)
+🎯 Frame 2154: 1 detections (1 persons, 0 objects)
+🎯 Frame 2179: 1 detections (0 persons, 0 objects)
+🎯 Frame 2181: 1 detections (0 persons, 0 objects)
+🎯 Frame 2182: 1 detections (0 persons, 0 objects)
+🎯 Frame 2183: 1 detections (0 persons, 0 objects)
+🎯 Frame 2184: 1 detections (0 persons, 0 objects)
+🎯 Frame 2185: 1 detections (0 persons, 0 objects)
+🎯 Frame 2186: 1 detections (0 persons, 0 objects)
+🎯 Frame 2187: 1 detections (0 persons, 0 objects)
+📹 End of video reached at frame 2189
+Video capture released. Total frames in video: 2189
+✅ Saved output video to /home/ing-bwrxrp/Unattended-Object-Detection/outputs/video1_inference_20250919_064843.mp4
+📊 Processed 2189 frames with detections
+⚠️ Total unattended alerts: 6
+⏱️ Processing time: 76.5s (28.6 fps)
+✅ Video processing completed successfully!
+[2025-09-19 06:51:21] ✓ Model3 processing completed successfully in 77 seconds
+[2025-09-19 06:51:21] ==================================
+[2025-09-19 06:51:21] JOB COMPLETION SUMMARY
+[2025-09-19 06:51:21] ==================================
+[2025-09-19 06:51:21] Job completed successfully!
+[2025-09-19 06:51:21] Total job duration: 156 seconds
+[2025-09-19 06:51:21] Inference duration: 79 seconds
+[2025-09-19 06:51:21] Model3 duration: 77 seconds
+[2025-09-19 06:51:21] Final output files:
+[2025-09-19 06:51:21]   - /home/ing-bwrxrp/Unattended-Object-Detection/outputs/video1_inference_20250919_064843.mp4 (12M)
+[2025-09-19 06:51:21]   - client_v2_7635.out (8.0K)
+[2025-09-19 06:51:21]   - client_v2_7650.out (128K)
+[2025-09-19 06:51:21]   - client_v2_7651.out (128K)
+[2025-09-19 06:51:21]   - client_v2_7652.out (48K)
+[2025-09-19 06:51:21]   - client_v2_7653.out (24K)
+[2025-09-19 06:51:21]   - client_v2_7654.out (24K)
+[2025-09-19 06:51:21]   - client_v2_7658.out (48K)
+[2025-09-19 06:51:21]   - client_v2_7659.out (96K)
+[2025-09-19 06:51:21]   - client_v2_7660.out (96K)
+[2025-09-19 06:51:21]   - client_v2_7661.out (96K)
+[2025-09-19 06:51:21]   - client_v2_7662.out (96K)
+[2025-09-19 06:51:21]   - client_v2_7663.out (32K)
+[2025-09-19 06:51:21]   - client_v2_7664.out (32K)
+[2025-09-19 06:51:21]   - client_v2_7665.out (384K)
+[2025-09-19 06:51:21]   - client_v2_7666.out (160K)
+[2025-09-19 06:51:21]   - main.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7626.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7627.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7628.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7629.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7632.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7633.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7634.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7636.out (16K)
+[2025-09-19 06:51:21]   - triton_7645.out (16K)
+[2025-09-19 06:51:21]   - triton_7646.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7647.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7648.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7649.out (8.0K)
+[2025-09-19 06:51:21]   - triton_7657.out (8.0K)
+[2025-09-19 06:51:21]   - client_v2_7635.err (0)
+[2025-09-19 06:51:21]   - client_v2_7650.err (8.0K)
+[2025-09-19 06:51:21]   - client_v2_7651.err (0)
+[2025-09-19 06:51:21]   - client_v2_7652.err (0)
+[2025-09-19 06:51:21]   - client_v2_7653.err (0)
+[2025-09-19 06:51:21]   - client_v2_7654.err (0)
+[2025-09-19 06:51:21]   - client_v2_7658.err (0)
+[2025-09-19 06:51:21]   - client_v2_7659.err (0)
+[2025-09-19 06:51:21]   - client_v2_7660.err (0)
+[2025-09-19 06:51:21]   - client_v2_7661.err (0)
+[2025-09-19 06:51:21]   - client_v2_7662.err (0)
+[2025-09-19 06:51:21]   - client_v2_7663.err (0)
+[2025-09-19 06:51:21]   - client_v2_7664.err (0)
+[2025-09-19 06:51:21]   - client_v2_7665.err (0)
+[2025-09-19 06:51:21]   - client_v2_7666.err (0)
+[2025-09-19 06:51:21]   - triton_7626.err (0)
+[2025-09-19 06:51:21]   - triton_7627.err (0)
+[2025-09-19 06:51:21]   - triton_7628.err (0)
+[2025-09-19 06:51:21]   - triton_7629.err (8.0K)
+[2025-09-19 06:51:21]   - triton_7632.err (8.0K)
+[2025-09-19 06:51:21]   - triton_7633.err (224K)
+[2025-09-19 06:51:21]   - triton_7634.err (224K)
+[2025-09-19 06:51:21]   - triton_7636.err (8.0K)
+[2025-09-19 06:51:21]   - triton_7645.err (8.0K)
+[2025-09-19 06:51:21]   - triton_7646.err (224K)
+[2025-09-19 06:51:21]   - triton_7647.err (224K)
+[2025-09-19 06:51:21]   - triton_7648.err (224K)
+[2025-09-19 06:51:21]   - triton_7649.err (20M)
+[2025-09-19 06:51:21]   - triton_7657.err (54M)
+[2025-09-19 06:51:21] Job finished at: Fri Sep 19 06:51:21 AM CEST 2025
+[2025-09-19 06:51:21] ==================================

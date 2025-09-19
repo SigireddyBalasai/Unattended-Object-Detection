@@ -1,0 +1,1354 @@
+[2025-09-19 05:27:56] ==================================
+[2025-09-19 05:27:56] TRITON CLIENT V2 JOB STARTING
+[2025-09-19 05:27:56] ==================================
+[2025-09-19 05:27:56] Job ID: 7662
+[2025-09-19 05:27:56] Job Name: triton-client-v2
+[2025-09-19 05:27:56] Node: gpu001
+[2025-09-19 05:27:56] Working directory: /home/ing-bwrxrp/Unattended-Object-Detection
+[2025-09-19 05:27:56] CPUs allocated: 2
+[2025-09-19 05:27:56] GPUs allocated: N/A
+[2025-09-19 05:27:56] Memory allocated: N/AMB
+[2025-09-19 05:27:56] Time limit: N/A
+[2025-09-19 05:27:56] User: ing-bwrxrp
+[2025-09-19 05:27:56] System information:
+[2025-09-19 05:27:56]   - CPU info: 2 cores available
+[2025-09-19 05:27:56]   - Memory: 2.0Ti total
+[2025-09-19 05:27:56]   - Disk space: 8.0E available
+[2025-09-19 05:27:56] GPU information:
+[2025-09-19 05:27:56]   - GPU: NVIDIA H100 80GB HBM3, 81559, 79474
+[2025-09-19 05:27:57] Checking required files...
+[2025-09-19 05:27:57]   ✓ Video file found: /home/ing-bwrxrp/Unattended-Object-Detection/input_file_ppt.mp4 (22M)
+[2025-09-19 05:27:57]   ✓ Triton client script found
+[2025-09-19 05:27:57]   ✓ Model3 script found
+[2025-09-19 05:27:57] Python environment check...
+[2025-09-19 05:27:57]   ✓ UV package manager found: uv 0.8.14
+[2025-09-19 05:27:57] ==================================
+[2025-09-19 05:27:57] DETECTING TRITON SERVER
+[2025-09-19 05:27:57] ==================================
+[2025-09-19 05:27:57] ✓ Detected Triton server on node: gpu001
+[2025-09-19 05:27:57] ✓ Retrieved Triton server ports: HTTP=8002, gRPC=8726, Metrics=8503
+[2025-09-19 05:27:57] ==================================
+[2025-09-19 05:27:57] WAITING FOR TRITON SERVER
+[2025-09-19 05:27:57] ==================================
+[2025-09-19 05:27:57] Checking Triton server availability at gpu001:8002...
+Waiting for Triton server on node: gpu001:8002
+✓ Triton server is ready on gpu001:8002
+[2025-09-19 05:27:57] Performing additional health checks...
+[2025-09-19 05:27:57]   ✓ Server live check: OK
+[2025-09-19 05:27:57]   ✓ Server metadata accessible
+[2025-09-19 05:27:57] Server metadata:
+{
+  "name": "triton",
+  "version": "2.49.0",
+  "extensions": [
+    "classification",
+    "sequence",
+    "model_repository",
+    "model_repository(unload_dependents)",
+    "schedule_policy",
+    "model_configuration",
+    "system_shared_memory",
+    "cuda_shared_memory",
+    "binary_tensor_data",
+    "parameters",
+    "statistics",
+    "trace",
+    "logging"
+  ]
+}
+[2025-09-19 05:27:57] Listing models on Triton server...
+[2025-09-19 05:27:57] Models available on the server:
+{
+  "error": "Not Found"
+}
+[2025-09-19 05:27:57] ==================================
+[2025-09-19 05:27:57] MODEL STATUS CHECK
+[2025-09-19 05:27:57] ==================================
+[2025-09-19 05:27:57] Checking model 'rtdetr' status...
+[2025-09-19 05:27:57] Model status response received:
+{
+  "name": "rtdetr",
+  "versions": [
+    "1"
+  ],
+  "platform": "onnxruntime_onnx",
+  "inputs": [
+    {
+      "name": "images",
+      "datatype": "FP32",
+      "shape": [
+        1,
+        3,
+        640,
+        640
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output0",
+      "datatype": "FP32",
+      "shape": [
+        1,
+        300,
+        84
+      ]
+    }
+  ]
+}
+[2025-09-19 05:27:57] ⚠ WARNING: Model 'rtdetr' may not be ready
+[2025-09-19 05:27:57] Retrieving model metadata...
+[2025-09-19 05:27:57] Model configuration:
+{
+  "name": "rtdetr",
+  "platform": "onnxruntime_onnx",
+  "backend": "onnxruntime",
+  "runtime": "",
+  "version_policy": {
+    "latest": {
+      "num_versions": 1
+    }
+  },
+  "max_batch_size": 0,
+  "input": [
+    {
+      "name": "images",
+      "data_type": "TYPE_FP32",
+      "format": "FORMAT_NONE",
+      "dims": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "is_shape_tensor": false,
+      "allow_ragged_batch": false,
+      "optional": false,
+      "is_non_linear_format_io": false
+    }
+  ],
+  "output": [
+    {
+      "name": "output0",
+      "data_type": "TYPE_FP32",
+      "dims": [
+        1,
+        300,
+        84
+      ],
+      "label_filename": "",
+      "is_shape_tensor": false,
+      "is_non_linear_format_io": false
+    }
+  ],
+  "batch_input": [],
+  "batch_output": [],
+  "optimization": {
+    "priority": "PRIORITY_DEFAULT",
+    "input_pinned_memory": {
+      "enable": true
+    },
+    "output_pinned_memory": {
+      "enable": true
+    },
+    "gather_kernel_buffer_threshold": 0,
+    "eager_batching": false
+  },
+  "instance_group": [
+    {
+      "name": "rtdetr_0",
+      "kind": "KIND_GPU",
+      "count": 1,
+      "gpus": [
+        0
+      ],
+      "secondary_devices": [],
+      "profile": [],
+      "passive": false,
+      "host_policy": ""
+    }
+  ],
+  "default_model_filename": "model.onnx",
+  "cc_model_filenames": {},
+  "metric_tags": {},
+  "parameters": {
+    "intra_op_thread_count": {
+      "string_value": "1"
+    },
+    "inter_op_thread_count": {
+      "string_value": "1"
+    }
+  },
+  "model_warmup": []
+}
+[2025-09-19 05:27:57] ==================================
+[2025-09-19 05:27:57] STARTING VIDEO INFERENCE
+[2025-09-19 05:27:57] ==================================
+[2025-09-19 05:27:57] Running inference on /home/ing-bwrxrp/Unattended-Object-Detection/input_file_ppt.mp4 with confidence threshold 0.5...
+[2025-09-19 05:27:57] Inference parameters:
+[2025-09-19 05:27:57]   - Input video: /home/ing-bwrxrp/Unattended-Object-Detection/input_file_ppt.mp4
+[2025-09-19 05:27:57]   - Model name: rtdetr
+[2025-09-19 05:27:57]   - Server URL: gpu001:8002
+[2025-09-19 05:27:57]   - Output video: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_file_ppt_inference_20250919_052754.mp4
+[2025-09-19 05:27:57]   - Confidence threshold: 0.5
+[2025-09-19 05:27:57] Inference started at: Fri Sep 19 05:27:57 AM CEST 2025
+[2025-09-19 05:27:57] Executing triton_client.py...
+Connected to Triton server at gpu001:8002
+Error listing models: HTTP Error 404: Not Found
+Model 'rtdetr' is ready
+Video info: 1192x720, 30.0 FPS, 930 frames
+Starting inference...
+Processing frame 1/930Processing frame 2/930Processing frame 3/930Processing frame 4/930Processing frame 5/930Processing frame 6/930Processing frame 7/930Processing frame 8/930Processing frame 9/930Processing frame 10/930Processing frame 11/930Processing frame 12/930Processing frame 13/930Processing frame 14/930Processing frame 15/930Processing frame 16/930Processing frame 17/930Processing frame 18/930Processing frame 19/930Processing frame 20/930Processing frame 21/930Processing frame 22/930Processing frame 23/930Processing frame 24/930Processing frame 25/930Processing frame 26/930Processing frame 27/930Processing frame 28/930Processing frame 29/930Processing frame 30/930Processing frame 31/930Processing frame 32/930Processing frame 33/930Processing frame 34/930Processing frame 35/930Processing frame 36/930Processing frame 37/930Processing frame 38/930Processing frame 39/930Processing frame 40/930Processing frame 41/930Processing frame 42/930Processing frame 43/930Processing frame 44/930Processing frame 45/930Processing frame 46/930Processing frame 47/930Processing frame 48/930Processing frame 49/930Processing frame 50/930Processing frame 51/930Processing frame 52/930Processing frame 53/930Processing frame 54/930Processing frame 55/930Processing frame 56/930Processing frame 57/930Processing frame 58/930Processing frame 59/930Processing frame 60/930Processing frame 61/930Processing frame 62/930Processing frame 63/930Processing frame 64/930Processing frame 65/930Processing frame 66/930Processing frame 67/930Processing frame 68/930Processing frame 69/930Processing frame 70/930Processing frame 71/930Processing frame 72/930Processing frame 73/930Processing frame 74/930Processing frame 75/930Processing frame 76/930Processing frame 77/930Processing frame 78/930Processing frame 79/930Processing frame 80/930Processing frame 81/930Processing frame 82/930Processing frame 83/930Processing frame 84/930Processing frame 85/930Processing frame 86/930Processing frame 87/930Processing frame 88/930Processing frame 89/930Processing frame 90/930Processing frame 91/930Processing frame 92/930Processing frame 93/930Processing frame 94/930Processing frame 95/930Processing frame 96/930Processing frame 97/930Processing frame 98/930Processing frame 99/930Processing frame 100/930Processing frame 101/930Processing frame 102/930Processing frame 103/930Processing frame 104/930Processing frame 105/930Processing frame 106/930Processing frame 107/930Processing frame 108/930Processing frame 109/930Processing frame 110/930Processing frame 111/930Processing frame 112/930Processing frame 113/930Processing frame 114/930Processing frame 115/930Processing frame 116/930Processing frame 117/930Processing frame 118/930Processing frame 119/930Processing frame 120/930Processing frame 121/930Processing frame 122/930Processing frame 123/930Processing frame 124/930Processing frame 125/930Processing frame 126/930Processing frame 127/930Processing frame 128/930Processing frame 129/930Processing frame 130/930Processing frame 131/930Processing frame 132/930Processing frame 133/930Processing frame 134/930Processing frame 135/930Processing frame 136/930Processing frame 137/930Processing frame 138/930Processing frame 139/930Processing frame 140/930Processing frame 141/930Processing frame 142/930Processing frame 143/930Processing frame 144/930Processing frame 145/930Processing frame 146/930Processing frame 147/930Processing frame 148/930Processing frame 149/930Processing frame 150/930Processing frame 151/930Processing frame 152/930Processing frame 153/930Processing frame 154/930Processing frame 155/930Processing frame 156/930Processing frame 157/930Processing frame 158/930Processing frame 159/930Processing frame 160/930Processing frame 161/930Processing frame 162/930Processing frame 163/930Processing frame 164/930Processing frame 165/930Processing frame 166/930Processing frame 167/930Processing frame 168/930Processing frame 169/930Processing frame 170/930Processing frame 171/930Processing frame 172/930Processing frame 173/930Processing frame 174/930Processing frame 175/930Processing frame 176/930Processing frame 177/930Processing frame 178/930Processing frame 179/930Processing frame 180/930Processing frame 181/930Processing frame 182/930Processing frame 183/930Processing frame 184/930Processing frame 185/930Processing frame 186/930Processing frame 187/930Processing frame 188/930Processing frame 189/930Processing frame 190/930Processing frame 191/930Processing frame 192/930Processing frame 193/930Processing frame 194/930Processing frame 195/930Processing frame 196/930Processing frame 197/930Processing frame 198/930Processing frame 199/930Processing frame 200/930Processing frame 201/930Processing frame 202/930Processing frame 203/930Processing frame 204/930Processing frame 205/930Processing frame 206/930Processing frame 207/930Processing frame 208/930Processing frame 209/930Processing frame 210/930Processing frame 211/930Processing frame 212/930Processing frame 213/930Processing frame 214/930Processing frame 215/930Processing frame 216/930Processing frame 217/930Processing frame 218/930Processing frame 219/930Processing frame 220/930Processing frame 221/930Processing frame 222/930Processing frame 223/930Processing frame 224/930Processing frame 225/930Processing frame 226/930Processing frame 227/930Processing frame 228/930Processing frame 229/930Processing frame 230/930Processing frame 231/930Processing frame 232/930Processing frame 233/930Processing frame 234/930Processing frame 235/930Processing frame 236/930Processing frame 237/930Processing frame 238/930Processing frame 239/930Processing frame 240/930Processing frame 241/930Processing frame 242/930Processing frame 243/930Processing frame 244/930Processing frame 245/930Processing frame 246/930Processing frame 247/930Processing frame 248/930Processing frame 249/930Processing frame 250/930Processing frame 251/930Processing frame 252/930Processing frame 253/930Processing frame 254/930Processing frame 255/930Processing frame 256/930Processing frame 257/930Processing frame 258/930Processing frame 259/930Processing frame 260/930Processing frame 261/930Processing frame 262/930Processing frame 263/930Processing frame 264/930Processing frame 265/930Processing frame 266/930Processing frame 267/930Processing frame 268/930Processing frame 269/930Processing frame 270/930Processing frame 271/930Processing frame 272/930Processing frame 273/930Processing frame 274/930Processing frame 275/930Processing frame 276/930Processing frame 277/930Processing frame 278/930Processing frame 279/930Processing frame 280/930Processing frame 281/930Processing frame 282/930Processing frame 283/930Processing frame 284/930Processing frame 285/930Processing frame 286/930Processing frame 287/930Processing frame 288/930Processing frame 289/930Processing frame 290/930Processing frame 291/930Processing frame 292/930Processing frame 293/930Processing frame 294/930Processing frame 295/930Processing frame 296/930Processing frame 297/930Processing frame 298/930Processing frame 299/930Processing frame 300/930Processing frame 301/930Processing frame 302/930Processing frame 303/930Processing frame 304/930Processing frame 305/930Processing frame 306/930Processing frame 307/930Processing frame 308/930Processing frame 309/930Processing frame 310/930Processing frame 311/930Processing frame 312/930Processing frame 313/930Processing frame 314/930Processing frame 315/930Processing frame 316/930Processing frame 317/930Processing frame 318/930Processing frame 319/930Processing frame 320/930Processing frame 321/930Processing frame 322/930Processing frame 323/930Processing frame 324/930Processing frame 325/930Processing frame 326/930Processing frame 327/930Processing frame 328/930Processing frame 329/930Processing frame 330/930Processing frame 331/930Processing frame 332/930Processing frame 333/930Processing frame 334/930Processing frame 335/930Processing frame 336/930Processing frame 337/930Processing frame 338/930Processing frame 339/930Processing frame 340/930Processing frame 341/930Processing frame 342/930Processing frame 343/930Processing frame 344/930Processing frame 345/930Processing frame 346/930Processing frame 347/930Processing frame 348/930Processing frame 349/930Processing frame 350/930Processing frame 351/930Processing frame 352/930Processing frame 353/930Processing frame 354/930Processing frame 355/930Processing frame 356/930Processing frame 357/930Processing frame 358/930Processing frame 359/930Processing frame 360/930Processing frame 361/930Processing frame 362/930Processing frame 363/930Processing frame 364/930Processing frame 365/930Processing frame 366/930Processing frame 367/930Processing frame 368/930Processing frame 369/930Processing frame 370/930Processing frame 371/930Processing frame 372/930Processing frame 373/930Processing frame 374/930Processing frame 375/930Processing frame 376/930Processing frame 377/930Processing frame 378/930Processing frame 379/930Processing frame 380/930Processing frame 381/930Processing frame 382/930Processing frame 383/930Processing frame 384/930Processing frame 385/930Processing frame 386/930Processing frame 387/930Processing frame 388/930Processing frame 389/930Processing frame 390/930Processing frame 391/930Processing frame 392/930Processing frame 393/930Processing frame 394/930Processing frame 395/930Processing frame 396/930Processing frame 397/930Processing frame 398/930Processing frame 399/930Processing frame 400/930Processing frame 401/930Processing frame 402/930Processing frame 403/930Processing frame 404/930Processing frame 405/930Processing frame 406/930Processing frame 407/930Processing frame 408/930Processing frame 409/930Processing frame 410/930Processing frame 411/930Processing frame 412/930Processing frame 413/930Processing frame 414/930Processing frame 415/930Processing frame 416/930Processing frame 417/930Processing frame 418/930Processing frame 419/930Processing frame 420/930Processing frame 421/930Processing frame 422/930Processing frame 423/930Processing frame 424/930Processing frame 425/930Processing frame 426/930Processing frame 427/930Processing frame 428/930Processing frame 429/930Processing frame 430/930Processing frame 431/930Processing frame 432/930Processing frame 433/930Processing frame 434/930Processing frame 435/930Processing frame 436/930Processing frame 437/930Processing frame 438/930Processing frame 439/930Processing frame 440/930Processing frame 441/930Processing frame 442/930Processing frame 443/930Processing frame 444/930Processing frame 445/930Processing frame 446/930Processing frame 447/930Processing frame 448/930Processing frame 449/930Processing frame 450/930Processing frame 451/930Processing frame 452/930Processing frame 453/930Processing frame 454/930Processing frame 455/930Processing frame 456/930Processing frame 457/930Processing frame 458/930Processing frame 459/930Processing frame 460/930Processing frame 461/930Processing frame 462/930Processing frame 463/930Processing frame 464/930Processing frame 465/930Processing frame 466/930Processing frame 467/930Processing frame 468/930Processing frame 469/930Processing frame 470/930Processing frame 471/930Processing frame 472/930Processing frame 473/930Processing frame 474/930Processing frame 475/930Processing frame 476/930Processing frame 477/930Processing frame 478/930Processing frame 479/930Processing frame 480/930Processing frame 481/930Processing frame 482/930Processing frame 483/930Processing frame 484/930Processing frame 485/930Processing frame 486/930Processing frame 487/930Processing frame 488/930Processing frame 489/930Processing frame 490/930Processing frame 491/930Processing frame 492/930Processing frame 493/930Processing frame 494/930Processing frame 495/930Processing frame 496/930Processing frame 497/930Processing frame 498/930Processing frame 499/930Processing frame 500/930Processing frame 501/930Processing frame 502/930Processing frame 503/930Processing frame 504/930Processing frame 505/930Processing frame 506/930Processing frame 507/930Processing frame 508/930Processing frame 509/930Processing frame 510/930Processing frame 511/930Processing frame 512/930Processing frame 513/930Processing frame 514/930Processing frame 515/930Processing frame 516/930Processing frame 517/930Processing frame 518/930Processing frame 519/930Processing frame 520/930Processing frame 521/930Processing frame 522/930Processing frame 523/930Processing frame 524/930Processing frame 525/930Processing frame 526/930Processing frame 527/930Processing frame 528/930Processing frame 529/930Processing frame 530/930Processing frame 531/930Processing frame 532/930Processing frame 533/930Processing frame 534/930Processing frame 535/930Processing frame 536/930Processing frame 537/930Processing frame 538/930Processing frame 539/930Processing frame 540/930Processing frame 541/930Processing frame 542/930Processing frame 543/930Processing frame 544/930Processing frame 545/930Processing frame 546/930Processing frame 547/930Processing frame 548/930Processing frame 549/930Processing frame 550/930Processing frame 551/930Processing frame 552/930Processing frame 553/930Processing frame 554/930Processing frame 555/930Processing frame 556/930Processing frame 557/930Processing frame 558/930Processing frame 559/930Processing frame 560/930Processing frame 561/930Processing frame 562/930Processing frame 563/930Processing frame 564/930Processing frame 565/930Processing frame 566/930Processing frame 567/930Processing frame 568/930Processing frame 569/930Processing frame 570/930Processing frame 571/930Processing frame 572/930Processing frame 573/930Processing frame 574/930Processing frame 575/930Processing frame 576/930Processing frame 577/930Processing frame 578/930Processing frame 579/930Processing frame 580/930Processing frame 581/930Processing frame 582/930Processing frame 583/930Processing frame 584/930Processing frame 585/930Processing frame 586/930Processing frame 587/930Processing frame 588/930Processing frame 589/930Processing frame 590/930Processing frame 591/930Processing frame 592/930Processing frame 593/930Processing frame 594/930Processing frame 595/930Processing frame 596/930Processing frame 597/930Processing frame 598/930Processing frame 599/930Processing frame 600/930Processing frame 601/930Processing frame 602/930Processing frame 603/930Processing frame 604/930Processing frame 605/930Processing frame 606/930Processing frame 607/930Processing frame 608/930Processing frame 609/930Processing frame 610/930Processing frame 611/930Processing frame 612/930Processing frame 613/930Processing frame 614/930Processing frame 615/930Processing frame 616/930Processing frame 617/930Processing frame 618/930Processing frame 619/930Processing frame 620/930Processing frame 621/930Processing frame 622/930Processing frame 623/930Processing frame 624/930Processing frame 625/930Processing frame 626/930Processing frame 627/930Processing frame 628/930Processing frame 629/930Processing frame 630/930Processing frame 631/930Processing frame 632/930Processing frame 633/930Processing frame 634/930Processing frame 635/930Processing frame 636/930Processing frame 637/930Processing frame 638/930Processing frame 639/930Processing frame 640/930Processing frame 641/930Processing frame 642/930Processing frame 643/930Processing frame 644/930Processing frame 645/930Processing frame 646/930Processing frame 647/930Processing frame 648/930Processing frame 649/930Processing frame 650/930Processing frame 651/930Processing frame 652/930Processing frame 653/930Processing frame 654/930Processing frame 655/930Processing frame 656/930Processing frame 657/930Processing frame 658/930Processing frame 659/930Processing frame 660/930Processing frame 661/930Processing frame 662/930Processing frame 663/930Processing frame 664/930Processing frame 665/930Processing frame 666/930Processing frame 667/930Processing frame 668/930Processing frame 669/930Processing frame 670/930Processing frame 671/930Processing frame 672/930Processing frame 673/930Processing frame 674/930Processing frame 675/930Processing frame 676/930Processing frame 677/930Processing frame 678/930Processing frame 679/930Processing frame 680/930Processing frame 681/930Processing frame 682/930Processing frame 683/930Processing frame 684/930Processing frame 685/930Processing frame 686/930Processing frame 687/930Processing frame 688/930Processing frame 689/930Processing frame 690/930Processing frame 691/930Processing frame 692/930Processing frame 693/930Processing frame 694/930Processing frame 695/930Processing frame 696/930Processing frame 697/930Processing frame 698/930Processing frame 699/930Processing frame 700/930Processing frame 701/930Processing frame 702/930Processing frame 703/930Processing frame 704/930Processing frame 705/930Processing frame 706/930Processing frame 707/930Processing frame 708/930Processing frame 709/930Processing frame 710/930Processing frame 711/930Processing frame 712/930Processing frame 713/930Processing frame 714/930Processing frame 715/930Processing frame 716/930Processing frame 717/930Processing frame 718/930Processing frame 719/930Processing frame 720/930Processing frame 721/930Processing frame 722/930Processing frame 723/930Processing frame 724/930Processing frame 725/930Processing frame 726/930Processing frame 727/930Processing frame 728/930Processing frame 729/930Processing frame 730/930Processing frame 731/930Processing frame 732/930Processing frame 733/930Processing frame 734/930Processing frame 735/930Processing frame 736/930Processing frame 737/930Processing frame 738/930Processing frame 739/930Processing frame 740/930Processing frame 741/930Processing frame 742/930Processing frame 743/930Processing frame 744/930Processing frame 745/930Processing frame 746/930Processing frame 747/930Processing frame 748/930Processing frame 749/930Processing frame 750/930Processing frame 751/930Processing frame 752/930Processing frame 753/930Processing frame 754/930Processing frame 755/930Processing frame 756/930Processing frame 757/930Processing frame 758/930Processing frame 759/930Processing frame 760/930Processing frame 761/930Processing frame 762/930Processing frame 763/930Processing frame 764/930Processing frame 765/930Processing frame 766/930Processing frame 767/930Processing frame 768/930Processing frame 769/930Processing frame 770/930Processing frame 771/930Processing frame 772/930Processing frame 773/930Processing frame 774/930Processing frame 775/930Processing frame 776/930Processing frame 777/930Processing frame 778/930Processing frame 779/930Processing frame 780/930Processing frame 781/930Processing frame 782/930Processing frame 783/930Processing frame 784/930Processing frame 785/930Processing frame 786/930Processing frame 787/930Processing frame 788/930Processing frame 789/930Processing frame 790/930Processing frame 791/930Processing frame 792/930Processing frame 793/930Processing frame 794/930Processing frame 795/930Processing frame 796/930Processing frame 797/930Processing frame 798/930Processing frame 799/930Processing frame 800/930Processing frame 801/930Processing frame 802/930Processing frame 803/930Processing frame 804/930Processing frame 805/930Processing frame 806/930Processing frame 807/930Processing frame 808/930Processing frame 809/930Processing frame 810/930Processing frame 811/930Processing frame 812/930Processing frame 813/930Processing frame 814/930Processing frame 815/930Processing frame 816/930Processing frame 817/930Processing frame 818/930Processing frame 819/930Processing frame 820/930Processing frame 821/930Processing frame 822/930Processing frame 823/930Processing frame 824/930Processing frame 825/930Processing frame 826/930Processing frame 827/930Processing frame 828/930Processing frame 829/930Processing frame 830/930Processing frame 831/930Processing frame 832/930Processing frame 833/930Processing frame 834/930Processing frame 835/930Processing frame 836/930Processing frame 837/930Processing frame 838/930Processing frame 839/930Processing frame 840/930Processing frame 841/930Processing frame 842/930Processing frame 843/930Processing frame 844/930Processing frame 845/930Processing frame 846/930Processing frame 847/930Processing frame 848/930Processing frame 849/930Processing frame 850/930Processing frame 851/930Processing frame 852/930Processing frame 853/930Processing frame 854/930Processing frame 855/930Processing frame 856/930Processing frame 857/930Processing frame 858/930Processing frame 859/930Processing frame 860/930Processing frame 861/930Processing frame 862/930Processing frame 863/930Processing frame 864/930Processing frame 865/930Processing frame 866/930Processing frame 867/930Processing frame 868/930Processing frame 869/930Processing frame 870/930Processing frame 871/930Processing frame 872/930Processing frame 873/930Processing frame 874/930Processing frame 875/930Processing frame 876/930Processing frame 877/930Processing frame 878/930Processing frame 879/930Processing frame 880/930Processing frame 881/930Processing frame 882/930Processing frame 883/930Processing frame 884/930Processing frame 885/930Processing frame 886/930Processing frame 887/930Processing frame 888/930Processing frame 889/930Processing frame 890/930Processing frame 891/930Processing frame 892/930Processing frame 893/930Processing frame 894/930Processing frame 895/930Processing frame 896/930Processing frame 897/930Processing frame 898/930Processing frame 899/930Processing frame 900/930Processing frame 901/930Processing frame 902/930Processing frame 903/930Processing frame 904/930Processing frame 905/930Processing frame 906/930Processing frame 907/930Processing frame 908/930Processing frame 909/930Processing frame 910/930Processing frame 911/930Processing frame 912/930Processing frame 913/930Processing frame 914/930Processing frame 915/930Processing frame 916/930Processing frame 917/930Processing frame 918/930Processing frame 919/930Processing frame 920/930Processing frame 921/930Processing frame 922/930Processing frame 923/930Processing frame 924/930Processing frame 925/930Processing frame 926/930Processing frame 927/930Processing frame 928/930Processing frame 929/930Processing frame 930/930
+Processed 930 frames
+Average inference FPS: 34.83
+Output saved to: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_file_ppt_inference_20250919_052754.mp4
+[2025-09-19 05:28:43] ✓ Inference completed successfully in 46 seconds
+[2025-09-19 05:28:43] ✓ Output video created: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_file_ppt_inference_20250919_052754.mp4 (116M)
+[2025-09-19 05:28:43] ==================================
+[2025-09-19 05:28:43] RUNNING MODEL3 POST-PROCESSING
+[2025-09-19 05:28:43] ==================================
+[2025-09-19 05:28:43] Executing model3.py for post-processing...
+[2025-09-19 05:28:43] Model3 processing started at: Fri Sep 19 05:28:43 AM CEST 2025
+Using provided Triton server URL: gpu001:8002
+Processing video: /home/ing-bwrxrp/Unattended-Object-Detection/input_file_ppt.mp4
+Output will be saved to: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_file_ppt_inference_20250919_052754.mp4
+🎬 Loading input video: /home/ing-bwrxrp/Unattended-Object-Detection/input_file_ppt.mp4
+📊 Video properties: 1192x720 @ 30fps, 930 total frames
+🎯 Output video: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_file_ppt_inference_20250919_052754.mp4
+🤖 Using model: rtdetr with confidence threshold: 0.5
+📝 Video writer initialized: 1192x720, 30fps
+Connecting to Triton server at: gpu001:8002
+✓ Successfully connected to Triton server at gpu001:8002
+🎬 Opened video: 30 fps, starting inference...
+🎯 Frame 0: 17 detections (11 persons, 1 objects)
+🔄 Processed 0/930 frames (0.0 fps)
+🎯 Frame 1: 17 detections (11 persons, 1 objects)
+🎯 Frame 2: 15 detections (10 persons, 1 objects)
+🎯 Frame 3: 16 detections (11 persons, 1 objects)
+🎯 Frame 4: 14 detections (9 persons, 1 objects)
+🎯 Frame 5: 14 detections (9 persons, 2 objects)
+🎯 Frame 6: 15 detections (9 persons, 3 objects)
+🎯 Frame 7: 14 detections (9 persons, 2 objects)
+🎯 Frame 8: 16 detections (10 persons, 3 objects)
+🎯 Frame 9: 17 detections (11 persons, 3 objects)
+🎯 Frame 10: 15 detections (9 persons, 3 objects)
+🎯 Frame 11: 15 detections (10 persons, 2 objects)
+🎯 Frame 12: 15 detections (8 persons, 4 objects)
+🎯 Frame 13: 12 detections (7 persons, 3 objects)
+🎯 Frame 14: 12 detections (6 persons, 4 objects)
+🎯 Frame 15: 12 detections (7 persons, 3 objects)
+🎯 Frame 16: 13 detections (8 persons, 3 objects)
+🎯 Frame 17: 14 detections (8 persons, 4 objects)
+🎯 Frame 18: 14 detections (8 persons, 4 objects)
+🎯 Frame 19: 12 detections (7 persons, 3 objects)
+🎯 Frame 20: 15 detections (8 persons, 3 objects)
+🎯 Frame 21: 17 detections (9 persons, 4 objects)
+🎯 Frame 22: 17 detections (9 persons, 3 objects)
+🎯 Frame 23: 17 detections (10 persons, 3 objects)
+🎯 Frame 24: 17 detections (10 persons, 4 objects)
+🎯 Frame 25: 16 detections (9 persons, 4 objects)
+🎯 Frame 26: 16 detections (9 persons, 4 objects)
+🎯 Frame 27: 16 detections (9 persons, 4 objects)
+🎯 Frame 28: 16 detections (8 persons, 4 objects)
+🎯 Frame 29: 19 detections (10 persons, 4 objects)
+🎯 Frame 30: 16 detections (9 persons, 3 objects)
+🎯 Frame 31: 15 detections (7 persons, 3 objects)
+🎯 Frame 32: 17 detections (9 persons, 3 objects)
+🎯 Frame 33: 18 detections (9 persons, 3 objects)
+🎯 Frame 34: 17 detections (8 persons, 3 objects)
+🎯 Frame 35: 18 detections (10 persons, 3 objects)
+🎯 Frame 36: 14 detections (7 persons, 2 objects)
+🎯 Frame 37: 17 detections (10 persons, 2 objects)
+🎯 Frame 38: 14 detections (8 persons, 2 objects)
+🎯 Frame 39: 17 detections (11 persons, 2 objects)
+🎯 Frame 40: 14 detections (8 persons, 2 objects)
+🎯 Frame 41: 15 detections (9 persons, 2 objects)
+🎯 Frame 42: 18 detections (11 persons, 3 objects)
+🎯 Frame 43: 16 detections (9 persons, 3 objects)
+🎯 Frame 44: 17 detections (9 persons, 3 objects)
+🎯 Frame 45: 18 detections (10 persons, 3 objects)
+🎯 Frame 46: 19 detections (11 persons, 3 objects)
+🎯 Frame 47: 16 detections (9 persons, 2 objects)
+🎯 Frame 48: 15 detections (10 persons, 1 objects)
+🎯 Frame 49: 16 detections (11 persons, 1 objects)
+🎯 Frame 50: 16 detections (10 persons, 1 objects)
+🎯 Frame 51: 16 detections (10 persons, 1 objects)
+🎯 Frame 52: 16 detections (10 persons, 1 objects)
+🎯 Frame 53: 13 detections (8 persons, 2 objects)
+🎯 Frame 54: 16 detections (10 persons, 3 objects)
+🎯 Frame 55: 15 detections (11 persons, 2 objects)
+🎯 Frame 56: 17 detections (11 persons, 2 objects)
+🎯 Frame 57: 17 detections (10 persons, 3 objects)
+🎯 Frame 58: 17 detections (10 persons, 3 objects)
+🎯 Frame 59: 16 detections (8 persons, 3 objects)
+🎯 Frame 60: 17 detections (9 persons, 3 objects)
+🎯 Frame 61: 16 detections (9 persons, 3 objects)
+🎯 Frame 62: 16 detections (9 persons, 4 objects)
+🎯 Frame 63: 14 detections (8 persons, 3 objects)
+🎯 Frame 64: 14 detections (9 persons, 2 objects)
+🎯 Frame 65: 16 detections (9 persons, 2 objects)
+🎯 Frame 66: 15 detections (8 persons, 3 objects)
+🎯 Frame 67: 13 detections (8 persons, 2 objects)
+🎯 Frame 68: 14 detections (9 persons, 2 objects)
+🎯 Frame 69: 14 detections (9 persons, 2 objects)
+🎯 Frame 70: 14 detections (8 persons, 2 objects)
+🎯 Frame 71: 17 detections (10 persons, 3 objects)
+🎯 Frame 72: 15 detections (10 persons, 2 objects)
+🎯 Frame 73: 14 detections (9 persons, 2 objects)
+🎯 Frame 74: 15 detections (9 persons, 3 objects)
+🎯 Frame 75: 15 detections (10 persons, 3 objects)
+🎯 Frame 76: 16 detections (9 persons, 3 objects)
+🎯 Frame 77: 14 detections (8 persons, 3 objects)
+🎯 Frame 78: 13 detections (7 persons, 3 objects)
+🎯 Frame 79: 13 detections (8 persons, 2 objects)
+🎯 Frame 80: 13 detections (8 persons, 2 objects)
+🎯 Frame 81: 12 detections (8 persons, 2 objects)
+🎯 Frame 82: 15 detections (8 persons, 2 objects)
+🎯 Frame 83: 13 detections (7 persons, 2 objects)
+🎯 Frame 84: 14 detections (8 persons, 2 objects)
+🎯 Frame 85: 15 detections (9 persons, 2 objects)
+🎯 Frame 86: 16 detections (9 persons, 2 objects)
+🎯 Frame 87: 17 detections (9 persons, 3 objects)
+🎯 Frame 88: 16 detections (9 persons, 2 objects)
+🎯 Frame 89: 15 detections (8 persons, 2 objects)
+🎯 Frame 90: 16 detections (9 persons, 2 objects)
+🎯 Frame 91: 18 detections (11 persons, 2 objects)
+🎯 Frame 92: 17 detections (10 persons, 2 objects)
+🎯 Frame 93: 15 detections (8 persons, 2 objects)
+🎯 Frame 94: 18 detections (10 persons, 3 objects)
+🎯 Frame 95: 18 detections (9 persons, 4 objects)
+🎯 Frame 96: 17 detections (8 persons, 4 objects)
+🎯 Frame 97: 20 detections (11 persons, 4 objects)
+🎯 Frame 98: 17 detections (9 persons, 4 objects)
+🎯 Frame 99: 16 detections (8 persons, 4 objects)
+Processed 100 frames...
+🎯 Frame 100: 17 detections (8 persons, 4 objects)
+🔄 Processed 100/930 frames (21.1 fps)
+🎯 Frame 101: 17 detections (10 persons, 4 objects)
+🎯 Frame 102: 18 detections (10 persons, 4 objects)
+🎯 Frame 103: 17 detections (9 persons, 4 objects)
+🎯 Frame 104: 17 detections (9 persons, 4 objects)
+🎯 Frame 105: 17 detections (9 persons, 4 objects)
+🎯 Frame 106: 15 detections (7 persons, 4 objects)
+🎯 Frame 107: 14 detections (7 persons, 4 objects)
+🎯 Frame 108: 16 detections (8 persons, 3 objects)
+🎯 Frame 109: 16 detections (8 persons, 3 objects)
+🎯 Frame 110: 16 detections (7 persons, 5 objects)
+🎯 Frame 111: 16 detections (7 persons, 5 objects)
+🎯 Frame 112: 16 detections (7 persons, 5 objects)
+🎯 Frame 113: 16 detections (7 persons, 5 objects)
+🎯 Frame 114: 18 detections (8 persons, 5 objects)
+🎯 Frame 115: 17 detections (7 persons, 5 objects)
+🎯 Frame 116: 16 detections (7 persons, 4 objects)
+🎯 Frame 117: 17 detections (8 persons, 5 objects)
+🎯 Frame 118: 17 detections (9 persons, 4 objects)
+🎯 Frame 119: 18 detections (9 persons, 4 objects)
+🎯 Frame 120: 18 detections (9 persons, 3 objects)
+🎯 Frame 121: 18 detections (9 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 5.1s
+🎯 Frame 122: 16 detections (8 persons, 3 objects)
+⚠️ Frame 122: 1 alert(s) - ['suitcase']
+🎯 Frame 123: 19 detections (9 persons, 4 objects)
+🎯 Frame 124: 17 detections (8 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 5.2s
+🎯 Frame 125: 17 detections (7 persons, 4 objects)
+⚠️ Frame 125: 1 alert(s) - ['suitcase']
+🎯 Frame 126: 21 detections (9 persons, 6 objects)
+🎯 Frame 127: 19 detections (9 persons, 4 objects)
+🚨 ALERT: suitcase unattended for 5.3s
+🎯 Frame 128: 22 detections (10 persons, 5 objects)
+⚠️ Frame 128: 1 alert(s) - ['suitcase']
+🎯 Frame 129: 20 detections (9 persons, 5 objects)
+🎯 Frame 130: 21 detections (9 persons, 5 objects)
+🎯 Frame 131: 19 detections (9 persons, 3 objects)
+🎯 Frame 132: 20 detections (9 persons, 5 objects)
+🎯 Frame 133: 21 detections (11 persons, 5 objects)
+🎯 Frame 134: 18 detections (10 persons, 4 objects)
+🎯 Frame 135: 18 detections (10 persons, 4 objects)
+🎯 Frame 136: 21 detections (10 persons, 5 objects)
+🎯 Frame 137: 21 detections (11 persons, 5 objects)
+🎯 Frame 138: 22 detections (11 persons, 5 objects)
+🎯 Frame 139: 23 detections (11 persons, 6 objects)
+🎯 Frame 140: 22 detections (9 persons, 6 objects)
+🎯 Frame 141: 24 detections (10 persons, 7 objects)
+🎯 Frame 142: 21 detections (10 persons, 5 objects)
+🎯 Frame 143: 25 detections (12 persons, 6 objects)
+🎯 Frame 144: 23 detections (11 persons, 5 objects)
+🎯 Frame 145: 22 detections (13 persons, 4 objects)
+🎯 Frame 146: 21 detections (12 persons, 3 objects)
+🎯 Frame 147: 21 detections (11 persons, 4 objects)
+🎯 Frame 148: 19 detections (12 persons, 2 objects)
+🎯 Frame 149: 20 detections (11 persons, 4 objects)
+🚨 ALERT: handbag unattended for 6.0s
+🎯 Frame 150: 18 detections (9 persons, 4 objects)
+⚠️ Frame 150: 1 alert(s) - ['handbag']
+🎯 Frame 151: 20 detections (11 persons, 4 objects)
+🚨 ALERT: backpack unattended for 6.1s
+🎯 Frame 152: 20 detections (11 persons, 4 objects)
+⚠️ Frame 152: 1 alert(s) - ['backpack']
+🎯 Frame 153: 19 detections (11 persons, 3 objects)
+🎯 Frame 154: 21 detections (10 persons, 6 objects)
+🎯 Frame 155: 21 detections (11 persons, 5 objects)
+🚨 ALERT: backpack unattended for 6.2s
+🚨 ALERT: handbag unattended for 6.2s
+🎯 Frame 156: 22 detections (12 persons, 5 objects)
+⚠️ Frame 156: 2 alert(s) - ['backpack', 'handbag']
+🎯 Frame 157: 22 detections (12 persons, 5 objects)
+🎯 Frame 158: 21 detections (11 persons, 5 objects)
+🎯 Frame 159: 20 detections (10 persons, 5 objects)
+🎯 Frame 160: 21 detections (11 persons, 5 objects)
+🎯 Frame 161: 21 detections (11 persons, 5 objects)
+🎯 Frame 162: 22 detections (11 persons, 6 objects)
+🎯 Frame 163: 24 detections (11 persons, 7 objects)
+🎯 Frame 164: 19 detections (9 persons, 5 objects)
+🎯 Frame 165: 23 detections (8 persons, 9 objects)
+🎯 Frame 166: 21 detections (8 persons, 7 objects)
+🎯 Frame 167: 21 detections (10 persons, 6 objects)
+🎯 Frame 168: 20 detections (9 persons, 6 objects)
+🎯 Frame 169: 22 detections (11 persons, 6 objects)
+🎯 Frame 170: 21 detections (9 persons, 7 objects)
+🎯 Frame 171: 18 detections (8 persons, 6 objects)
+🎯 Frame 172: 21 detections (10 persons, 7 objects)
+🎯 Frame 173: 20 detections (10 persons, 6 objects)
+🎯 Frame 174: 21 detections (9 persons, 8 objects)
+🚨 ALERT: handbag unattended for 6.8s
+🎯 Frame 175: 20 detections (10 persons, 6 objects)
+⚠️ Frame 175: 1 alert(s) - ['handbag']
+🎯 Frame 176: 21 detections (9 persons, 8 objects)
+🎯 Frame 177: 19 detections (9 persons, 6 objects)
+🎯 Frame 178: 22 detections (10 persons, 6 objects)
+🎯 Frame 179: 21 detections (9 persons, 7 objects)
+🎯 Frame 180: 19 detections (9 persons, 6 objects)
+🎯 Frame 181: 22 detections (10 persons, 7 objects)
+🎯 Frame 182: 21 detections (11 persons, 6 objects)
+🎯 Frame 183: 19 detections (10 persons, 5 objects)
+🎯 Frame 184: 18 detections (9 persons, 5 objects)
+🎯 Frame 185: 19 detections (11 persons, 5 objects)
+🎯 Frame 186: 19 detections (11 persons, 4 objects)
+🎯 Frame 187: 20 detections (12 persons, 4 objects)
+🎯 Frame 188: 20 detections (10 persons, 6 objects)
+🎯 Frame 189: 23 detections (11 persons, 7 objects)
+🎯 Frame 190: 22 detections (12 persons, 5 objects)
+🎯 Frame 191: 25 detections (11 persons, 9 objects)
+🚨 ALERT: suitcase unattended for 7.4s
+🎯 Frame 192: 27 detections (12 persons, 10 objects)
+⚠️ Frame 192: 1 alert(s) - ['suitcase']
+🎯 Frame 193: 25 detections (12 persons, 9 objects)
+🎯 Frame 194: 27 detections (12 persons, 10 objects)
+🎯 Frame 195: 26 detections (11 persons, 10 objects)
+🎯 Frame 196: 25 detections (11 persons, 9 objects)
+🎯 Frame 197: 23 detections (10 persons, 8 objects)
+🚨 ALERT: suitcase unattended for 7.6s
+🎯 Frame 198: 24 detections (11 persons, 9 objects)
+⚠️ Frame 198: 1 alert(s) - ['suitcase']
+🎯 Frame 199: 22 detections (10 persons, 8 objects)
+Processed 200 frames...
+🎯 Frame 200: 22 detections (10 persons, 9 objects)
+🔄 Processed 200/930 frames (21.2 fps)
+🚨 ALERT: suitcase unattended for 7.7s
+🎯 Frame 201: 24 detections (11 persons, 8 objects)
+⚠️ Frame 201: 1 alert(s) - ['suitcase']
+🎯 Frame 202: 24 detections (11 persons, 9 objects)
+🎯 Frame 203: 25 detections (12 persons, 9 objects)
+🎯 Frame 204: 26 detections (12 persons, 9 objects)
+🚨 ALERT: suitcase unattended for 7.8s
+🎯 Frame 205: 25 detections (12 persons, 8 objects)
+⚠️ Frame 205: 1 alert(s) - ['suitcase']
+🎯 Frame 206: 24 detections (12 persons, 7 objects)
+🎯 Frame 207: 23 detections (12 persons, 7 objects)
+🎯 Frame 208: 25 detections (12 persons, 8 objects)
+🚨 ALERT: suitcase unattended for 8.0s
+🎯 Frame 209: 26 detections (12 persons, 9 objects)
+⚠️ Frame 209: 1 alert(s) - ['suitcase']
+🎯 Frame 210: 27 detections (12 persons, 9 objects)
+🚨 ALERT: suitcase unattended for 8.0s
+🎯 Frame 211: 26 detections (12 persons, 9 objects)
+⚠️ Frame 211: 1 alert(s) - ['suitcase']
+🎯 Frame 212: 24 detections (10 persons, 9 objects)
+🚨 ALERT: suitcase unattended for 8.1s
+🎯 Frame 213: 25 detections (11 persons, 9 objects)
+⚠️ Frame 213: 1 alert(s) - ['suitcase']
+🎯 Frame 214: 23 detections (9 persons, 9 objects)
+🚨 ALERT: suitcase unattended for 8.2s
+🎯 Frame 215: 22 detections (9 persons, 8 objects)
+⚠️ Frame 215: 1 alert(s) - ['suitcase']
+🚨 ALERT: suitcase unattended for 8.2s
+🎯 Frame 216: 25 detections (11 persons, 9 objects)
+⚠️ Frame 216: 1 alert(s) - ['suitcase']
+🎯 Frame 217: 24 detections (10 persons, 9 objects)
+🚨 ALERT: suitcase unattended for 8.3s
+🎯 Frame 218: 24 detections (9 persons, 10 objects)
+⚠️ Frame 218: 1 alert(s) - ['suitcase']
+🎯 Frame 219: 25 detections (11 persons, 9 objects)
+🚨 ALERT: suitcase unattended for 8.3s
+🎯 Frame 220: 24 detections (10 persons, 9 objects)
+⚠️ Frame 220: 1 alert(s) - ['suitcase']
+🎯 Frame 221: 23 detections (11 persons, 7 objects)
+🎯 Frame 222: 20 detections (9 persons, 6 objects)
+🚨 ALERT: suitcase unattended for 8.4s
+🎯 Frame 223: 21 detections (8 persons, 8 objects)
+⚠️ Frame 223: 1 alert(s) - ['suitcase']
+🎯 Frame 224: 22 detections (9 persons, 8 objects)
+🎯 Frame 225: 19 detections (9 persons, 6 objects)
+🎯 Frame 226: 16 detections (7 persons, 5 objects)
+🚨 ALERT: suitcase unattended for 8.6s
+🎯 Frame 227: 18 detections (7 persons, 7 objects)
+⚠️ Frame 227: 1 alert(s) - ['suitcase']
+🚨 ALERT: suitcase unattended for 8.6s
+🎯 Frame 228: 20 detections (8 persons, 7 objects)
+⚠️ Frame 228: 1 alert(s) - ['suitcase']
+🎯 Frame 229: 19 detections (8 persons, 6 objects)
+🎯 Frame 230: 19 detections (8 persons, 6 objects)
+🎯 Frame 231: 22 detections (10 persons, 7 objects)
+🎯 Frame 232: 20 detections (9 persons, 6 objects)
+🚨 ALERT: suitcase unattended for 8.8s
+🎯 Frame 233: 20 detections (8 persons, 7 objects)
+⚠️ Frame 233: 1 alert(s) - ['suitcase']
+🚨 ALERT: suitcase unattended for 8.8s
+🎯 Frame 234: 17 detections (9 persons, 4 objects)
+⚠️ Frame 234: 1 alert(s) - ['suitcase']
+🎯 Frame 235: 17 detections (8 persons, 5 objects)
+🎯 Frame 236: 17 detections (9 persons, 4 objects)
+🎯 Frame 237: 13 detections (6 persons, 3 objects)
+🎯 Frame 238: 15 detections (6 persons, 5 objects)
+🎯 Frame 239: 14 detections (7 persons, 3 objects)
+🎯 Frame 240: 19 detections (10 persons, 5 objects)
+🎯 Frame 241: 19 detections (10 persons, 5 objects)
+🎯 Frame 242: 18 detections (8 persons, 6 objects)
+🚨 ALERT: suitcase unattended for 9.1s
+🎯 Frame 243: 18 detections (9 persons, 5 objects)
+⚠️ Frame 243: 1 alert(s) - ['suitcase']
+🚨 ALERT: suitcase unattended for 9.1s
+🎯 Frame 244: 17 detections (9 persons, 4 objects)
+⚠️ Frame 244: 1 alert(s) - ['suitcase']
+🎯 Frame 245: 16 detections (8 persons, 4 objects)
+🎯 Frame 246: 17 detections (9 persons, 4 objects)
+🎯 Frame 247: 16 detections (8 persons, 4 objects)
+🎯 Frame 248: 19 detections (10 persons, 5 objects)
+🎯 Frame 249: 20 detections (10 persons, 5 objects)
+🎯 Frame 250: 19 detections (10 persons, 4 objects)
+🎯 Frame 251: 19 detections (11 persons, 4 objects)
+🎯 Frame 252: 18 detections (8 persons, 6 objects)
+🎯 Frame 253: 20 detections (10 persons, 6 objects)
+🎯 Frame 254: 18 detections (10 persons, 4 objects)
+🎯 Frame 255: 18 detections (10 persons, 4 objects)
+🎯 Frame 256: 18 detections (10 persons, 4 objects)
+🎯 Frame 257: 17 detections (10 persons, 3 objects)
+🎯 Frame 258: 17 detections (10 persons, 3 objects)
+🎯 Frame 259: 17 detections (10 persons, 4 objects)
+🎯 Frame 260: 18 detections (10 persons, 3 objects)
+🎯 Frame 261: 20 detections (10 persons, 5 objects)
+🎯 Frame 262: 18 detections (9 persons, 4 objects)
+🎯 Frame 263: 20 detections (11 persons, 4 objects)
+🎯 Frame 264: 20 detections (10 persons, 5 objects)
+🎯 Frame 265: 19 detections (9 persons, 5 objects)
+🎯 Frame 266: 19 detections (9 persons, 5 objects)
+🎯 Frame 267: 19 detections (9 persons, 5 objects)
+🚨 ALERT: suitcase unattended for 9.9s
+🎯 Frame 268: 17 detections (9 persons, 3 objects)
+⚠️ Frame 268: 1 alert(s) - ['suitcase']
+🎯 Frame 269: 18 detections (8 persons, 5 objects)
+🎯 Frame 270: 17 detections (9 persons, 3 objects)
+🎯 Frame 271: 16 detections (8 persons, 3 objects)
+🎯 Frame 272: 16 detections (7 persons, 4 objects)
+🎯 Frame 273: 17 detections (8 persons, 4 objects)
+🎯 Frame 274: 20 detections (9 persons, 6 objects)
+🎯 Frame 275: 18 detections (8 persons, 5 objects)
+🎯 Frame 276: 21 detections (11 persons, 5 objects)
+🎯 Frame 277: 18 detections (9 persons, 4 objects)
+🎯 Frame 278: 20 detections (10 persons, 5 objects)
+🎯 Frame 279: 21 detections (11 persons, 5 objects)
+🎯 Frame 280: 19 detections (9 persons, 6 objects)
+🎯 Frame 281: 18 detections (8 persons, 6 objects)
+🎯 Frame 282: 20 detections (9 persons, 7 objects)
+🚨 ALERT: suitcase unattended for 10.4s
+🎯 Frame 283: 22 detections (9 persons, 8 objects)
+⚠️ Frame 283: 1 alert(s) - ['suitcase']
+🎯 Frame 284: 19 detections (8 persons, 6 objects)
+🎯 Frame 285: 18 detections (7 persons, 6 objects)
+🎯 Frame 286: 18 detections (9 persons, 6 objects)
+🎯 Frame 287: 18 detections (9 persons, 4 objects)
+🎯 Frame 288: 19 detections (9 persons, 5 objects)
+🎯 Frame 289: 18 detections (9 persons, 5 objects)
+🎯 Frame 290: 18 detections (8 persons, 6 objects)
+🎯 Frame 291: 21 detections (9 persons, 7 objects)
+🎯 Frame 292: 20 detections (10 persons, 6 objects)
+🚨 ALERT: suitcase unattended for 10.8s
+🎯 Frame 293: 20 detections (10 persons, 6 objects)
+⚠️ Frame 293: 1 alert(s) - ['suitcase']
+🎯 Frame 294: 20 detections (10 persons, 6 objects)
+🎯 Frame 295: 20 detections (10 persons, 6 objects)
+🎯 Frame 296: 23 detections (11 persons, 8 objects)
+🎯 Frame 297: 22 detections (11 persons, 7 objects)
+🎯 Frame 298: 23 detections (11 persons, 8 objects)
+🎯 Frame 299: 19 detections (9 persons, 6 objects)
+Processed 300 frames...
+🎯 Frame 300: 20 detections (10 persons, 6 objects)
+🔄 Processed 300/930 frames (21.2 fps)
+🎯 Frame 301: 21 detections (11 persons, 6 objects)
+🎯 Frame 302: 19 detections (9 persons, 6 objects)
+🎯 Frame 303: 20 detections (9 persons, 7 objects)
+🎯 Frame 304: 21 detections (10 persons, 6 objects)
+🎯 Frame 305: 21 detections (9 persons, 7 objects)
+🎯 Frame 306: 20 detections (9 persons, 6 objects)
+🎯 Frame 307: 22 detections (10 persons, 7 objects)
+🎯 Frame 308: 21 detections (10 persons, 6 objects)
+🎯 Frame 309: 19 detections (9 persons, 5 objects)
+🎯 Frame 310: 21 detections (10 persons, 6 objects)
+🎯 Frame 311: 19 detections (9 persons, 5 objects)
+🎯 Frame 312: 19 detections (10 persons, 4 objects)
+🎯 Frame 313: 19 detections (8 persons, 6 objects)
+🎯 Frame 314: 21 detections (10 persons, 6 objects)
+🎯 Frame 315: 18 detections (9 persons, 5 objects)
+🎯 Frame 316: 20 detections (9 persons, 6 objects)
+🎯 Frame 317: 16 detections (8 persons, 4 objects)
+🎯 Frame 318: 16 detections (8 persons, 4 objects)
+🎯 Frame 319: 16 detections (7 persons, 5 objects)
+🎯 Frame 320: 17 detections (8 persons, 4 objects)
+🎯 Frame 321: 17 detections (7 persons, 5 objects)
+🎯 Frame 322: 17 detections (8 persons, 5 objects)
+🎯 Frame 323: 16 detections (8 persons, 4 objects)
+🎯 Frame 324: 18 detections (9 persons, 5 objects)
+🎯 Frame 325: 17 detections (8 persons, 6 objects)
+🎯 Frame 326: 18 detections (7 persons, 5 objects)
+🎯 Frame 327: 21 detections (9 persons, 6 objects)
+🎯 Frame 328: 19 detections (8 persons, 5 objects)
+🎯 Frame 329: 21 detections (8 persons, 6 objects)
+🎯 Frame 330: 20 detections (9 persons, 5 objects)
+🎯 Frame 331: 21 detections (10 persons, 5 objects)
+🎯 Frame 332: 22 detections (10 persons, 6 objects)
+🚨 ALERT: suitcase unattended for 12.1s
+🎯 Frame 333: 21 detections (10 persons, 6 objects)
+⚠️ Frame 333: 1 alert(s) - ['suitcase']
+🎯 Frame 334: 19 detections (8 persons, 6 objects)
+🎯 Frame 335: 21 detections (9 persons, 7 objects)
+🎯 Frame 336: 21 detections (9 persons, 7 objects)
+🎯 Frame 337: 24 detections (10 persons, 8 objects)
+🎯 Frame 338: 22 detections (10 persons, 7 objects)
+🎯 Frame 339: 24 detections (12 persons, 7 objects)
+🎯 Frame 340: 26 detections (13 persons, 8 objects)
+🎯 Frame 341: 24 detections (11 persons, 8 objects)
+🎯 Frame 342: 23 detections (10 persons, 8 objects)
+🎯 Frame 343: 25 detections (11 persons, 8 objects)
+🎯 Frame 344: 27 detections (12 persons, 10 objects)
+🎯 Frame 345: 25 detections (10 persons, 10 objects)
+🎯 Frame 346: 24 detections (11 persons, 8 objects)
+🎯 Frame 347: 22 detections (10 persons, 8 objects)
+🎯 Frame 348: 18 detections (8 persons, 7 objects)
+🚨 ALERT: suitcase unattended for 12.6s
+🎯 Frame 349: 20 detections (9 persons, 8 objects)
+⚠️ Frame 349: 1 alert(s) - ['suitcase']
+🎯 Frame 350: 20 detections (8 persons, 8 objects)
+🎯 Frame 351: 19 detections (9 persons, 7 objects)
+🎯 Frame 352: 22 detections (10 persons, 8 objects)
+🎯 Frame 353: 22 detections (10 persons, 8 objects)
+🎯 Frame 354: 22 detections (9 persons, 9 objects)
+🎯 Frame 355: 20 detections (9 persons, 7 objects)
+🎯 Frame 356: 22 detections (9 persons, 8 objects)
+🎯 Frame 357: 23 detections (9 persons, 9 objects)
+🎯 Frame 358: 22 detections (9 persons, 8 objects)
+🎯 Frame 359: 24 detections (10 persons, 8 objects)
+🎯 Frame 360: 22 detections (9 persons, 8 objects)
+🎯 Frame 361: 21 detections (9 persons, 8 objects)
+🎯 Frame 362: 22 detections (11 persons, 7 objects)
+🚨 ALERT: backpack unattended for 13.1s
+🎯 Frame 363: 22 detections (10 persons, 7 objects)
+⚠️ Frame 363: 1 alert(s) - ['backpack']
+🎯 Frame 364: 23 detections (10 persons, 7 objects)
+🎯 Frame 365: 20 detections (9 persons, 6 objects)
+🎯 Frame 366: 18 detections (9 persons, 5 objects)
+🎯 Frame 367: 19 detections (9 persons, 6 objects)
+🎯 Frame 368: 21 detections (10 persons, 6 objects)
+🎯 Frame 369: 21 detections (9 persons, 7 objects)
+🎯 Frame 370: 19 detections (8 persons, 7 objects)
+🎯 Frame 371: 20 detections (8 persons, 7 objects)
+🎯 Frame 372: 20 detections (8 persons, 7 objects)
+🎯 Frame 373: 20 detections (8 persons, 7 objects)
+🎯 Frame 374: 19 detections (7 persons, 7 objects)
+🎯 Frame 375: 20 detections (8 persons, 7 objects)
+🎯 Frame 376: 19 detections (8 persons, 6 objects)
+🎯 Frame 377: 21 detections (8 persons, 8 objects)
+🎯 Frame 378: 19 detections (9 persons, 6 objects)
+🎯 Frame 379: 19 detections (8 persons, 7 objects)
+🎯 Frame 380: 21 detections (10 persons, 7 objects)
+🎯 Frame 381: 21 detections (9 persons, 8 objects)
+🎯 Frame 382: 20 detections (9 persons, 7 objects)
+🎯 Frame 383: 18 detections (8 persons, 6 objects)
+🎯 Frame 384: 17 detections (8 persons, 5 objects)
+🎯 Frame 385: 20 detections (8 persons, 7 objects)
+🎯 Frame 386: 20 detections (8 persons, 7 objects)
+🎯 Frame 387: 19 detections (8 persons, 6 objects)
+🎯 Frame 388: 20 detections (9 persons, 6 objects)
+🎯 Frame 389: 20 detections (8 persons, 7 objects)
+🎯 Frame 390: 21 detections (9 persons, 7 objects)
+🎯 Frame 391: 21 detections (9 persons, 7 objects)
+🎯 Frame 392: 21 detections (9 persons, 7 objects)
+🎯 Frame 393: 20 detections (9 persons, 6 objects)
+🎯 Frame 394: 19 detections (8 persons, 6 objects)
+🎯 Frame 395: 19 detections (8 persons, 6 objects)
+🎯 Frame 396: 20 detections (8 persons, 7 objects)
+🎯 Frame 397: 20 detections (9 persons, 6 objects)
+🎯 Frame 398: 19 detections (9 persons, 6 objects)
+🎯 Frame 399: 20 detections (10 persons, 6 objects)
+Processed 400 frames...
+🎯 Frame 400: 20 detections (9 persons, 6 objects)
+🔄 Processed 400/930 frames (21.2 fps)
+🎯 Frame 401: 19 detections (8 persons, 6 objects)
+🎯 Frame 402: 24 detections (11 persons, 8 objects)
+🎯 Frame 403: 20 detections (8 persons, 7 objects)
+🎯 Frame 404: 19 detections (8 persons, 7 objects)
+🎯 Frame 405: 19 detections (9 persons, 6 objects)
+🎯 Frame 406: 21 detections (10 persons, 6 objects)
+🎯 Frame 407: 21 detections (10 persons, 6 objects)
+🎯 Frame 408: 21 detections (10 persons, 6 objects)
+🎯 Frame 409: 21 detections (10 persons, 6 objects)
+🎯 Frame 410: 21 detections (10 persons, 6 objects)
+🎯 Frame 411: 21 detections (10 persons, 6 objects)
+🎯 Frame 412: 20 detections (8 persons, 7 objects)
+🎯 Frame 413: 20 detections (9 persons, 6 objects)
+🎯 Frame 414: 20 detections (9 persons, 6 objects)
+🎯 Frame 415: 21 detections (8 persons, 8 objects)
+🎯 Frame 416: 21 detections (9 persons, 7 objects)
+🎯 Frame 417: 22 detections (9 persons, 8 objects)
+🎯 Frame 418: 22 detections (9 persons, 8 objects)
+🎯 Frame 419: 22 detections (9 persons, 8 objects)
+🎯 Frame 420: 24 detections (11 persons, 8 objects)
+🎯 Frame 421: 25 detections (11 persons, 9 objects)
+🎯 Frame 422: 24 detections (10 persons, 9 objects)
+🎯 Frame 423: 28 detections (12 persons, 11 objects)
+🎯 Frame 424: 26 detections (10 persons, 11 objects)
+🎯 Frame 425: 24 detections (11 persons, 8 objects)
+🎯 Frame 426: 25 detections (11 persons, 9 objects)
+🎯 Frame 427: 23 detections (11 persons, 7 objects)
+🎯 Frame 428: 24 detections (10 persons, 9 objects)
+🎯 Frame 429: 23 detections (9 persons, 9 objects)
+🎯 Frame 430: 23 detections (10 persons, 8 objects)
+🎯 Frame 431: 22 detections (9 persons, 8 objects)
+🎯 Frame 432: 22 detections (9 persons, 8 objects)
+🎯 Frame 433: 22 detections (10 persons, 7 objects)
+🎯 Frame 434: 23 detections (10 persons, 8 objects)
+🎯 Frame 435: 23 detections (11 persons, 7 objects)
+🎯 Frame 436: 22 detections (10 persons, 7 objects)
+🎯 Frame 437: 23 detections (10 persons, 8 objects)
+🎯 Frame 438: 21 detections (10 persons, 6 objects)
+🎯 Frame 439: 22 detections (10 persons, 7 objects)
+🎯 Frame 440: 20 detections (9 persons, 6 objects)
+🎯 Frame 441: 20 detections (9 persons, 6 objects)
+🎯 Frame 442: 22 detections (10 persons, 7 objects)
+🎯 Frame 443: 21 detections (9 persons, 7 objects)
+🎯 Frame 444: 22 detections (10 persons, 7 objects)
+🎯 Frame 445: 21 detections (9 persons, 7 objects)
+🎯 Frame 446: 23 detections (10 persons, 8 objects)
+🎯 Frame 447: 21 detections (9 persons, 8 objects)
+🎯 Frame 448: 21 detections (9 persons, 7 objects)
+🎯 Frame 449: 22 detections (9 persons, 8 objects)
+🎯 Frame 450: 22 detections (10 persons, 7 objects)
+🎯 Frame 451: 22 detections (10 persons, 7 objects)
+🎯 Frame 452: 22 detections (10 persons, 7 objects)
+🎯 Frame 453: 24 detections (11 persons, 8 objects)
+🎯 Frame 454: 24 detections (11 persons, 8 objects)
+🎯 Frame 455: 24 detections (11 persons, 8 objects)
+🎯 Frame 456: 24 detections (11 persons, 8 objects)
+🎯 Frame 457: 25 detections (12 persons, 8 objects)
+🎯 Frame 458: 24 detections (11 persons, 8 objects)
+🎯 Frame 459: 25 detections (13 persons, 8 objects)
+🎯 Frame 460: 23 detections (11 persons, 7 objects)
+🎯 Frame 461: 23 detections (11 persons, 7 objects)
+🎯 Frame 462: 24 detections (11 persons, 8 objects)
+🎯 Frame 463: 23 detections (10 persons, 8 objects)
+🎯 Frame 464: 23 detections (10 persons, 8 objects)
+🎯 Frame 465: 22 detections (11 persons, 6 objects)
+🎯 Frame 466: 22 detections (12 persons, 5 objects)
+🎯 Frame 467: 22 detections (11 persons, 6 objects)
+🎯 Frame 468: 21 detections (9 persons, 6 objects)
+🎯 Frame 469: 21 detections (9 persons, 6 objects)
+🎯 Frame 470: 20 detections (10 persons, 5 objects)
+🎯 Frame 471: 22 detections (11 persons, 6 objects)
+🎯 Frame 472: 21 detections (11 persons, 5 objects)
+🎯 Frame 473: 21 detections (11 persons, 5 objects)
+🎯 Frame 474: 21 detections (10 persons, 7 objects)
+🎯 Frame 475: 19 detections (10 persons, 4 objects)
+🎯 Frame 476: 22 detections (10 persons, 7 objects)
+🎯 Frame 477: 21 detections (12 persons, 4 objects)
+🎯 Frame 478: 19 detections (10 persons, 4 objects)
+🎯 Frame 479: 22 detections (11 persons, 6 objects)
+🎯 Frame 480: 24 detections (12 persons, 8 objects)
+🚨 ALERT: suitcase unattended for 17.0s
+🎯 Frame 481: 21 detections (10 persons, 7 objects)
+⚠️ Frame 481: 1 alert(s) - ['suitcase']
+🎯 Frame 482: 24 detections (11 persons, 8 objects)
+🎯 Frame 483: 22 detections (11 persons, 7 objects)
+🎯 Frame 484: 22 detections (11 persons, 6 objects)
+🎯 Frame 485: 23 detections (11 persons, 7 objects)
+🎯 Frame 486: 20 detections (10 persons, 5 objects)
+🎯 Frame 487: 17 detections (9 persons, 3 objects)
+🎯 Frame 488: 19 detections (9 persons, 5 objects)
+🎯 Frame 489: 18 detections (9 persons, 4 objects)
+🎯 Frame 490: 16 detections (8 persons, 3 objects)
+🎯 Frame 491: 17 detections (8 persons, 4 objects)
+🎯 Frame 492: 17 detections (9 persons, 3 objects)
+🎯 Frame 493: 17 detections (9 persons, 3 objects)
+🎯 Frame 494: 17 detections (9 persons, 3 objects)
+🎯 Frame 495: 17 detections (9 persons, 3 objects)
+🎯 Frame 496: 17 detections (9 persons, 3 objects)
+🎯 Frame 497: 19 detections (11 persons, 3 objects)
+🎯 Frame 498: 18 detections (10 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 5.2s
+🎯 Frame 499: 19 detections (10 persons, 4 objects)
+⚠️ Frame 499: 1 alert(s) - ['suitcase']
+Processed 500 frames...
+🎯 Frame 500: 19 detections (10 persons, 4 objects)
+🔄 Processed 500/930 frames (21.3 fps)
+🎯 Frame 501: 20 detections (11 persons, 4 objects)
+🎯 Frame 502: 17 detections (10 persons, 3 objects)
+🎯 Frame 503: 18 detections (10 persons, 3 objects)
+🎯 Frame 504: 19 detections (11 persons, 4 objects)
+🎯 Frame 505: 19 detections (11 persons, 3 objects)
+🎯 Frame 506: 20 detections (11 persons, 4 objects)
+🎯 Frame 507: 19 detections (10 persons, 4 objects)
+🎯 Frame 508: 20 detections (11 persons, 4 objects)
+🎯 Frame 509: 20 detections (10 persons, 5 objects)
+🎯 Frame 510: 19 detections (10 persons, 4 objects)
+🎯 Frame 511: 17 detections (9 persons, 3 objects)
+🎯 Frame 512: 19 detections (10 persons, 4 objects)
+🚨 ALERT: suitcase unattended for 18.1s
+🎯 Frame 513: 20 detections (11 persons, 4 objects)
+⚠️ Frame 513: 1 alert(s) - ['suitcase']
+🎯 Frame 514: 20 detections (11 persons, 4 objects)
+🎯 Frame 515: 19 detections (11 persons, 3 objects)
+🎯 Frame 516: 19 detections (12 persons, 2 objects)
+🎯 Frame 517: 19 detections (11 persons, 3 objects)
+🎯 Frame 518: 21 detections (10 persons, 6 objects)
+🎯 Frame 519: 19 detections (10 persons, 4 objects)
+🎯 Frame 520: 20 detections (10 persons, 5 objects)
+🎯 Frame 521: 20 detections (10 persons, 5 objects)
+🎯 Frame 522: 19 detections (10 persons, 5 objects)
+🎯 Frame 523: 20 detections (11 persons, 5 objects)
+🎯 Frame 524: 21 detections (11 persons, 5 objects)
+🎯 Frame 525: 21 detections (11 persons, 5 objects)
+🎯 Frame 526: 21 detections (12 persons, 4 objects)
+🎯 Frame 527: 20 detections (12 persons, 3 objects)
+🎯 Frame 528: 20 detections (12 persons, 3 objects)
+🎯 Frame 529: 19 detections (11 persons, 3 objects)
+🎯 Frame 530: 17 detections (11 persons, 2 objects)
+🎯 Frame 531: 17 detections (11 persons, 2 objects)
+🎯 Frame 532: 18 detections (11 persons, 3 objects)
+🎯 Frame 533: 19 detections (10 persons, 4 objects)
+🎯 Frame 534: 19 detections (11 persons, 3 objects)
+🎯 Frame 535: 20 detections (12 persons, 3 objects)
+🎯 Frame 536: 19 detections (12 persons, 4 objects)
+🎯 Frame 537: 19 detections (12 persons, 4 objects)
+🎯 Frame 538: 21 detections (13 persons, 3 objects)
+🎯 Frame 539: 21 detections (12 persons, 4 objects)
+🎯 Frame 540: 19 detections (11 persons, 3 objects)
+🎯 Frame 541: 20 detections (11 persons, 4 objects)
+🎯 Frame 542: 18 detections (11 persons, 3 objects)
+🎯 Frame 543: 16 detections (9 persons, 2 objects)
+🎯 Frame 544: 16 detections (10 persons, 2 objects)
+🎯 Frame 545: 18 detections (10 persons, 3 objects)
+🎯 Frame 546: 17 detections (10 persons, 2 objects)
+🎯 Frame 547: 17 detections (10 persons, 2 objects)
+🎯 Frame 548: 18 detections (10 persons, 3 objects)
+🎯 Frame 549: 18 detections (11 persons, 2 objects)
+🎯 Frame 550: 18 detections (11 persons, 2 objects)
+🎯 Frame 551: 19 detections (12 persons, 2 objects)
+🎯 Frame 552: 18 detections (10 persons, 3 objects)
+🎯 Frame 553: 18 detections (10 persons, 3 objects)
+🎯 Frame 554: 16 detections (10 persons, 2 objects)
+🎯 Frame 555: 16 detections (10 persons, 2 objects)
+🎯 Frame 556: 16 detections (10 persons, 2 objects)
+🎯 Frame 557: 17 detections (11 persons, 2 objects)
+🎯 Frame 558: 17 detections (11 persons, 2 objects)
+🎯 Frame 559: 18 detections (11 persons, 3 objects)
+🎯 Frame 560: 18 detections (12 persons, 2 objects)
+🎯 Frame 561: 18 detections (12 persons, 2 objects)
+🎯 Frame 562: 18 detections (12 persons, 3 objects)
+🎯 Frame 563: 18 detections (11 persons, 2 objects)
+🎯 Frame 564: 19 detections (12 persons, 2 objects)
+🎯 Frame 565: 19 detections (11 persons, 3 objects)
+🎯 Frame 566: 18 detections (10 persons, 3 objects)
+🎯 Frame 567: 18 detections (11 persons, 3 objects)
+🎯 Frame 568: 18 detections (12 persons, 2 objects)
+🎯 Frame 569: 21 detections (13 persons, 4 objects)
+🎯 Frame 570: 18 detections (12 persons, 2 objects)
+🎯 Frame 571: 18 detections (11 persons, 2 objects)
+🎯 Frame 572: 18 detections (11 persons, 2 objects)
+🎯 Frame 573: 17 detections (10 persons, 2 objects)
+🎯 Frame 574: 18 detections (10 persons, 3 objects)
+🎯 Frame 575: 19 detections (10 persons, 4 objects)
+🎯 Frame 576: 17 detections (10 persons, 2 objects)
+🎯 Frame 577: 18 detections (11 persons, 2 objects)
+🎯 Frame 578: 18 detections (11 persons, 2 objects)
+🎯 Frame 579: 19 detections (10 persons, 4 objects)
+🎯 Frame 580: 19 detections (11 persons, 3 objects)
+🎯 Frame 581: 19 detections (10 persons, 4 objects)
+🎯 Frame 582: 19 detections (12 persons, 2 objects)
+🎯 Frame 583: 19 detections (12 persons, 2 objects)
+🎯 Frame 584: 20 detections (12 persons, 3 objects)
+🎯 Frame 585: 19 detections (12 persons, 3 objects)
+🎯 Frame 586: 20 detections (12 persons, 3 objects)
+🎯 Frame 587: 21 detections (12 persons, 4 objects)
+🎯 Frame 588: 19 detections (12 persons, 3 objects)
+🎯 Frame 589: 19 detections (12 persons, 3 objects)
+🎯 Frame 590: 20 detections (13 persons, 3 objects)
+🎯 Frame 591: 18 detections (10 persons, 3 objects)
+🎯 Frame 592: 16 detections (10 persons, 2 objects)
+🎯 Frame 593: 16 detections (10 persons, 2 objects)
+🎯 Frame 594: 18 detections (12 persons, 2 objects)
+🎯 Frame 595: 16 detections (10 persons, 2 objects)
+🎯 Frame 596: 18 detections (10 persons, 4 objects)
+🎯 Frame 597: 18 detections (11 persons, 2 objects)
+🎯 Frame 598: 15 detections (10 persons, 2 objects)
+🎯 Frame 599: 16 detections (10 persons, 2 objects)
+Processed 600 frames...
+🎯 Frame 600: 18 detections (11 persons, 3 objects)
+🔄 Processed 600/930 frames (21.4 fps)
+🎯 Frame 601: 18 detections (12 persons, 2 objects)
+🎯 Frame 602: 16 detections (10 persons, 3 objects)
+🎯 Frame 603: 16 detections (11 persons, 2 objects)
+🎯 Frame 604: 17 detections (10 persons, 2 objects)
+🎯 Frame 605: 18 detections (11 persons, 3 objects)
+🎯 Frame 606: 16 detections (10 persons, 2 objects)
+🎯 Frame 607: 16 detections (10 persons, 2 objects)
+🎯 Frame 608: 19 detections (11 persons, 3 objects)
+🎯 Frame 609: 17 detections (11 persons, 2 objects)
+🎯 Frame 610: 17 detections (11 persons, 2 objects)
+🎯 Frame 611: 17 detections (11 persons, 2 objects)
+🎯 Frame 612: 18 detections (12 persons, 2 objects)
+🎯 Frame 613: 19 detections (12 persons, 2 objects)
+🎯 Frame 614: 18 detections (11 persons, 2 objects)
+🎯 Frame 615: 18 detections (11 persons, 2 objects)
+🎯 Frame 616: 19 detections (11 persons, 3 objects)
+🎯 Frame 617: 16 detections (9 persons, 2 objects)
+🎯 Frame 618: 18 detections (11 persons, 2 objects)
+🎯 Frame 619: 16 detections (10 persons, 2 objects)
+🎯 Frame 620: 17 detections (10 persons, 2 objects)
+🎯 Frame 621: 15 detections (9 persons, 2 objects)
+🎯 Frame 622: 16 detections (10 persons, 2 objects)
+🎯 Frame 623: 16 detections (10 persons, 2 objects)
+🎯 Frame 624: 16 detections (10 persons, 2 objects)
+🎯 Frame 625: 17 detections (10 persons, 2 objects)
+🎯 Frame 626: 15 detections (8 persons, 2 objects)
+🎯 Frame 627: 16 detections (8 persons, 3 objects)
+🎯 Frame 628: 15 detections (8 persons, 2 objects)
+🎯 Frame 629: 14 detections (7 persons, 2 objects)
+🎯 Frame 630: 20 detections (11 persons, 4 objects)
+🚨 ALERT: suitcase unattended for 22.0s
+🎯 Frame 631: 19 detections (11 persons, 3 objects)
+⚠️ Frame 631: 1 alert(s) - ['suitcase']
+🎯 Frame 632: 18 detections (11 persons, 2 objects)
+🎯 Frame 633: 18 detections (11 persons, 2 objects)
+🎯 Frame 634: 17 detections (10 persons, 2 objects)
+🎯 Frame 635: 16 detections (9 persons, 2 objects)
+🎯 Frame 636: 18 detections (11 persons, 2 objects)
+🎯 Frame 637: 17 detections (10 persons, 2 objects)
+🎯 Frame 638: 18 detections (11 persons, 3 objects)
+🎯 Frame 639: 19 detections (11 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 22.3s
+🎯 Frame 640: 16 detections (10 persons, 2 objects)
+⚠️ Frame 640: 1 alert(s) - ['suitcase']
+🎯 Frame 641: 16 detections (11 persons, 2 objects)
+🎯 Frame 642: 15 detections (10 persons, 2 objects)
+🎯 Frame 643: 16 detections (10 persons, 2 objects)
+🎯 Frame 644: 18 detections (10 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 22.5s
+🎯 Frame 645: 15 detections (9 persons, 3 objects)
+⚠️ Frame 645: 1 alert(s) - ['suitcase']
+🎯 Frame 646: 16 detections (9 persons, 2 objects)
+🎯 Frame 647: 15 detections (9 persons, 2 objects)
+🎯 Frame 648: 14 detections (8 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 22.6s
+🎯 Frame 649: 11 detections (7 persons, 2 objects)
+⚠️ Frame 649: 1 alert(s) - ['suitcase']
+🎯 Frame 650: 16 detections (11 persons, 2 objects)
+🎯 Frame 651: 17 detections (10 persons, 2 objects)
+🚨 ALERT: suitcase unattended for 22.7s
+🎯 Frame 652: 14 detections (7 persons, 2 objects)
+⚠️ Frame 652: 1 alert(s) - ['suitcase']
+🎯 Frame 653: 14 detections (8 persons, 2 objects)
+🚨 ALERT: suitcase unattended for 22.8s
+🎯 Frame 654: 15 detections (9 persons, 3 objects)
+⚠️ Frame 654: 1 alert(s) - ['suitcase']
+🎯 Frame 655: 14 detections (9 persons, 3 objects)
+🎯 Frame 656: 14 detections (9 persons, 2 objects)
+🎯 Frame 657: 14 detections (9 persons, 3 objects)
+🎯 Frame 658: 12 detections (9 persons, 2 objects)
+🚨 ALERT: suitcase unattended for 23.0s
+🎯 Frame 659: 12 detections (9 persons, 2 objects)
+⚠️ Frame 659: 1 alert(s) - ['suitcase']
+🎯 Frame 660: 18 detections (11 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 23.0s
+🎯 Frame 661: 19 detections (11 persons, 3 objects)
+⚠️ Frame 661: 1 alert(s) - ['suitcase']
+🎯 Frame 662: 18 detections (11 persons, 3 objects)
+🎯 Frame 663: 19 detections (12 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 23.1s
+🎯 Frame 664: 20 detections (12 persons, 4 objects)
+⚠️ Frame 664: 1 alert(s) - ['suitcase']
+🎯 Frame 665: 18 detections (12 persons, 2 objects)
+🎯 Frame 666: 17 detections (10 persons, 3 objects)
+🎯 Frame 667: 16 detections (9 persons, 3 objects)
+🎯 Frame 668: 17 detections (9 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 23.3s
+🎯 Frame 669: 15 detections (8 persons, 2 objects)
+⚠️ Frame 669: 1 alert(s) - ['suitcase']
+🎯 Frame 670: 17 detections (9 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 23.4s
+🎯 Frame 671: 18 detections (10 persons, 3 objects)
+⚠️ Frame 671: 1 alert(s) - ['suitcase']
+🎯 Frame 672: 19 detections (12 persons, 2 objects)
+🎯 Frame 673: 18 detections (11 persons, 2 objects)
+🚨 ALERT: suitcase unattended for 23.5s
+🎯 Frame 674: 17 detections (10 persons, 2 objects)
+⚠️ Frame 674: 1 alert(s) - ['suitcase']
+🎯 Frame 675: 17 detections (10 persons, 2 objects)
+🎯 Frame 676: 17 detections (10 persons, 2 objects)
+🎯 Frame 677: 16 detections (9 persons, 2 objects)
+🎯 Frame 678: 15 detections (9 persons, 2 objects)
+🚨 ALERT: suitcase unattended for 23.6s
+🎯 Frame 679: 13 detections (8 persons, 2 objects)
+⚠️ Frame 679: 1 alert(s) - ['suitcase']
+🎯 Frame 680: 16 detections (10 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 23.7s
+🎯 Frame 681: 17 detections (11 persons, 3 objects)
+⚠️ Frame 681: 1 alert(s) - ['suitcase']
+🎯 Frame 682: 17 detections (10 persons, 3 objects)
+🚨 ALERT: suitcase unattended for 23.8s
+🎯 Frame 683: 16 detections (8 persons, 4 objects)
+⚠️ Frame 683: 1 alert(s) - ['suitcase']
+🎯 Frame 684: 16 detections (9 persons, 4 objects)
+🚨 ALERT: suitcase unattended for 23.8s
+🎯 Frame 685: 16 detections (9 persons, 4 objects)
+⚠️ Frame 685: 1 alert(s) - ['suitcase']
+🎯 Frame 686: 15 detections (8 persons, 5 objects)
+🎯 Frame 687: 12 detections (8 persons, 2 objects)
+🎯 Frame 688: 15 detections (8 persons, 4 objects)
+🎯 Frame 689: 15 detections (9 persons, 4 objects)
+🎯 Frame 690: 16 detections (8 persons, 4 objects)
+🚨 ALERT: backpack unattended for 24.0s
+🎯 Frame 691: 15 detections (8 persons, 4 objects)
+⚠️ Frame 691: 1 alert(s) - ['backpack']
+🎯 Frame 692: 17 detections (8 persons, 4 objects)
+🎯 Frame 693: 15 detections (8 persons, 4 objects)
+🎯 Frame 694: 16 detections (8 persons, 5 objects)
+🎯 Frame 695: 17 detections (9 persons, 5 objects)
+🎯 Frame 696: 18 detections (9 persons, 5 objects)
+🎯 Frame 697: 15 detections (8 persons, 4 objects)
+🎯 Frame 698: 16 detections (8 persons, 5 objects)
+🎯 Frame 699: 16 detections (8 persons, 5 objects)
+Processed 700 frames...
+🎯 Frame 700: 15 detections (8 persons, 4 objects)
+🔄 Processed 700/930 frames (21.4 fps)
+🚨 ALERT: suitcase unattended for 24.4s
+🎯 Frame 701: 15 detections (8 persons, 4 objects)
+⚠️ Frame 701: 1 alert(s) - ['suitcase']
+🎯 Frame 702: 16 detections (8 persons, 5 objects)
+🚨 ALERT: backpack unattended for 24.4s
+🎯 Frame 703: 17 detections (9 persons, 5 objects)
+⚠️ Frame 703: 1 alert(s) - ['backpack']
+🎯 Frame 704: 18 detections (9 persons, 5 objects)
+🚨 ALERT: suitcase unattended for 24.5s
+🎯 Frame 705: 19 detections (10 persons, 5 objects)
+⚠️ Frame 705: 1 alert(s) - ['suitcase']
+🚨 ALERT: backpack unattended for 24.5s
+🎯 Frame 706: 15 detections (8 persons, 3 objects)
+⚠️ Frame 706: 1 alert(s) - ['backpack']
+🎯 Frame 707: 16 detections (9 persons, 3 objects)
+🎯 Frame 708: 16 detections (9 persons, 3 objects)
+🎯 Frame 709: 15 detections (8 persons, 3 objects)
+🎯 Frame 710: 15 detections (8 persons, 3 objects)
+🎯 Frame 711: 15 detections (8 persons, 3 objects)
+🎯 Frame 712: 13 detections (8 persons, 2 objects)
+🎯 Frame 713: 13 detections (8 persons, 2 objects)
+🎯 Frame 714: 15 detections (9 persons, 2 objects)
+🎯 Frame 715: 12 detections (8 persons, 2 objects)
+🎯 Frame 716: 14 detections (8 persons, 2 objects)
+🎯 Frame 717: 13 detections (8 persons, 2 objects)
+🎯 Frame 718: 12 detections (7 persons, 2 objects)
+🎯 Frame 719: 15 detections (9 persons, 3 objects)
+🎯 Frame 720: 16 detections (10 persons, 3 objects)
+🎯 Frame 721: 16 detections (11 persons, 3 objects)
+🎯 Frame 722: 16 detections (11 persons, 2 objects)
+🎯 Frame 723: 15 detections (11 persons, 2 objects)
+🎯 Frame 724: 17 detections (12 persons, 3 objects)
+🎯 Frame 725: 14 detections (10 persons, 2 objects)
+🎯 Frame 726: 15 detections (10 persons, 3 objects)
+🎯 Frame 727: 16 detections (10 persons, 3 objects)
+🎯 Frame 728: 15 detections (10 persons, 3 objects)
+🎯 Frame 729: 15 detections (10 persons, 2 objects)
+🎯 Frame 730: 15 detections (10 persons, 2 objects)
+🎯 Frame 731: 15 detections (9 persons, 2 objects)
+🎯 Frame 732: 16 detections (10 persons, 2 objects)
+🎯 Frame 733: 14 detections (9 persons, 2 objects)
+🎯 Frame 734: 14 detections (9 persons, 2 objects)
+🎯 Frame 735: 14 detections (9 persons, 2 objects)
+🎯 Frame 736: 14 detections (9 persons, 2 objects)
+🎯 Frame 737: 14 detections (9 persons, 2 objects)
+🎯 Frame 738: 14 detections (9 persons, 2 objects)
+🎯 Frame 739: 15 detections (9 persons, 2 objects)
+🎯 Frame 740: 16 detections (10 persons, 2 objects)
+🎯 Frame 741: 15 detections (10 persons, 2 objects)
+🎯 Frame 742: 14 detections (9 persons, 2 objects)
+🎯 Frame 743: 14 detections (9 persons, 2 objects)
+🎯 Frame 744: 13 detections (9 persons, 2 objects)
+🎯 Frame 745: 15 detections (10 persons, 2 objects)
+🎯 Frame 746: 14 detections (9 persons, 2 objects)
+🎯 Frame 747: 15 detections (10 persons, 2 objects)
+🎯 Frame 748: 14 detections (9 persons, 2 objects)
+🎯 Frame 749: 14 detections (9 persons, 2 objects)
+🎯 Frame 750: 14 detections (10 persons, 2 objects)
+🎯 Frame 751: 13 detections (9 persons, 2 objects)
+🎯 Frame 752: 15 detections (11 persons, 2 objects)
+🎯 Frame 753: 14 detections (9 persons, 2 objects)
+🎯 Frame 754: 15 detections (10 persons, 2 objects)
+🎯 Frame 755: 15 detections (10 persons, 2 objects)
+🎯 Frame 756: 15 detections (10 persons, 2 objects)
+🎯 Frame 757: 15 detections (11 persons, 2 objects)
+🎯 Frame 758: 15 detections (11 persons, 2 objects)
+🎯 Frame 759: 13 detections (10 persons, 1 objects)
+🎯 Frame 760: 12 detections (9 persons, 1 objects)
+🎯 Frame 761: 13 detections (10 persons, 1 objects)
+🎯 Frame 762: 12 detections (9 persons, 1 objects)
+🎯 Frame 763: 13 detections (10 persons, 2 objects)
+🎯 Frame 764: 14 detections (10 persons, 1 objects)
+🎯 Frame 765: 14 detections (10 persons, 1 objects)
+🎯 Frame 766: 13 detections (9 persons, 1 objects)
+🎯 Frame 767: 14 detections (9 persons, 1 objects)
+🎯 Frame 768: 14 detections (9 persons, 1 objects)
+🎯 Frame 769: 14 detections (9 persons, 1 objects)
+🎯 Frame 770: 12 detections (9 persons, 1 objects)
+🎯 Frame 771: 13 detections (9 persons, 1 objects)
+🎯 Frame 772: 13 detections (9 persons, 1 objects)
+🎯 Frame 773: 13 detections (9 persons, 1 objects)
+🎯 Frame 774: 14 detections (9 persons, 1 objects)
+🎯 Frame 775: 15 detections (10 persons, 1 objects)
+🎯 Frame 776: 15 detections (10 persons, 1 objects)
+🎯 Frame 777: 12 detections (7 persons, 1 objects)
+🎯 Frame 778: 13 detections (8 persons, 1 objects)
+🎯 Frame 779: 13 detections (8 persons, 1 objects)
+🎯 Frame 780: 15 detections (9 persons, 2 objects)
+🎯 Frame 781: 15 detections (9 persons, 2 objects)
+🎯 Frame 782: 14 detections (9 persons, 1 objects)
+🎯 Frame 783: 13 detections (8 persons, 1 objects)
+🎯 Frame 784: 13 detections (8 persons, 1 objects)
+🎯 Frame 785: 13 detections (10 persons, 1 objects)
+🎯 Frame 786: 10 detections (8 persons, 1 objects)
+🎯 Frame 787: 13 detections (9 persons, 1 objects)
+🎯 Frame 788: 14 detections (10 persons, 1 objects)
+🎯 Frame 789: 13 detections (9 persons, 1 objects)
+🎯 Frame 790: 12 detections (9 persons, 1 objects)
+🎯 Frame 791: 14 detections (9 persons, 1 objects)
+🎯 Frame 792: 13 detections (9 persons, 1 objects)
+🎯 Frame 793: 14 detections (9 persons, 1 objects)
+🎯 Frame 794: 15 detections (11 persons, 1 objects)
+🎯 Frame 795: 14 detections (10 persons, 1 objects)
+🎯 Frame 796: 14 detections (10 persons, 1 objects)
+🎯 Frame 797: 14 detections (9 persons, 2 objects)
+🎯 Frame 798: 14 detections (10 persons, 1 objects)
+🎯 Frame 799: 15 detections (10 persons, 1 objects)
+Processed 800 frames...
+🎯 Frame 800: 13 detections (9 persons, 1 objects)
+🔄 Processed 800/930 frames (21.5 fps)
+🎯 Frame 801: 15 detections (10 persons, 1 objects)
+🎯 Frame 802: 14 detections (9 persons, 1 objects)
+🎯 Frame 803: 15 detections (10 persons, 1 objects)
+🎯 Frame 804: 14 detections (8 persons, 2 objects)
+🎯 Frame 805: 14 detections (9 persons, 2 objects)
+🎯 Frame 806: 13 detections (8 persons, 2 objects)
+🎯 Frame 807: 14 detections (9 persons, 1 objects)
+🎯 Frame 808: 13 detections (8 persons, 1 objects)
+🎯 Frame 809: 12 detections (7 persons, 1 objects)
+🎯 Frame 810: 12 detections (7 persons, 1 objects)
+🎯 Frame 811: 12 detections (7 persons, 1 objects)
+🎯 Frame 812: 12 detections (7 persons, 1 objects)
+🎯 Frame 813: 13 detections (7 persons, 1 objects)
+🎯 Frame 814: 14 detections (8 persons, 1 objects)
+🎯 Frame 815: 14 detections (7 persons, 2 objects)
+🎯 Frame 816: 11 detections (6 persons, 1 objects)
+🎯 Frame 817: 13 detections (8 persons, 1 objects)
+🎯 Frame 818: 12 detections (8 persons, 1 objects)
+🎯 Frame 819: 12 detections (7 persons, 1 objects)
+🎯 Frame 820: 11 detections (6 persons, 1 objects)
+🎯 Frame 821: 14 detections (8 persons, 1 objects)
+🎯 Frame 822: 13 detections (9 persons, 1 objects)
+🎯 Frame 823: 13 detections (8 persons, 1 objects)
+🎯 Frame 824: 14 detections (9 persons, 1 objects)
+🎯 Frame 825: 13 detections (9 persons, 1 objects)
+🎯 Frame 826: 14 detections (9 persons, 1 objects)
+🎯 Frame 827: 14 detections (10 persons, 1 objects)
+🎯 Frame 828: 13 detections (9 persons, 1 objects)
+🎯 Frame 829: 14 detections (9 persons, 1 objects)
+🎯 Frame 830: 16 detections (11 persons, 1 objects)
+🎯 Frame 831: 15 detections (11 persons, 1 objects)
+🎯 Frame 832: 13 detections (9 persons, 1 objects)
+🎯 Frame 833: 11 detections (8 persons, 1 objects)
+🎯 Frame 834: 15 detections (10 persons, 1 objects)
+🎯 Frame 835: 13 detections (9 persons, 1 objects)
+🎯 Frame 836: 12 detections (9 persons, 1 objects)
+🎯 Frame 837: 12 detections (9 persons, 1 objects)
+🎯 Frame 838: 11 detections (8 persons, 1 objects)
+🎯 Frame 839: 12 detections (8 persons, 1 objects)
+🎯 Frame 840: 12 detections (9 persons, 1 objects)
+🎯 Frame 841: 12 detections (9 persons, 1 objects)
+🎯 Frame 842: 11 detections (8 persons, 1 objects)
+🎯 Frame 843: 12 detections (7 persons, 1 objects)
+🎯 Frame 844: 11 detections (7 persons, 2 objects)
+🎯 Frame 845: 10 detections (7 persons, 1 objects)
+🎯 Frame 846: 13 detections (8 persons, 1 objects)
+🎯 Frame 847: 11 detections (7 persons, 1 objects)
+🎯 Frame 848: 10 detections (7 persons, 1 objects)
+🎯 Frame 849: 12 detections (8 persons, 1 objects)
+🎯 Frame 850: 12 detections (7 persons, 1 objects)
+🎯 Frame 851: 11 detections (7 persons, 1 objects)
+🎯 Frame 852: 13 detections (8 persons, 1 objects)
+🎯 Frame 853: 11 detections (7 persons, 1 objects)
+🎯 Frame 854: 11 detections (7 persons, 1 objects)
+🎯 Frame 855: 10 detections (6 persons, 1 objects)
+🎯 Frame 856: 11 detections (7 persons, 1 objects)
+🎯 Frame 857: 12 detections (8 persons, 1 objects)
+🎯 Frame 858: 14 detections (8 persons, 1 objects)
+🎯 Frame 859: 14 detections (8 persons, 1 objects)
+🎯 Frame 860: 13 detections (8 persons, 1 objects)
+🎯 Frame 861: 13 detections (8 persons, 1 objects)
+🎯 Frame 862: 12 detections (8 persons, 1 objects)
+🎯 Frame 863: 11 detections (7 persons, 1 objects)
+🎯 Frame 864: 12 detections (7 persons, 1 objects)
+🎯 Frame 865: 11 detections (7 persons, 1 objects)
+🎯 Frame 866: 12 detections (8 persons, 1 objects)
+🎯 Frame 867: 12 detections (8 persons, 1 objects)
+🎯 Frame 868: 13 detections (8 persons, 2 objects)
+🚨 ALERT: suitcase unattended for 30.0s
+🎯 Frame 869: 11 detections (8 persons, 1 objects)
+⚠️ Frame 869: 1 alert(s) - ['suitcase']
+🎯 Frame 870: 11 detections (7 persons, 1 objects)
+🎯 Frame 871: 12 detections (7 persons, 2 objects)
+🎯 Frame 872: 12 detections (7 persons, 2 objects)
+🎯 Frame 873: 13 detections (8 persons, 2 objects)
+🎯 Frame 874: 14 detections (9 persons, 2 objects)
+🎯 Frame 875: 14 detections (9 persons, 2 objects)
+🎯 Frame 876: 14 detections (9 persons, 3 objects)
+🎯 Frame 877: 14 detections (9 persons, 3 objects)
+🎯 Frame 878: 15 detections (9 persons, 3 objects)
+🎯 Frame 879: 15 detections (9 persons, 3 objects)
+🎯 Frame 880: 14 detections (9 persons, 2 objects)
+🎯 Frame 881: 16 detections (9 persons, 3 objects)
+🎯 Frame 882: 16 detections (9 persons, 3 objects)
+🎯 Frame 883: 17 detections (10 persons, 3 objects)
+🎯 Frame 884: 17 detections (10 persons, 3 objects)
+🎯 Frame 885: 15 detections (8 persons, 3 objects)
+🎯 Frame 886: 17 detections (10 persons, 3 objects)
+🎯 Frame 887: 15 detections (10 persons, 1 objects)
+🎯 Frame 888: 14 detections (9 persons, 1 objects)
+🎯 Frame 889: 14 detections (9 persons, 1 objects)
+🎯 Frame 890: 15 detections (9 persons, 2 objects)
+🎯 Frame 891: 17 detections (9 persons, 3 objects)
+🎯 Frame 892: 15 detections (8 persons, 2 objects)
+🎯 Frame 893: 16 detections (8 persons, 3 objects)
+🎯 Frame 894: 16 detections (8 persons, 3 objects)
+🎯 Frame 895: 17 detections (10 persons, 3 objects)
+🎯 Frame 896: 16 detections (9 persons, 3 objects)
+🎯 Frame 897: 16 detections (9 persons, 3 objects)
+🎯 Frame 898: 16 detections (9 persons, 3 objects)
+🎯 Frame 899: 17 detections (9 persons, 4 objects)
+Processed 900 frames...
+🎯 Frame 900: 19 detections (11 persons, 3 objects)
+🔄 Processed 900/930 frames (21.5 fps)
+🎯 Frame 901: 18 detections (11 persons, 3 objects)
+🎯 Frame 902: 17 detections (10 persons, 3 objects)
+🎯 Frame 903: 15 detections (9 persons, 3 objects)
+🎯 Frame 904: 16 detections (10 persons, 3 objects)
+🎯 Frame 905: 15 detections (9 persons, 2 objects)
+🎯 Frame 906: 17 detections (10 persons, 3 objects)
+🎯 Frame 907: 16 detections (9 persons, 3 objects)
+🎯 Frame 908: 16 detections (9 persons, 3 objects)
+🎯 Frame 909: 16 detections (10 persons, 2 objects)
+🎯 Frame 910: 16 detections (10 persons, 2 objects)
+🎯 Frame 911: 17 detections (10 persons, 3 objects)
+🎯 Frame 912: 16 detections (9 persons, 3 objects)
+🎯 Frame 913: 15 detections (9 persons, 3 objects)
+🎯 Frame 914: 18 detections (10 persons, 3 objects)
+🎯 Frame 915: 17 detections (10 persons, 3 objects)
+🎯 Frame 916: 16 detections (10 persons, 2 objects)
+🎯 Frame 917: 17 detections (10 persons, 3 objects)
+🎯 Frame 918: 15 detections (9 persons, 3 objects)
+🎯 Frame 919: 16 detections (10 persons, 2 objects)
+🎯 Frame 920: 14 detections (10 persons, 1 objects)
+🎯 Frame 921: 14 detections (9 persons, 1 objects)
+🎯 Frame 922: 15 detections (10 persons, 1 objects)
+🎯 Frame 923: 15 detections (10 persons, 1 objects)
+🎯 Frame 924: 14 detections (10 persons, 1 objects)
+🎯 Frame 925: 14 detections (9 persons, 1 objects)
+🎯 Frame 926: 16 detections (10 persons, 2 objects)
+🎯 Frame 927: 16 detections (10 persons, 2 objects)
+🎯 Frame 928: 15 detections (9 persons, 2 objects)
+🎯 Frame 929: 16 detections (10 persons, 2 objects)
+📹 End of video reached at frame 930
+Video capture released. Total frames in video: 930
+✅ Saved output video to /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_file_ppt_inference_20250919_052754.mp4
+📊 Processed 930 frames with detections
+⚠️ Total unattended alerts: 57
+⏱️ Processing time: 43.3s (21.5 fps)
+✅ Video processing completed successfully!
+[2025-09-19 05:29:26] ✓ Model3 processing completed successfully in 43 seconds
+[2025-09-19 05:29:26] ==================================
+[2025-09-19 05:29:26] JOB COMPLETION SUMMARY
+[2025-09-19 05:29:26] ==================================
+[2025-09-19 05:29:26] Job completed successfully!
+[2025-09-19 05:29:26] Total job duration: 90 seconds
+[2025-09-19 05:29:26] Inference duration: 46 seconds
+[2025-09-19 05:29:26] Model3 duration: 43 seconds
+[2025-09-19 05:29:26] Final output files:
+[2025-09-19 05:29:26]   - /home/ing-bwrxrp/Unattended-Object-Detection/outputs/input_file_ppt_inference_20250919_052754.mp4 (120M)
+[2025-09-19 05:29:26]   - client_v2_7635.out (8.0K)
+[2025-09-19 05:29:26]   - client_v2_7650.out (128K)
+[2025-09-19 05:29:26]   - client_v2_7651.out (128K)
+[2025-09-19 05:29:26]   - client_v2_7652.out (48K)
+[2025-09-19 05:29:26]   - client_v2_7653.out (24K)
+[2025-09-19 05:29:26]   - client_v2_7654.out (24K)
+[2025-09-19 05:29:26]   - client_v2_7658.out (48K)
+[2025-09-19 05:29:26]   - client_v2_7659.out (96K)
+[2025-09-19 05:29:26]   - client_v2_7660.out (96K)
+[2025-09-19 05:29:26]   - client_v2_7661.out (96K)
+[2025-09-19 05:29:26]   - client_v2_7662.out (96K)
+[2025-09-19 05:29:26]   - main.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7626.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7627.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7628.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7629.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7632.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7633.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7634.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7636.out (16K)
+[2025-09-19 05:29:26]   - triton_7645.out (16K)
+[2025-09-19 05:29:26]   - triton_7646.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7647.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7648.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7649.out (8.0K)
+[2025-09-19 05:29:26]   - triton_7657.out (8.0K)
+[2025-09-19 05:29:26]   - client_v2_7635.err (0)
+[2025-09-19 05:29:26]   - client_v2_7650.err (8.0K)
+[2025-09-19 05:29:26]   - client_v2_7651.err (0)
+[2025-09-19 05:29:27]   - client_v2_7652.err (0)
+[2025-09-19 05:29:27]   - client_v2_7653.err (0)
+[2025-09-19 05:29:27]   - client_v2_7654.err (0)
+[2025-09-19 05:29:27]   - client_v2_7658.err (0)
+[2025-09-19 05:29:27]   - client_v2_7659.err (0)
+[2025-09-19 05:29:27]   - client_v2_7660.err (0)
+[2025-09-19 05:29:27]   - client_v2_7661.err (0)
+[2025-09-19 05:29:27]   - client_v2_7662.err (0)
+[2025-09-19 05:29:27]   - triton_7626.err (0)
+[2025-09-19 05:29:27]   - triton_7627.err (0)
+[2025-09-19 05:29:27]   - triton_7628.err (0)
+[2025-09-19 05:29:27]   - triton_7629.err (8.0K)
+[2025-09-19 05:29:27]   - triton_7632.err (8.0K)
+[2025-09-19 05:29:27]   - triton_7633.err (224K)
+[2025-09-19 05:29:27]   - triton_7634.err (224K)
+[2025-09-19 05:29:27]   - triton_7636.err (8.0K)
+[2025-09-19 05:29:27]   - triton_7645.err (8.0K)
+[2025-09-19 05:29:27]   - triton_7646.err (224K)
+[2025-09-19 05:29:27]   - triton_7647.err (224K)
+[2025-09-19 05:29:27]   - triton_7648.err (224K)
+[2025-09-19 05:29:27]   - triton_7649.err (20M)
+[2025-09-19 05:29:27]   - triton_7657.err (22M)
+[2025-09-19 05:29:27] Job finished at: Fri Sep 19 05:29:27 AM CEST 2025
+[2025-09-19 05:29:27] ==================================

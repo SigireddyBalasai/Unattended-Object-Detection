@@ -1,0 +1,495 @@
+[2025-09-19 05:53:14] ==================================
+[2025-09-19 05:53:14] TRITON CLIENT V2 JOB STARTING
+[2025-09-19 05:53:14] ==================================
+[2025-09-19 05:53:14] Job ID: 7664
+[2025-09-19 05:53:14] Job Name: triton-client-v2
+[2025-09-19 05:53:14] Node: gpu001
+[2025-09-19 05:53:14] Working directory: /home/ing-bwrxrp/Unattended-Object-Detection
+[2025-09-19 05:53:14] CPUs allocated: 2
+[2025-09-19 05:53:14] GPUs allocated: N/A
+[2025-09-19 05:53:14] Memory allocated: N/AMB
+[2025-09-19 05:53:14] Time limit: N/A
+[2025-09-19 05:53:14] User: ing-bwrxrp
+[2025-09-19 05:53:14] System information:
+[2025-09-19 05:53:14]   - CPU info: 2 cores available
+[2025-09-19 05:53:14]   - Memory: 2.0Ti total
+[2025-09-19 05:53:14]   - Disk space: 8.0E available
+[2025-09-19 05:53:14] GPU information:
+[2025-09-19 05:53:14]   - GPU: NVIDIA H100 80GB HBM3, 81559, 79474
+[2025-09-19 05:53:14] Checking required files...
+[2025-09-19 05:53:14]   ✓ Video file found: /home/ing-bwrxrp/Unattended-Object-Detection/1000053772.mp4 (6.0M)
+[2025-09-19 05:53:14]   ✓ Triton client script found
+[2025-09-19 05:53:14]   ✓ Model3 script found
+[2025-09-19 05:53:14] Python environment check...
+[2025-09-19 05:53:14]   ✓ UV package manager found: uv 0.8.14
+[2025-09-19 05:53:14] ==================================
+[2025-09-19 05:53:14] DETECTING TRITON SERVER
+[2025-09-19 05:53:14] ==================================
+[2025-09-19 05:53:14] ✓ Detected Triton server on node: gpu001
+[2025-09-19 05:53:14] ✓ Retrieved Triton server ports: HTTP=8002, gRPC=8726, Metrics=8503
+[2025-09-19 05:53:14] ==================================
+[2025-09-19 05:53:14] WAITING FOR TRITON SERVER
+[2025-09-19 05:53:14] ==================================
+[2025-09-19 05:53:14] Checking Triton server availability at gpu001:8002...
+Waiting for Triton server on node: gpu001:8002
+✓ Triton server is ready on gpu001:8002
+[2025-09-19 05:53:14] Performing additional health checks...
+[2025-09-19 05:53:14]   ✓ Server live check: OK
+[2025-09-19 05:53:14]   ✓ Server metadata accessible
+[2025-09-19 05:53:14] Server metadata:
+{
+  "name": "triton",
+  "version": "2.49.0",
+  "extensions": [
+    "classification",
+    "sequence",
+    "model_repository",
+    "model_repository(unload_dependents)",
+    "schedule_policy",
+    "model_configuration",
+    "system_shared_memory",
+    "cuda_shared_memory",
+    "binary_tensor_data",
+    "parameters",
+    "statistics",
+    "trace",
+    "logging"
+  ]
+}
+[2025-09-19 05:53:14] Listing models on Triton server...
+[2025-09-19 05:53:14] Models available on the server:
+{
+  "error": "Not Found"
+}
+[2025-09-19 05:53:14] ==================================
+[2025-09-19 05:53:14] MODEL STATUS CHECK
+[2025-09-19 05:53:14] ==================================
+[2025-09-19 05:53:14] Checking model 'rtdetr' status...
+[2025-09-19 05:53:14] Model status response received:
+{
+  "name": "rtdetr",
+  "versions": [
+    "1"
+  ],
+  "platform": "onnxruntime_onnx",
+  "inputs": [
+    {
+      "name": "images",
+      "datatype": "FP32",
+      "shape": [
+        1,
+        3,
+        640,
+        640
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output0",
+      "datatype": "FP32",
+      "shape": [
+        1,
+        300,
+        84
+      ]
+    }
+  ]
+}
+[2025-09-19 05:53:14] ⚠ WARNING: Model 'rtdetr' may not be ready
+[2025-09-19 05:53:14] Retrieving model metadata...
+[2025-09-19 05:53:14] Model configuration:
+{
+  "name": "rtdetr",
+  "platform": "onnxruntime_onnx",
+  "backend": "onnxruntime",
+  "runtime": "",
+  "version_policy": {
+    "latest": {
+      "num_versions": 1
+    }
+  },
+  "max_batch_size": 0,
+  "input": [
+    {
+      "name": "images",
+      "data_type": "TYPE_FP32",
+      "format": "FORMAT_NONE",
+      "dims": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "is_shape_tensor": false,
+      "allow_ragged_batch": false,
+      "optional": false,
+      "is_non_linear_format_io": false
+    }
+  ],
+  "output": [
+    {
+      "name": "output0",
+      "data_type": "TYPE_FP32",
+      "dims": [
+        1,
+        300,
+        84
+      ],
+      "label_filename": "",
+      "is_shape_tensor": false,
+      "is_non_linear_format_io": false
+    }
+  ],
+  "batch_input": [],
+  "batch_output": [],
+  "optimization": {
+    "priority": "PRIORITY_DEFAULT",
+    "input_pinned_memory": {
+      "enable": true
+    },
+    "output_pinned_memory": {
+      "enable": true
+    },
+    "gather_kernel_buffer_threshold": 0,
+    "eager_batching": false
+  },
+  "instance_group": [
+    {
+      "name": "rtdetr_0",
+      "kind": "KIND_GPU",
+      "count": 1,
+      "gpus": [
+        0
+      ],
+      "secondary_devices": [],
+      "profile": [],
+      "passive": false,
+      "host_policy": ""
+    }
+  ],
+  "default_model_filename": "model.onnx",
+  "cc_model_filenames": {},
+  "metric_tags": {},
+  "parameters": {
+    "intra_op_thread_count": {
+      "string_value": "1"
+    },
+    "inter_op_thread_count": {
+      "string_value": "1"
+    }
+  },
+  "model_warmup": []
+}
+[2025-09-19 05:53:14] ==================================
+[2025-09-19 05:53:14] STARTING VIDEO INFERENCE
+[2025-09-19 05:53:14] ==================================
+[2025-09-19 05:53:14] Running inference on /home/ing-bwrxrp/Unattended-Object-Detection/1000053772.mp4 with confidence threshold 0.5...
+[2025-09-19 05:53:14] Inference parameters:
+[2025-09-19 05:53:14]   - Input video: /home/ing-bwrxrp/Unattended-Object-Detection/1000053772.mp4
+[2025-09-19 05:53:14]   - Model name: rtdetr
+[2025-09-19 05:53:14]   - Server URL: gpu001:8002
+[2025-09-19 05:53:14]   - Output video: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/1000053772_inference_20250919_055311.mp4
+[2025-09-19 05:53:14]   - Confidence threshold: 0.5
+[2025-09-19 05:53:14] Inference started at: Fri Sep 19 05:53:14 AM CEST 2025
+[2025-09-19 05:53:14] Executing triton_client.py...
+Connected to Triton server at gpu001:8002
+Error listing models: HTTP Error 404: Not Found
+Model 'rtdetr' is ready
+Video info: 1280x720, 24.0 FPS, 192 frames
+Starting inference...
+Processing frame 1/192Processing frame 2/192Processing frame 3/192Processing frame 4/192Processing frame 5/192Processing frame 6/192Processing frame 7/192Processing frame 8/192Processing frame 9/192Processing frame 10/192Processing frame 11/192Processing frame 12/192Processing frame 13/192Processing frame 14/192Processing frame 15/192Processing frame 16/192Processing frame 17/192Processing frame 18/192Processing frame 19/192Processing frame 20/192Processing frame 21/192Processing frame 22/192Processing frame 23/192Processing frame 24/192Processing frame 25/192Processing frame 26/192Processing frame 27/192Processing frame 28/192Processing frame 29/192Processing frame 30/192Processing frame 31/192Processing frame 32/192Processing frame 33/192Processing frame 34/192Processing frame 35/192Processing frame 36/192Processing frame 37/192Processing frame 38/192Processing frame 39/192Processing frame 40/192Processing frame 41/192Processing frame 42/192Processing frame 43/192Processing frame 44/192Processing frame 45/192Processing frame 46/192Processing frame 47/192Processing frame 48/192Processing frame 49/192Processing frame 50/192Processing frame 51/192Processing frame 52/192Processing frame 53/192Processing frame 54/192Processing frame 55/192Processing frame 56/192Processing frame 57/192Processing frame 58/192Processing frame 59/192Processing frame 60/192Processing frame 61/192Processing frame 62/192Processing frame 63/192Processing frame 64/192Processing frame 65/192Processing frame 66/192Processing frame 67/192Processing frame 68/192Processing frame 69/192Processing frame 70/192Processing frame 71/192Processing frame 72/192Processing frame 73/192Processing frame 74/192Processing frame 75/192Processing frame 76/192Processing frame 77/192Processing frame 78/192Processing frame 79/192Processing frame 80/192Processing frame 81/192Processing frame 82/192Processing frame 83/192Processing frame 84/192Processing frame 85/192Processing frame 86/192Processing frame 87/192Processing frame 88/192Processing frame 89/192Processing frame 90/192Processing frame 91/192Processing frame 92/192Processing frame 93/192Processing frame 94/192Processing frame 95/192Processing frame 96/192Processing frame 97/192Processing frame 98/192Processing frame 99/192Processing frame 100/192Processing frame 101/192Processing frame 102/192Processing frame 103/192Processing frame 104/192Processing frame 105/192Processing frame 106/192Processing frame 107/192Processing frame 108/192Processing frame 109/192Processing frame 110/192Processing frame 111/192Processing frame 112/192Processing frame 113/192Processing frame 114/192Processing frame 115/192Processing frame 116/192Processing frame 117/192Processing frame 118/192Processing frame 119/192Processing frame 120/192Processing frame 121/192Processing frame 122/192Processing frame 123/192Processing frame 124/192Processing frame 125/192Processing frame 126/192Processing frame 127/192Processing frame 128/192Processing frame 129/192Processing frame 130/192Processing frame 131/192Processing frame 132/192Processing frame 133/192Processing frame 134/192Processing frame 135/192Processing frame 136/192Processing frame 137/192Processing frame 138/192Processing frame 139/192Processing frame 140/192Processing frame 141/192Processing frame 142/192Processing frame 143/192Processing frame 144/192Processing frame 145/192Processing frame 146/192Processing frame 147/192Processing frame 148/192Processing frame 149/192Processing frame 150/192Processing frame 151/192Processing frame 152/192Processing frame 153/192Processing frame 154/192Processing frame 155/192Processing frame 156/192Processing frame 157/192Processing frame 158/192Processing frame 159/192Processing frame 160/192Processing frame 161/192Processing frame 162/192Processing frame 163/192Processing frame 164/192Processing frame 165/192Processing frame 166/192Processing frame 167/192Processing frame 168/192Processing frame 169/192Processing frame 170/192Processing frame 171/192Processing frame 172/192Processing frame 173/192Processing frame 174/192Processing frame 175/192Processing frame 176/192Processing frame 177/192Processing frame 178/192Processing frame 179/192Processing frame 180/192Processing frame 181/192Processing frame 182/192Processing frame 183/192Processing frame 184/192Processing frame 185/192Processing frame 186/192Processing frame 187/192Processing frame 188/192Processing frame 189/192Processing frame 190/192Processing frame 191/192Processing frame 192/192
+Processed 192 frames
+Average inference FPS: 35.28
+Output saved to: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/1000053772_inference_20250919_055311.mp4
+[2025-09-19 05:53:26] ✓ Inference completed successfully in 12 seconds
+[2025-09-19 05:53:26] ✓ Output video created: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/1000053772_inference_20250919_055311.mp4 (18M)
+[2025-09-19 05:53:26] ==================================
+[2025-09-19 05:53:26] RUNNING MODEL3 POST-PROCESSING
+[2025-09-19 05:53:26] ==================================
+[2025-09-19 05:53:26] Executing model3.py for post-processing...
+[2025-09-19 05:53:26] Model3 processing started at: Fri Sep 19 05:53:26 AM CEST 2025
+Using provided Triton server URL: gpu001:8002
+Processing video: /home/ing-bwrxrp/Unattended-Object-Detection/1000053772.mp4
+Output will be saved to: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/1000053772_inference_20250919_055311.mp4
+🎬 Loading input video: /home/ing-bwrxrp/Unattended-Object-Detection/1000053772.mp4
+📊 Video properties: 1280x720 @ 24fps, 192 total frames
+🎯 Output video: /home/ing-bwrxrp/Unattended-Object-Detection/outputs/1000053772_inference_20250919_055311.mp4
+🤖 Using model: rtdetr with confidence threshold: 0.5
+📝 Video writer initialized: 1280x720, 24fps
+Connecting to Triton server at: gpu001:8002
+✓ Successfully connected to Triton server at gpu001:8002
+🎬 Opened video: 24 fps, starting inference...
+🎯 Frame 0: 14 detections (11 persons, 1 objects)
+🔄 Processed 0/192 frames (0.0 fps)
+🎯 Frame 1: 13 detections (9 persons, 2 objects)
+🎯 Frame 2: 12 detections (11 persons, 0 objects)
+🎯 Frame 3: 12 detections (11 persons, 0 objects)
+🎯 Frame 4: 16 detections (14 persons, 1 objects)
+🎯 Frame 5: 14 detections (12 persons, 1 objects)
+🎯 Frame 6: 10 detections (8 persons, 1 objects)
+🎯 Frame 7: 13 detections (11 persons, 2 objects)
+🎯 Frame 8: 12 detections (9 persons, 3 objects)
+🎯 Frame 9: 12 detections (10 persons, 2 objects)
+🎯 Frame 10: 12 detections (9 persons, 3 objects)
+🎯 Frame 11: 12 detections (9 persons, 3 objects)
+🎯 Frame 12: 12 detections (10 persons, 2 objects)
+🎯 Frame 13: 12 detections (11 persons, 1 objects)
+🎯 Frame 14: 11 detections (9 persons, 2 objects)
+🎯 Frame 15: 12 detections (10 persons, 2 objects)
+🎯 Frame 16: 12 detections (10 persons, 2 objects)
+🎯 Frame 17: 13 detections (10 persons, 3 objects)
+🎯 Frame 18: 10 detections (7 persons, 3 objects)
+🎯 Frame 19: 9 detections (7 persons, 2 objects)
+🎯 Frame 20: 10 detections (7 persons, 3 objects)
+🎯 Frame 21: 10 detections (6 persons, 4 objects)
+🎯 Frame 22: 11 detections (7 persons, 4 objects)
+🎯 Frame 23: 13 detections (9 persons, 4 objects)
+🎯 Frame 24: 14 detections (10 persons, 3 objects)
+🎯 Frame 25: 16 detections (11 persons, 4 objects)
+🎯 Frame 26: 15 detections (11 persons, 4 objects)
+🎯 Frame 27: 16 detections (11 persons, 5 objects)
+🎯 Frame 28: 15 detections (10 persons, 5 objects)
+🎯 Frame 29: 15 detections (10 persons, 5 objects)
+🎯 Frame 30: 14 detections (10 persons, 4 objects)
+🎯 Frame 31: 15 detections (10 persons, 5 objects)
+🎯 Frame 32: 12 detections (9 persons, 3 objects)
+🎯 Frame 33: 13 detections (10 persons, 3 objects)
+🎯 Frame 34: 12 detections (9 persons, 3 objects)
+🎯 Frame 35: 14 detections (11 persons, 3 objects)
+🎯 Frame 36: 14 detections (9 persons, 4 objects)
+🎯 Frame 37: 16 detections (11 persons, 4 objects)
+🎯 Frame 38: 15 detections (11 persons, 3 objects)
+🎯 Frame 39: 18 detections (12 persons, 5 objects)
+🎯 Frame 40: 14 detections (10 persons, 3 objects)
+🎯 Frame 41: 15 detections (10 persons, 4 objects)
+🎯 Frame 42: 16 detections (11 persons, 4 objects)
+🎯 Frame 43: 15 detections (11 persons, 3 objects)
+🎯 Frame 44: 20 detections (11 persons, 8 objects)
+🎯 Frame 45: 15 detections (11 persons, 3 objects)
+🎯 Frame 46: 14 detections (9 persons, 4 objects)
+🎯 Frame 47: 16 detections (11 persons, 4 objects)
+🎯 Frame 48: 15 detections (10 persons, 4 objects)
+🎯 Frame 49: 13 detections (7 persons, 5 objects)
+🎯 Frame 50: 16 detections (9 persons, 6 objects)
+🎯 Frame 51: 18 detections (11 persons, 6 objects)
+🎯 Frame 52: 19 detections (12 persons, 6 objects)
+🎯 Frame 53: 17 detections (10 persons, 6 objects)
+🎯 Frame 54: 17 detections (11 persons, 5 objects)
+🎯 Frame 55: 20 detections (12 persons, 7 objects)
+🎯 Frame 56: 18 detections (13 persons, 4 objects)
+🎯 Frame 57: 17 detections (12 persons, 4 objects)
+🎯 Frame 58: 17 detections (10 persons, 5 objects)
+🎯 Frame 59: 18 detections (12 persons, 5 objects)
+🎯 Frame 60: 16 detections (10 persons, 5 objects)
+🎯 Frame 61: 19 detections (12 persons, 6 objects)
+🎯 Frame 62: 22 detections (13 persons, 8 objects)
+🎯 Frame 63: 20 detections (12 persons, 7 objects)
+🎯 Frame 64: 20 detections (11 persons, 8 objects)
+🎯 Frame 65: 19 detections (11 persons, 7 objects)
+🎯 Frame 66: 16 detections (11 persons, 4 objects)
+🎯 Frame 67: 17 detections (11 persons, 6 objects)
+🎯 Frame 68: 17 detections (12 persons, 5 objects)
+🎯 Frame 69: 18 detections (12 persons, 6 objects)
+🎯 Frame 70: 18 detections (11 persons, 7 objects)
+🎯 Frame 71: 18 detections (11 persons, 7 objects)
+🎯 Frame 72: 17 detections (13 persons, 4 objects)
+🎯 Frame 73: 18 detections (13 persons, 5 objects)
+🎯 Frame 74: 18 detections (13 persons, 5 objects)
+🎯 Frame 75: 21 detections (14 persons, 7 objects)
+🎯 Frame 76: 18 detections (12 persons, 6 objects)
+🎯 Frame 77: 17 detections (11 persons, 6 objects)
+🎯 Frame 78: 17 detections (11 persons, 6 objects)
+🎯 Frame 79: 19 detections (12 persons, 7 objects)
+🎯 Frame 80: 19 detections (14 persons, 5 objects)
+🎯 Frame 81: 20 detections (13 persons, 6 objects)
+🎯 Frame 82: 18 detections (13 persons, 4 objects)
+🎯 Frame 83: 18 detections (12 persons, 5 objects)
+🎯 Frame 84: 18 detections (12 persons, 5 objects)
+🎯 Frame 85: 17 detections (12 persons, 4 objects)
+🎯 Frame 86: 18 detections (12 persons, 5 objects)
+🎯 Frame 87: 17 detections (10 persons, 6 objects)
+🎯 Frame 88: 17 detections (10 persons, 6 objects)
+🎯 Frame 89: 18 detections (11 persons, 5 objects)
+🎯 Frame 90: 18 detections (11 persons, 5 objects)
+🎯 Frame 91: 20 detections (13 persons, 5 objects)
+🎯 Frame 92: 18 detections (12 persons, 4 objects)
+🎯 Frame 93: 18 detections (12 persons, 4 objects)
+🎯 Frame 94: 20 detections (14 persons, 4 objects)
+🎯 Frame 95: 20 detections (14 persons, 4 objects)
+🎯 Frame 96: 19 detections (12 persons, 5 objects)
+🚨 ALERT: backpack unattended for 5.0s
+🎯 Frame 97: 18 detections (12 persons, 4 objects)
+⚠️ Frame 97: 1 alert(s) - ['backpack']
+🎯 Frame 98: 17 detections (11 persons, 4 objects)
+🎯 Frame 99: 18 detections (12 persons, 4 objects)
+Processed 100 frames...
+🎯 Frame 100: 17 detections (11 persons, 4 objects)
+🔄 Processed 100/192 frames (21.6 fps)
+🎯 Frame 101: 16 detections (10 persons, 4 objects)
+🎯 Frame 102: 20 detections (13 persons, 5 objects)
+🎯 Frame 103: 18 detections (12 persons, 4 objects)
+🎯 Frame 104: 19 detections (13 persons, 4 objects)
+🎯 Frame 105: 17 detections (12 persons, 3 objects)
+🎯 Frame 106: 17 detections (12 persons, 3 objects)
+🎯 Frame 107: 18 detections (12 persons, 4 objects)
+🎯 Frame 108: 20 detections (13 persons, 5 objects)
+🎯 Frame 109: 19 detections (12 persons, 4 objects)
+🎯 Frame 110: 18 detections (12 persons, 5 objects)
+🎯 Frame 111: 18 detections (12 persons, 5 objects)
+🎯 Frame 112: 16 detections (11 persons, 4 objects)
+🎯 Frame 113: 14 detections (9 persons, 4 objects)
+🎯 Frame 114: 15 detections (10 persons, 4 objects)
+🎯 Frame 115: 19 detections (10 persons, 7 objects)
+🎯 Frame 116: 17 detections (9 persons, 7 objects)
+🚨 ALERT: backpack unattended for 5.9s
+🎯 Frame 117: 17 detections (10 persons, 6 objects)
+⚠️ Frame 117: 1 alert(s) - ['backpack']
+🎯 Frame 118: 19 detections (11 persons, 7 objects)
+🎯 Frame 119: 15 detections (9 persons, 5 objects)
+🎯 Frame 120: 16 detections (11 persons, 4 objects)
+🎯 Frame 121: 16 detections (10 persons, 5 objects)
+🎯 Frame 122: 17 detections (11 persons, 5 objects)
+🎯 Frame 123: 17 detections (12 persons, 4 objects)
+🎯 Frame 124: 17 detections (11 persons, 5 objects)
+🎯 Frame 125: 17 detections (9 persons, 7 objects)
+🎯 Frame 126: 18 detections (11 persons, 6 objects)
+🎯 Frame 127: 18 detections (10 persons, 7 objects)
+🎯 Frame 128: 18 detections (11 persons, 6 objects)
+🎯 Frame 129: 17 detections (10 persons, 6 objects)
+🎯 Frame 130: 19 detections (12 persons, 6 objects)
+🎯 Frame 131: 21 detections (13 persons, 7 objects)
+🎯 Frame 132: 17 detections (10 persons, 6 objects)
+🎯 Frame 133: 16 detections (9 persons, 6 objects)
+🎯 Frame 134: 17 detections (10 persons, 6 objects)
+🎯 Frame 135: 16 detections (9 persons, 6 objects)
+🎯 Frame 136: 15 detections (8 persons, 6 objects)
+🎯 Frame 137: 17 detections (10 persons, 6 objects)
+🎯 Frame 138: 17 detections (11 persons, 5 objects)
+🎯 Frame 139: 18 detections (12 persons, 5 objects)
+🎯 Frame 140: 15 detections (9 persons, 5 objects)
+🎯 Frame 141: 17 detections (11 persons, 5 objects)
+🎯 Frame 142: 15 detections (10 persons, 5 objects)
+🎯 Frame 143: 16 detections (11 persons, 5 objects)
+🎯 Frame 144: 13 detections (9 persons, 4 objects)
+🎯 Frame 145: 15 detections (11 persons, 4 objects)
+🎯 Frame 146: 15 detections (10 persons, 5 objects)
+🎯 Frame 147: 15 detections (11 persons, 4 objects)
+🎯 Frame 148: 16 detections (12 persons, 4 objects)
+🎯 Frame 149: 16 detections (12 persons, 4 objects)
+🎯 Frame 150: 15 detections (12 persons, 3 objects)
+🎯 Frame 151: 14 detections (11 persons, 3 objects)
+🎯 Frame 152: 13 detections (10 persons, 3 objects)
+🎯 Frame 153: 15 detections (12 persons, 3 objects)
+🎯 Frame 154: 16 detections (13 persons, 3 objects)
+🎯 Frame 155: 16 detections (13 persons, 3 objects)
+🎯 Frame 156: 17 detections (13 persons, 3 objects)
+🎯 Frame 157: 17 detections (13 persons, 3 objects)
+🎯 Frame 158: 16 detections (13 persons, 2 objects)
+🎯 Frame 159: 16 detections (13 persons, 2 objects)
+🎯 Frame 160: 13 detections (11 persons, 1 objects)
+🎯 Frame 161: 13 detections (10 persons, 1 objects)
+🎯 Frame 162: 13 detections (11 persons, 1 objects)
+🎯 Frame 163: 13 detections (11 persons, 1 objects)
+🎯 Frame 164: 13 detections (11 persons, 2 objects)
+🎯 Frame 165: 13 detections (11 persons, 2 objects)
+🎯 Frame 166: 12 detections (10 persons, 2 objects)
+🎯 Frame 167: 12 detections (10 persons, 2 objects)
+🎯 Frame 168: 14 detections (12 persons, 2 objects)
+🎯 Frame 169: 10 detections (8 persons, 2 objects)
+🎯 Frame 170: 13 detections (10 persons, 3 objects)
+🎯 Frame 171: 13 detections (10 persons, 3 objects)
+🎯 Frame 172: 13 detections (10 persons, 3 objects)
+🎯 Frame 173: 14 detections (10 persons, 4 objects)
+🎯 Frame 174: 15 detections (11 persons, 4 objects)
+🎯 Frame 175: 16 detections (12 persons, 4 objects)
+🎯 Frame 176: 15 detections (11 persons, 4 objects)
+🎯 Frame 177: 14 detections (10 persons, 4 objects)
+🎯 Frame 178: 14 detections (10 persons, 4 objects)
+🎯 Frame 179: 14 detections (10 persons, 4 objects)
+🎯 Frame 180: 13 detections (9 persons, 4 objects)
+🎯 Frame 181: 15 detections (9 persons, 6 objects)
+🎯 Frame 182: 14 detections (8 persons, 5 objects)
+🎯 Frame 183: 12 detections (8 persons, 4 objects)
+🎯 Frame 184: 13 detections (9 persons, 4 objects)
+🎯 Frame 185: 13 detections (9 persons, 4 objects)
+🎯 Frame 186: 14 detections (10 persons, 4 objects)
+🎯 Frame 187: 15 detections (12 persons, 3 objects)
+🎯 Frame 188: 14 detections (11 persons, 3 objects)
+🎯 Frame 189: 14 detections (12 persons, 2 objects)
+🎯 Frame 190: 14 detections (12 persons, 2 objects)
+🎯 Frame 191: 15 detections (13 persons, 2 objects)
+📹 End of video reached at frame 192
+Video capture released. Total frames in video: 192
+✅ Saved output video to /home/ing-bwrxrp/Unattended-Object-Detection/outputs/1000053772_inference_20250919_055311.mp4
+📊 Processed 192 frames with detections
+⚠️ Total unattended alerts: 2
+⏱️ Processing time: 8.8s (21.9 fps)
+✅ Video processing completed successfully!
+[2025-09-19 05:53:35] ✓ Model3 processing completed successfully in 9 seconds
+[2025-09-19 05:53:35] ==================================
+[2025-09-19 05:53:35] JOB COMPLETION SUMMARY
+[2025-09-19 05:53:35] ==================================
+[2025-09-19 05:53:35] Job completed successfully!
+[2025-09-19 05:53:35] Total job duration: 21 seconds
+[2025-09-19 05:53:35] Inference duration: 12 seconds
+[2025-09-19 05:53:35] Model3 duration: 9 seconds
+[2025-09-19 05:53:35] Final output files:
+[2025-09-19 05:53:35]   - /home/ing-bwrxrp/Unattended-Object-Detection/outputs/1000053772_inference_20250919_055311.mp4 (16M)
+[2025-09-19 05:53:35]   - client_v2_7635.out (8.0K)
+[2025-09-19 05:53:35]   - client_v2_7650.out (128K)
+[2025-09-19 05:53:35]   - client_v2_7651.out (128K)
+[2025-09-19 05:53:35]   - client_v2_7652.out (48K)
+[2025-09-19 05:53:35]   - client_v2_7653.out (24K)
+[2025-09-19 05:53:35]   - client_v2_7654.out (24K)
+[2025-09-19 05:53:35]   - client_v2_7658.out (48K)
+[2025-09-19 05:53:35]   - client_v2_7659.out (96K)
+[2025-09-19 05:53:35]   - client_v2_7660.out (96K)
+[2025-09-19 05:53:35]   - client_v2_7661.out (96K)
+[2025-09-19 05:53:35]   - client_v2_7662.out (96K)
+[2025-09-19 05:53:35]   - client_v2_7663.out (32K)
+[2025-09-19 05:53:35]   - client_v2_7664.out (24K)
+[2025-09-19 05:53:35]   - main.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7626.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7627.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7628.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7629.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7632.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7633.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7634.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7636.out (16K)
+[2025-09-19 05:53:35]   - triton_7645.out (16K)
+[2025-09-19 05:53:35]   - triton_7646.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7647.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7648.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7649.out (8.0K)
+[2025-09-19 05:53:35]   - triton_7657.out (8.0K)
+[2025-09-19 05:53:35]   - client_v2_7635.err (0)
+[2025-09-19 05:53:35]   - client_v2_7650.err (8.0K)
+[2025-09-19 05:53:35]   - client_v2_7651.err (0)
+[2025-09-19 05:53:35]   - client_v2_7652.err (0)
+[2025-09-19 05:53:35]   - client_v2_7653.err (0)
+[2025-09-19 05:53:35]   - client_v2_7654.err (0)
+[2025-09-19 05:53:35]   - client_v2_7658.err (0)
+[2025-09-19 05:53:35]   - client_v2_7659.err (0)
+[2025-09-19 05:53:35]   - client_v2_7660.err (0)
+[2025-09-19 05:53:35]   - client_v2_7661.err (0)
+[2025-09-19 05:53:35]   - client_v2_7662.err (0)
+[2025-09-19 05:53:35]   - client_v2_7663.err (0)
+[2025-09-19 05:53:35]   - client_v2_7664.err (0)
+[2025-09-19 05:53:35]   - triton_7626.err (0)
+[2025-09-19 05:53:35]   - triton_7627.err (0)
+[2025-09-19 05:53:35]   - triton_7628.err (0)
+[2025-09-19 05:53:35]   - triton_7629.err (8.0K)
+[2025-09-19 05:53:35]   - triton_7632.err (8.0K)
+[2025-09-19 05:53:35]   - triton_7633.err (224K)
+[2025-09-19 05:53:35]   - triton_7634.err (224K)
+[2025-09-19 05:53:35]   - triton_7636.err (8.0K)
+[2025-09-19 05:53:35]   - triton_7645.err (8.0K)
+[2025-09-19 05:53:35]   - triton_7646.err (224K)
+[2025-09-19 05:53:35]   - triton_7647.err (224K)
+[2025-09-19 05:53:35]   - triton_7648.err (224K)
+[2025-09-19 05:53:35]   - triton_7649.err (20M)
+[2025-09-19 05:53:35]   - triton_7657.err (22M)
+[2025-09-19 05:53:35] Job finished at: Fri Sep 19 05:53:35 AM CEST 2025
+[2025-09-19 05:53:35] ==================================
